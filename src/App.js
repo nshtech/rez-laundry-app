@@ -3,6 +3,17 @@ import logo from './logo.svg';
 import './App.css';
 
 
+let customers = [];
+
+fetch("./customers.json")
+  .then(function(resp) {
+    return resp.json();
+  })
+  .then(function(data) {
+    customers = customers.users;
+  })
+
+
 
 function App() {
   return (
