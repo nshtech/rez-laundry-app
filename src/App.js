@@ -6,6 +6,7 @@ import {AppMenu} from './AppMenu';
 import {AppProfile} from './AppProfile';
 import {Route} from 'react-router-dom';
 import {Dashboard} from './components/Dashboard';
+import { CustomerSheet } from './components/CustomerSheet';
 import {FormsDemo} from './components/FormsDemo';
 import {SampleDemo} from './components/SampleDemo';
 import {DataDemo} from './components/DataDemo';
@@ -236,7 +237,7 @@ class App extends Component {
                 </div>
 
                 <div className="layout-main">
-                    <Route path="/" exact component={Dashboard} />
+                    <Route path="/" exact component={CustomerSheet} />
                     <Route path="/forms" component={FormsDemo} />
                     <Route path="/sample" component={SampleDemo} />
                     <Route path="/data" component={DataDemo} />
