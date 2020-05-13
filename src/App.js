@@ -33,6 +33,7 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 
 import 'firebase/auth';
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 
 const firebaseConfig = {
     apiKey: "AIzaSyAfTUULx93uJ8x9gZN1gmTCYFT9zTDz_Xc",
@@ -46,6 +47,9 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 
+export const provider = new firebase.auth.GoogleAuthProvider();
+export const auth = firebase.auth();
+
 class App extends Component {
 
     constructor() {
@@ -55,14 +59,36 @@ class App extends Component {
             layoutColorMode: 'dark',
             staticMenuInactive: false,
             overlayMenuActive: false,
-            mobileMenuActive: false
+            mobileMenuActive: false,
+            user: null
         };
+        this.login = this.login.bind(this); // <-- add this line
+        this.logout = this.logout.bind(this);
 
         this.onWrapperClick = this.onWrapperClick.bind(this);
         this.onToggleMenu = this.onToggleMenu.bind(this);
         this.onSidebarClick = this.onSidebarClick.bind(this);
         this.onMenuItemClick = this.onMenuItemClick.bind(this);
         this.createMenu();
+    }
+
+    login() {
+        auth.signInWithPopup(provider)
+            .then((result) => {
+                const user = result.user;
+                console.log(user.email)
+                this.setState({
+                    user
+                });
+            });
+    }
+    logout() {
+        auth.signOut()
+            .then(() => {
+                this.setState({
+                    user: null
+                });
+            });
     }
 
     onWrapperClick(event) {
@@ -118,20 +144,6 @@ class App extends Component {
         this.menu = [
             {label: 'Dashboard', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/'}},
             { label: 'Calendar', icon: 'pi pi-fw pi-calendar', to: '/calendar'},
-            // {
-            //     label: 'Menu Modes', icon: 'pi pi-fw pi-cog',
-            //     items: [
-            //         {label: 'Static Menu', icon: 'pi pi-fw pi-bars',  command: () => this.setState({layoutMode: 'static'}) },
-            //         {label: 'Overlay Menu', icon: 'pi pi-fw pi-bars',  command: () => this.setState({layoutMode: 'overlay'}) }
-            //     ]
-            // },
-            // {
-            //     label: 'Menu Colors', icon: 'pi pi-fw pi-align-left',
-            //     items: [
-            //         {label: 'Dark', icon: 'pi pi-fw pi-bars',  command: () => this.setState({layoutColorMode: 'dark'}) },
-            //         {label: 'Light', icon: 'pi pi-fw pi-bars',  command: () => this.setState({layoutColorMode: 'light'}) }
-            //     ]
-            // },
             {
                 label: 'Components', icon: 'pi pi-fw pi-globe', badge: '9',
                 items: [
@@ -152,51 +164,6 @@ class App extends Component {
                     {label: 'Empty Page', icon: 'pi pi-fw pi-circle-off', to: '/empty'}
                 ]
             },
-            // {
-            //     label: 'Menu Hierarchy', icon: 'pi pi-fw pi-search',
-            //     items: [
-            //         {
-            //             label: 'Submenu 1', icon: 'pi pi-fw pi-bookmark',
-            //             items: [
-            //                 {
-            //                     label: 'Submenu 1.1', icon: 'pi pi-fw pi-bookmark',
-            //                     items: [
-            //                         {label: 'Submenu 1.1.1', icon: 'pi pi-fw pi-bookmark'},
-            //                         {label: 'Submenu 1.1.2', icon: 'pi pi-fw pi-bookmark'},
-            //                         {label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark'},
-            //                     ]
-            //                 },
-            //                 {
-            //                     label: 'Submenu 1.2', icon: 'pi pi-fw pi-bookmark',
-            //                     items: [
-            //                         {label: 'Submenu 1.2.1', icon: 'pi pi-fw pi-bookmark'},
-            //                         {label: 'Submenu 1.2.2', icon: 'pi pi-fw pi-bookmark'}
-            //                     ]
-            //                 },
-            //             ]
-            //         },
-            //         {
-            //             label: 'Submenu 2', icon: 'pi pi-fw pi-bookmark',
-            //             items: [
-            //                 {
-            //                     label: 'Submenu 2.1', icon: 'pi pi-fw pi-bookmark',
-            //                     items: [
-            //                         {label: 'Submenu 2.1.1', icon: 'pi pi-fw pi-bookmark'},
-            //                         {label: 'Submenu 2.1.2', icon: 'pi pi-fw pi-bookmark'},
-            //                         {label: 'Submenu 2.1.3', icon: 'pi pi-fw pi-bookmark'},
-            //                     ]
-            //                 },
-            //                 {
-            //                     label: 'Submenu 2.2', icon: 'pi pi-fw pi-bookmark',
-            //                     items: [
-            //                         {label: 'Submenu 2.2.1', icon: 'pi pi-fw pi-bookmark'},
-            //                         {label: 'Submenu 2.2.2', icon: 'pi pi-fw pi-bookmark'}
-            //                     ]
-            //                 }
-            //             ]
-            //         }
-            //     ]
-            // },
             {label: 'Documentation', icon: 'pi pi-fw pi-question', command: () => {window.location = "#/documentation"}},
             {label: 'View Source', icon: 'pi pi-fw pi-search', command: () => {window.location = "https://github.com/primefaces/sigma"}}
         ];
@@ -228,6 +195,12 @@ class App extends Component {
     }
 
     render() {
+        const {
+            user,
+            signOut,
+            signInWithGoogle,
+        } = this.props;
+
         const logo = this.state.layoutColorMode === 'dark' ? 'assets/layout/images/logo-white.svg': 'assets/layout/images/logo.svg';
 
         const wrapperClass = classNames('layout-wrapper', {
@@ -244,36 +217,44 @@ class App extends Component {
         });
 
         return (
-            <div className={wrapperClass} onClick={this.onWrapperClick}>
-                <AppTopbar onToggleMenu={this.onToggleMenu}/>
+            <div>
+                {this.state.user && this.state.user.email.includes("studentholdings.org") ?
+                <div>
+                    <button onClick={this.logout}>Log Out</button>
+                    <div className={wrapperClass} onClick={this.onWrapperClick}>
+                        <AppTopbar onToggleMenu={this.onToggleMenu} />
 
-                <div ref={(el) => this.sidebar = el} className={sidebarClassName} onClick={this.onSidebarClick}>
-                    <div className="layout-logo">
-                        <img alt="Logo" src={logo} />
+                        <div ref={(el) => this.sidebar = el} className={sidebarClassName} onClick={this.onSidebarClick}>
+                            <div className="layout-logo">
+                                <img alt="Logo" src={logo} />
+                            </div>
+                            <AppProfile />
+                            <AppMenu model={this.menu} onMenuItemClick={this.onMenuItemClick} />
+                        </div>
+                        <div className="layout-main">
+                            <Route path="/" exact component={Dashboard} />
+                            <Route path="/calendar" component={Calendar} />
+                            <Route path="/forms" component={FormsDemo} />
+                            <Route path="/sample" component={SampleDemo} />
+                            <Route path="/data" component={DataDemo} />
+                            <Route path="/panels" component={PanelsDemo} />
+                            <Route path="/overlays" component={OverlaysDemo} />
+                            <Route path="/menus" component={MenusDemo} />
+                            <Route path="/messages" component={MessagesDemo} />
+                            <Route path="/charts" component={ChartsDemo} />
+                            <Route path="/misc" component={MiscDemo} />
+                            <Route path="/empty" component={EmptyPage} />
+                            <Route path="/documentation" component={Documentation} />
+                        </div>
+
+                        <AppFooter />
+
+                        <div className="layout-mask"></div>
                     </div>
-                    <AppProfile />
-                    <AppMenu model={this.menu} onMenuItemClick={this.onMenuItemClick} />
-                </div>
-
-                <div className="layout-main">
-                    <Route path="/" exact component={Dashboard} />
-                    <Route path="/calendar" component={Calendar} />
-                    <Route path="/forms" component={FormsDemo} />
-                    <Route path="/sample" component={SampleDemo} />
-                    <Route path="/data" component={DataDemo} />
-                    <Route path="/panels" component={PanelsDemo} />
-                    <Route path="/overlays" component={OverlaysDemo} />
-                    <Route path="/menus" component={MenusDemo} />
-                    <Route path="/messages" component={MessagesDemo} />
-                    <Route path="/charts" component={ChartsDemo} />
-                    <Route path="/misc" component={MiscDemo} />
-                    <Route path="/empty" component={EmptyPage} />
-                    <Route path="/documentation" component={Documentation} />
-                </div>
-
-                <AppFooter />
-
-                <div className="layout-mask"></div>
+                    </div>
+                    :
+                    <button onClick={this.login}>Log In</button>
+                }
             </div>
         );
     }
