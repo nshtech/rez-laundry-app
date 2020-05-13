@@ -1,6 +1,4 @@
-{"customers": [
-    {"title": "RezLaundry Customers 2019-2020"},
-    {"users": [
+[
       {
         "id": "001",
         "name": "Caroline Lobel",
@@ -83,6 +81,3 @@
       }
   
       ]
-    }
-]
-}
