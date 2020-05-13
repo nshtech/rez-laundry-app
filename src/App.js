@@ -4,6 +4,7 @@ import {AppTopbar} from './AppTopbar';
 import {AppFooter} from './AppFooter';
 import {AppMenu} from './AppMenu';
 import {AppProfile} from './AppProfile';
+import { Button } from 'primereact/button';
 import {Route} from 'react-router-dom';
 import {Dashboard} from './components/Dashboard';
 import { Calendar } from './components/Calendar';
@@ -194,6 +195,14 @@ class App extends Component {
             this.removeClass(document.body, 'body-overflow-hidden');
     }
 
+    componentDidMount() {
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                this.setState({ user });
+            }
+        });
+    }
+
     render() {
         const {
             user,
@@ -220,9 +229,8 @@ class App extends Component {
             <div>
                 {this.state.user && this.state.user.email.includes("studentholdings.org") ?
                 <div>
-                    <button onClick={this.logout}>Log Out</button>
                     <div className={wrapperClass} onClick={this.onWrapperClick}>
-                        <AppTopbar onToggleMenu={this.onToggleMenu} />
+                            <AppTopbar onToggleMenu={this.onToggleMenu} logout={this.logout} />
 
                         <div ref={(el) => this.sidebar = el} className={sidebarClassName} onClick={this.onSidebarClick}>
                             <div className="layout-logo">
