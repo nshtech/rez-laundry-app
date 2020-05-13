@@ -29,6 +29,23 @@ import '@fullcalendar/timegrid/main.css';
 import './layout/layout.scss';
 import './App.scss';
 
+import firebase from 'firebase/app';
+import 'firebase/database';
+
+import 'firebase/auth';
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAfTUULx93uJ8x9gZN1gmTCYFT9zTDz_Xc",
+    authDomain: "rez-laundry-app.firebaseapp.com",
+    databaseURL: "https://rez-laundry-app.firebaseio.com",
+    projectId: "rez-laundry-app",
+    storageBucket: "rez-laundry-app.appspot.com",
+    messagingSenderId: "453879510299",
+    appId: "1:453879510299:web:3a398485cdf846aa500fbe",
+    measurementId: "G-SVQRESF0XW"
+};
+firebase.initializeApp(firebaseConfig);
+
 class App extends Component {
 
     constructor() {
