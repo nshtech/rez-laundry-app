@@ -237,7 +237,7 @@ class App extends Component {
                 </div>
 
                 <div className="layout-main">
-                    <Route path="/" exact component={CustomerSheet} />
+                    <Route path="/" exact component={Dashboard} />
                     <Route path="/forms" component={FormsDemo} />
                     <Route path="/sample" component={SampleDemo} />
                     <Route path="/data" component={DataDemo} />
