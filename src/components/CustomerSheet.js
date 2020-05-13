@@ -14,6 +14,9 @@ import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 
 import customerData from '../customers.json'
+// import classNames from 'classnames';
+
+import '../Dashboard.css';
 
 export class CustomerSheet extends Component {
 
@@ -21,33 +24,13 @@ export class CustomerSheet extends Component {
         super();
 
         this.state = {
-            tasks: [],
-            city: null,
-            selectedCar: null,
             customers: customerData
         };
 
-        this.onTaskChange = this.onTaskChange.bind(this);
-        this.onCityChange = this.onCityChange.bind(this);
-        this.carservice = new CarService();
     }
 
-    onTaskChange(e) {
-        let selectedTasks = [...this.state.tasks];
-        if (e.checked)
-            selectedTasks.push(e.value);
-        else
-            selectedTasks.splice(selectedTasks.indexOf(e.value), 1);
-
-        this.setState({ tasks: selectedTasks });
-    }
-
-    onCityChange(e) {
-        this.setState({ city: e.value });
-    }
-
-    componentDidMount() {
-        this.carservice.getCarsSmall().then(data => this.setState({ cars: data }));
+    statusBodyTemplate(rowData) {
+        return <span className={'customer-badge', rowData.laundrystatus}>{rowData.laundrystatus}</span>;
     }
 
     render() {
@@ -61,6 +44,7 @@ export class CustomerSheet extends Component {
                             <Column field="name" header="Name" sortable={true} />
                             <Column field="email" header="Email" sortable={true} />
                             <Column field="phone" header="Phone" sortable={true} />
+                            <Column header="Bag Status" body={this.statusBodyTemplate}/>
                         </DataTable>
                     </div>
                 {/* </div> */}

@@ -5,7 +5,7 @@
         "phone": "2015551111",
         "email": "carolinelobel@studentholdings.org",
         "res-hall": "Delta Gamma",
-        "laundry-status": "picked up" 
+        "laundrystatus": "picked-up" 
       },
       {
         "id": "002",
@@ -13,7 +13,7 @@
         "phone": "3055551111",
         "email": "patricepower@studentholdings.org",
         "res-hall": "Delta Gamma",
-        "laundry-status": "being cleaned" 
+        "laundrystatus": "being-cleaned" 
       },
       {
         "id": "003",
@@ -21,7 +21,7 @@
         "phone": "9735551111",
         "email": "williewildcat@xyz.com",
         "res-hall": "Bobb Hall",
-        "laundry-status": "delivered" 
+        "laundrystatus": "bag-missing" 
       },
       {
         "id": "004",
@@ -29,7 +29,7 @@
         "phone": "9175551111",
         "email": "mortyshapiro@xyz.com",
         "res-hall": "McCulloch Hall",
-        "laundry-status": "picked up" 
+        "laundrystatus": "picked-up" 
       },
       {
         "id": "005",
@@ -37,7 +37,7 @@
         "phone": "2017771111",
         "email": "sophiefields@xyz.com",
         "res-hall": "Lincoln",
-        "laundry-status": "being cleaned" 
+        "laundrystatus": "being-cleaned" 
       },
       {
         "id": "006",
@@ -45,7 +45,7 @@
         "phone": "2015551111",
         "email": "zoelobel@xyz.com",
         "res-hall": "AEPi",
-        "laundry-status": "picked up" 
+        "laundrystatus": "picked-up" 
       },
       {
         "id": "007",
@@ -53,7 +53,7 @@
         "phone": "9145557777",
         "email": "allysmith@xyz.com",
         "res-hall": "Alison",
-        "laundry-status": "delivered" 
+        "laundrystatus": "delivered" 
       },
       {
         "id": "008",
@@ -61,7 +61,7 @@
         "phone": "6465551111",
         "email": "samsmith@xyz.com",
         "res-hall": "Willard",
-        "laundry-status": "picked up" 
+        "laundrystatus": "picked-up" 
       },
       {
         "id": "009",
@@ -69,7 +69,7 @@
         "phone": "6465557777",
         "email": "johngreen@xyz.com",
         "res-hall": "1838 Chicago",
-        "laundry-status": "picked up" 
+        "laundrystatus": "picked-up" 
       },
       {
         "id": "010",
@@ -77,7 +77,7 @@
         "phone": "8475559999",
         "email": "robertyschmidt@xyz.com",
         "res-hall": "SMQ",
-        "laundry-status": "delivered" 
+        "laundrystatus": "delivered" 
       }
   
       ]
