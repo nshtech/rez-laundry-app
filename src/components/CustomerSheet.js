@@ -30,7 +30,7 @@ export class CustomerSheet extends Component {
     }
 
     statusBodyTemplate(rowData) {
-        return <span className={'customer-badge', rowData.laundrystatus}>{rowData.laundrystatus}</span>;
+        return <span className={rowData.laundrystatus}>{rowData.laundrystatus}</span>;
     }
 
     render() {
@@ -38,7 +38,7 @@ export class CustomerSheet extends Component {
             <div>
                 {/* <div className="p-col-12 p-lg-6"> */}
                     <div className="card">
-                        <h1 style={{ fontSize: '16px' }}>Recent Sales</h1>
+                        <h1 style={{ fontSize: '16px' }}>Active Customers</h1>
                         <DataTable value={this.state.customers} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true}>
                             <Column field="id" header="ID" sortable={true} />
                             <Column field="name" header="Name" sortable={true} />
