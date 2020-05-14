@@ -26,27 +26,33 @@ export class CustomerSheet extends Component {
         this.state = {
             customers: customerData
         };
-
+        this.export = this.export.bind(this);
     }
 
     statusBodyTemplate(rowData) {
         return <span className={rowData.laundrystatus}>{rowData.laundrystatus}</span>;
     }
 
+    export() {
+     this.dt.exportCSV();
+ }
     render() {
+      var header = <div style={{textAlign:'left'}}><Button type="button" icon="pi pi-external-link" iconPos="left" label="CSV" onClick={this.export}></Button></div>;
         return (
             <div>
-                {/* <div className="p-col-12 p-lg-6"> */}
+
                     <div className="card">
-                        <h1 style={{ fontSize: '16px' }}>Active Customers</h1>
-                        <DataTable value={this.state.customers} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true}>
+
+                        <h1 style={{ fontSize: '16px' }}>Recent Sales</h1>
+                        <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} >
                             <Column field="id" header="ID" sortable={true} />
-                            <Column field="name" header="Name" sortable={true} />
+                            <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
                             <Column field="email" header="Email" sortable={true} />
                             <Column field="phone" header="Phone" sortable={true} />
                             <Column header="Bag Status" body={this.statusBodyTemplate}/>
                         </DataTable>
-                    </div>
+                        </div>
+
                 {/* </div> */}
             </div>
         );
