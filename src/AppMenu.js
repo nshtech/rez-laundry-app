@@ -86,7 +86,7 @@ class AppSubmenu extends Component {
     render() {
         let items = this.props.items && this.props.items.map((item, i) => {
             let active = this.state.activeIndex === i;
-            let styleClass = classNames(item.badgeStyleClass, {'active-menuitem': active && !item.to});
+            let styleClass = classNames(item.badgeStyleClass, {'active-menuitem': active && !item.to}, 'item');
 
             return (
                 <li className={styleClass} key={i}>

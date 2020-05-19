@@ -1,0 +1,61 @@
+/* BAG STATUSES FOR DATATABLE */
+.delivered {
+    border-radius: 2px;
+    padding: .25em .5em;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+    background-color: #C8E6C9;
+    color: #256029;
+}
+
+.bag-missing {
+    border-radius: 2px;
+    padding: .25em .5em;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+    background-color: #FFCDD2;
+    color: #C63737;
+}
+
+.being-cleaned {
+    border-radius: 2px;
+    padding: .25em .5em;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+    background-color: #FEEDAF;
+    color: #8A5340;
+}
+
+.picked-up {
+    border-radius: 2px;
+    padding: .25em .5em;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+    background-color: #B3E5FC;
+    color: #23547B;
+}
+
+.out-for-delivery {
+    border-radius: 2px;
+    padding: .25em .5em;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+    background-color: #ECCFFF;
+    color: #694382;
+}
+
+.status-proposal {
+    background-color: #FFD8B2;
+    color: #805B36;
+}
+    

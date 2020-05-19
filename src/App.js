@@ -4,8 +4,12 @@ import {AppTopbar} from './AppTopbar';
 import {AppFooter} from './AppFooter';
 import {AppMenu} from './AppMenu';
 import {AppProfile} from './AppProfile';
+import { Button } from 'primereact/button';
 import {Route} from 'react-router-dom';
 import {Dashboard} from './components/Dashboard';
+import { Calendar } from './components/Calendar';
+import { LogIn } from './components/LogIn';
+import { CustomerSheet } from './components/CustomerSheet';
 import {FormsDemo} from './components/FormsDemo';
 import {SampleDemo} from './components/SampleDemo';
 import {DataDemo} from './components/DataDemo';
@@ -26,6 +30,28 @@ import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
 import './layout/layout.scss';
 import './App.scss';
+import './App.css';
+
+import firebase from 'firebase/app';
+import 'firebase/database';
+
+import 'firebase/auth';
+import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAfTUULx93uJ8x9gZN1gmTCYFT9zTDz_Xc",
+    authDomain: "rez-laundry-app.firebaseapp.com",
+    databaseURL: "https://rez-laundry-app.firebaseio.com",
+    projectId: "rez-laundry-app",
+    storageBucket: "rez-laundry-app.appspot.com",
+    messagingSenderId: "453879510299",
+    appId: "1:453879510299:web:3a398485cdf846aa500fbe",
+    measurementId: "G-SVQRESF0XW"
+};
+firebase.initializeApp(firebaseConfig);
+
+export const provider = new firebase.auth.GoogleAuthProvider();
+export const auth = firebase.auth();
 
 class App extends Component {
 
@@ -36,14 +62,36 @@ class App extends Component {
             layoutColorMode: 'dark',
             staticMenuInactive: false,
             overlayMenuActive: false,
-            mobileMenuActive: false
+            mobileMenuActive: false,
+            user: null
         };
+        this.login = this.login.bind(this); // <-- add this line
+        this.logout = this.logout.bind(this);
 
         this.onWrapperClick = this.onWrapperClick.bind(this);
         this.onToggleMenu = this.onToggleMenu.bind(this);
         this.onSidebarClick = this.onSidebarClick.bind(this);
         this.onMenuItemClick = this.onMenuItemClick.bind(this);
         this.createMenu();
+    }
+
+    login() {
+        auth.signInWithPopup(provider)
+            .then((result) => {
+                const user = result.user;
+                console.log(user.email)
+                this.setState({
+                    user
+                });
+            });
+    }
+    logout() {
+        auth.signOut()
+            .then(() => {
+                this.setState({
+                    user: null
+                });
+            });
     }
 
     onWrapperClick(event) {
@@ -98,20 +146,7 @@ class App extends Component {
     createMenu() {
         this.menu = [
             {label: 'Dashboard', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/'}},
-            {
-                label: 'Menu Modes', icon: 'pi pi-fw pi-cog',
-                items: [
-                    {label: 'Static Menu', icon: 'pi pi-fw pi-bars',  command: () => this.setState({layoutMode: 'static'}) },
-                    {label: 'Overlay Menu', icon: 'pi pi-fw pi-bars',  command: () => this.setState({layoutMode: 'overlay'}) }
-                ]
-            },
-            {
-                label: 'Menu Colors', icon: 'pi pi-fw pi-align-left',
-                items: [
-                    {label: 'Dark', icon: 'pi pi-fw pi-bars',  command: () => this.setState({layoutColorMode: 'dark'}) },
-                    {label: 'Light', icon: 'pi pi-fw pi-bars',  command: () => this.setState({layoutColorMode: 'light'}) }
-                ]
-            },
+            { label: 'Calendar', icon: 'pi pi-fw pi-calendar', to: '/calendar'},
             {
                 label: 'Components', icon: 'pi pi-fw pi-globe', badge: '9',
                 items: [
@@ -130,51 +165,6 @@ class App extends Component {
                 label: 'Template Pages', icon: 'pi pi-fw pi-file',
                 items: [
                     {label: 'Empty Page', icon: 'pi pi-fw pi-circle-off', to: '/empty'}
-                ]
-            },
-            {
-                label: 'Menu Hierarchy', icon: 'pi pi-fw pi-search',
-                items: [
-                    {
-                        label: 'Submenu 1', icon: 'pi pi-fw pi-bookmark',
-                        items: [
-                            {
-                                label: 'Submenu 1.1', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    {label: 'Submenu 1.1.1', icon: 'pi pi-fw pi-bookmark'},
-                                    {label: 'Submenu 1.1.2', icon: 'pi pi-fw pi-bookmark'},
-                                    {label: 'Submenu 1.1.3', icon: 'pi pi-fw pi-bookmark'},
-                                ]
-                            },
-                            {
-                                label: 'Submenu 1.2', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    {label: 'Submenu 1.2.1', icon: 'pi pi-fw pi-bookmark'},
-                                    {label: 'Submenu 1.2.2', icon: 'pi pi-fw pi-bookmark'}
-                                ]
-                            },
-                        ]
-                    },
-                    {
-                        label: 'Submenu 2', icon: 'pi pi-fw pi-bookmark',
-                        items: [
-                            {
-                                label: 'Submenu 2.1', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    {label: 'Submenu 2.1.1', icon: 'pi pi-fw pi-bookmark'},
-                                    {label: 'Submenu 2.1.2', icon: 'pi pi-fw pi-bookmark'},
-                                    {label: 'Submenu 2.1.3', icon: 'pi pi-fw pi-bookmark'},
-                                ]
-                            },
-                            {
-                                label: 'Submenu 2.2', icon: 'pi pi-fw pi-bookmark',
-                                items: [
-                                    {label: 'Submenu 2.2.1', icon: 'pi pi-fw pi-bookmark'},
-                                    {label: 'Submenu 2.2.2', icon: 'pi pi-fw pi-bookmark'}
-                                ]
-                            }
-                        ]
-                    }
                 ]
             },
             {label: 'Documentation', icon: 'pi pi-fw pi-question', command: () => {window.location = "#/documentation"}},
@@ -207,7 +197,21 @@ class App extends Component {
             this.removeClass(document.body, 'body-overflow-hidden');
     }
 
+    componentDidMount() {
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                this.setState({ user });
+            }
+        });
+    }
+
     render() {
+        const {
+            user,
+            signOut,
+            signInWithGoogle,
+        } = this.props;
+
         const logo = this.state.layoutColorMode === 'dark' ? 'assets/layout/images/logo-white.svg': 'assets/layout/images/logo.svg';
 
         const wrapperClass = classNames('layout-wrapper', {
@@ -220,39 +224,58 @@ class App extends Component {
 
         const sidebarClassName = classNames("layout-sidebar", {
             'layout-sidebar-dark': this.state.layoutColorMode === 'dark',
-            'layout-sidebar-light': this.state.layoutColorMode === 'light'
+            // 'layout-sidebar-light': this.state.layoutColorMode === 'light'
         });
 
         return (
-            <div className={wrapperClass} onClick={this.onWrapperClick}>
-                <AppTopbar onToggleMenu={this.onToggleMenu}/>
+            <div>
+                {this.state.user && this.state.user.email.includes("studentholdings.org") ?
+                <div>
+                    <div className={wrapperClass} onClick={this.onWrapperClick}>
+                            <AppTopbar onToggleMenu={this.onToggleMenu} logout={this.logout} />
 
-                <div ref={(el) => this.sidebar = el} className={sidebarClassName} onClick={this.onSidebarClick}>
-                    <div className="layout-logo">
-                        <img alt="Logo" src={logo} />
+                        <div ref={(el) => this.sidebar = el} className='layout-sidebar' onClick={this.onSidebarClick}>
+                            <div className="layout-logo">
+                                <img alt="Logo" className="login-logo" src="/images/baglogo_2.png" />
+                            </div>
+                            <AppProfile />
+                            <AppMenu model={this.menu} onMenuItemClick={this.onMenuItemClick} />
+                        </div>
+                        <div className="layout-main">
+                            <Route path="/" exact component={Dashboard} />
+                            <Route path="/calendar" component={Calendar} />
+                            <Route path="/forms" component={FormsDemo} />
+                            <Route path="/sample" component={SampleDemo} />
+                            <Route path="/data" component={DataDemo} />
+                            <Route path="/panels" component={PanelsDemo} />
+                            <Route path="/overlays" component={OverlaysDemo} />
+                            <Route path="/menus" component={MenusDemo} />
+                            <Route path="/messages" component={MessagesDemo} />
+                            <Route path="/charts" component={ChartsDemo} />
+                            <Route path="/misc" component={MiscDemo} />
+                            <Route path="/empty" component={EmptyPage} />
+                            <Route path="/documentation" component={Documentation} />
+                        </div>
+
+                        <AppFooter />
+
+                        <div className="layout-mask"></div>
                     </div>
-                    <AppProfile />
-                    <AppMenu model={this.menu} onMenuItemClick={this.onMenuItemClick} />
-                </div>
-
-                <div className="layout-main">
-                    <Route path="/" exact component={Dashboard} />
-                    <Route path="/forms" component={FormsDemo} />
-                    <Route path="/sample" component={SampleDemo} />
-                    <Route path="/data" component={DataDemo} />
-                    <Route path="/panels" component={PanelsDemo} />
-                    <Route path="/overlays" component={OverlaysDemo} />
-                    <Route path="/menus" component={MenusDemo} />
-                    <Route path="/messages" component={MessagesDemo} />
-                    <Route path="/charts" component={ChartsDemo} />
-                    <Route path="/misc" component={MiscDemo} />
-                    <Route path="/empty" component={EmptyPage} />
-                    <Route path="/documentation" component={Documentation} />
-                </div>
-
-                <AppFooter />
-
-                <div className="layout-mask"></div>
+                    </div>
+                    :
+                    <div className="p-grid-login">
+                        <div className="p-col-12">
+                            <div className="card login-card">
+                                <h1>Rez Laundry Ops App</h1>
+                                <p>Log in with your SH email for access.</p>
+                                <div className="login-centered">
+                                    <Button label="Log In" className="p-button-raised p-button-secondary" onClick={this.login} />
+                                </div>
+                                {/* <img className="login-logo" src="images/purple-logo.png" />  */}
+                            </div>
+                        </div>
+                    </div>
+                }
             </div>
         );
     }

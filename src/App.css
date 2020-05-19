@@ -1,0 +1,52 @@
+
+/* LOGIN PAGE */
+.p-grid-login {
+    max-width: 50%;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-top: 15%
+}
+
+.login-card {
+    background-color: #6a09a4;
+    color: white
+}
+
+.login-logo {
+    width: 150px;
+}
+
+.login-button {
+    background-color: white;
+}
+
+.login-centered {
+    display: flex;
+    justify-content: center;
+}
+
+/* TOPBAR */
+.layout-topbar {
+    background:  #6a09a4
+}
+
+
+/* SIDEBAR */
+.username {
+    color: white;
+    font-size: 15px;
+}
+
+.pi-cog {
+    color:white;
+}
+
+.layout-sidebar {
+    color:white;
+    background-color: #945cb5;
+}
+
+.item a {
+    color: #f4f4f4;
+    text-decoration: none;
+}
