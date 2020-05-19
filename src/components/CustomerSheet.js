@@ -37,13 +37,16 @@ export class CustomerSheet extends Component {
      this.dt.exportCSV();
  }
     render() {
-      var header = <div style={{textAlign:'left'}}><Button type="button" icon="pi pi-external-link" iconPos="left" label="CSV" onClick={this.export}></Button></div>;
+      var header = <div style={{textAlign:'left'}}>
+          <Button type="button" icon="pi pi-external-link" iconPos="left" label="CSV" onClick={this.export}>
+          </Button>
+          </div>;
         return (
             <div>
 
                     <div className="card">
 
-                        <h1 style={{ fontSize: '16px' }}>Recent Sales</h1>
+                        <h1 style={{ fontSize: '16px' }}>Customer Database</h1>
                         <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} >
                             <Column field="id" header="ID" sortable={true} />
                             <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
