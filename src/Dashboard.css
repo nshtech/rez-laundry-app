@@ -43,7 +43,13 @@
     color: #23547B;
 }
 
-.status-renewal {
+.out-for-delivery {
+    border-radius: 2px;
+    padding: .25em .5em;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
     background-color: #ECCFFF;
     color: #694382;
 }

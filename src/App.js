@@ -8,6 +8,7 @@ import { Button } from 'primereact/button';
 import {Route} from 'react-router-dom';
 import {Dashboard} from './components/Dashboard';
 import { Calendar } from './components/Calendar';
+import { LogIn } from './components/LogIn';
 import { CustomerSheet } from './components/CustomerSheet';
 import {FormsDemo} from './components/FormsDemo';
 import {SampleDemo} from './components/SampleDemo';
@@ -29,6 +30,7 @@ import '@fullcalendar/daygrid/main.css';
 import '@fullcalendar/timegrid/main.css';
 import './layout/layout.scss';
 import './App.scss';
+import './App.css';
 
 import firebase from 'firebase/app';
 import 'firebase/database';
@@ -222,7 +224,7 @@ class App extends Component {
 
         const sidebarClassName = classNames("layout-sidebar", {
             'layout-sidebar-dark': this.state.layoutColorMode === 'dark',
-            'layout-sidebar-light': this.state.layoutColorMode === 'light'
+            // 'layout-sidebar-light': this.state.layoutColorMode === 'light'
         });
 
         return (
@@ -232,9 +234,9 @@ class App extends Component {
                     <div className={wrapperClass} onClick={this.onWrapperClick}>
                             <AppTopbar onToggleMenu={this.onToggleMenu} logout={this.logout} />
 
-                        <div ref={(el) => this.sidebar = el} className={sidebarClassName} onClick={this.onSidebarClick}>
+                        <div ref={(el) => this.sidebar = el} className='layout-sidebar' onClick={this.onSidebarClick}>
                             <div className="layout-logo">
-                                <img alt="Logo" src={logo} />
+                                <img alt="Logo" className="login-logo" src="/images/baglogo_2.png" />
                             </div>
                             <AppProfile />
                             <AppMenu model={this.menu} onMenuItemClick={this.onMenuItemClick} />
@@ -261,7 +263,18 @@ class App extends Component {
                     </div>
                     </div>
                     :
-                    <button onClick={this.login}>Log In</button>
+                    <div className="p-grid-login">
+                        <div className="p-col-12">
+                            <div className="card login-card">
+                                <h1>Rez Laundry Ops App</h1>
+                                <p>Log in with your SH email for access.</p>
+                                <div className="login-centered">
+                                    <Button label="Log In" className="p-button-raised p-button-secondary" onClick={this.login} />
+                                </div>
+                                {/* <img className="login-logo" src="images/purple-logo.png" />  */}
+                            </div>
+                        </div>
+                    </div>
                 }
             </div>
         );
