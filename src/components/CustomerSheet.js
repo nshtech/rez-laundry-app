@@ -8,6 +8,7 @@ import { InputText } from 'primereact/inputtext';
 import { Chart } from 'primereact/chart';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
+import {ToggleButton} from 'primereact/togglebutton';
 import { FullCalendar } from 'primereact/fullcalendar';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
@@ -52,7 +53,7 @@ export class CustomerSheet extends Component {
                             <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
                             <Column field="email" header="Email" sortable={true} />
                             <Column field="phone" header="Phone" sortable={true} />
-                            <Column header="Bag Status" body={this.statusBodyTemplate}/>
+                            <Button field="laundrystatus" header="Bag Status" sortable={true} body={this.statusBodyTemplate}/>
                         </DataTable>
                         </div>
 
