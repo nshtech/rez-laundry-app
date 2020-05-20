@@ -80,10 +80,20 @@ class App extends Component {
             .then((result) => {
                 const user = result.user;
                 console.log(user.email)
-                this.setState({
-                    user
-                });
+                console.log(user.displayName)
+                if (user.email.includes("studentholdings.org")) {
+                    this.setState({
+                        user
+                    });
+                } else {
+                    this.setState({
+                        user: null
+                    });
+                }
+                
+                localStorage.setItem('user', JSON.stringify(user))
             });
+        
     }
     logout() {
         auth.signOut()
@@ -229,7 +239,7 @@ class App extends Component {
 
         return (
             <div>
-                {this.state.user && this.state.user.email.includes("studentholdings.org") ?
+                {this.state.user  ?
                 <div>
                     <div className={wrapperClass} onClick={this.onWrapperClick}>
                             <AppTopbar onToggleMenu={this.onToggleMenu} logout={this.logout} />
