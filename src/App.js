@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect} from 'react';
 import classNames from 'classnames';
 import {AppTopbar} from './AppTopbar';
 import {AppFooter} from './AppFooter';
@@ -81,20 +81,12 @@ class App extends Component {
                 const user = result.user;
                 console.log(user.email)
                 console.log(user.displayName)
-                if (user.email.includes("studentholdings.org")) {
-                    this.setState({
-                        user
-                    });
-                } else {
-                    this.setState({
-                        user: null
-                    });
-                }
-                
-                localStorage.setItem('user', JSON.stringify(user))
+                this.setState({
+                    user
+                });
             });
-        
     }
+
     logout() {
         auth.signOut()
             .then(() => {
@@ -237,9 +229,26 @@ class App extends Component {
             // 'layout-sidebar-light': this.state.layoutColorMode === 'light'
         });
 
+        
+
+        if (this.state.user && this.state.user.email.includes('studentholdings.org')) {
+            const db = firebase.database().ref()
+            db.child('/users/' + this.state.user.uid).once("value")
+                .then(snapshot => {
+                    if (!snapshot.val()) {
+                        db.child('/users/' + this.state.user.uid).set({
+                            username: this.state.user.displayName,
+                            email: this.state.user.email,
+                        })
+                    }
+            })
+            localStorage.setItem('user', JSON.stringify(this.state.user))
+        }
+        
+
         return (
             <div>
-                {this.state.user  ?
+                {this.state.user && this.state.user.email.includes('studentholdings.org') ?
                 <div>
                     <div className={wrapperClass} onClick={this.onWrapperClick}>
                             <AppTopbar onToggleMenu={this.onToggleMenu} logout={this.logout} />
