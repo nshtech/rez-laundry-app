@@ -3,10 +3,11 @@ import classNames from 'classnames';
 
 export class AppProfile extends Component {
 
-    constructor() {
-        super();
+
+    constructor(props) {
+        super(props);
         this.state = {
-            expanded: false
+            expanded: false,
         };
         this.onClick = this.onClick.bind(this);
     }
@@ -17,13 +18,16 @@ export class AppProfile extends Component {
     }
 
     render() {
+
+        // console.log(this.props.user.getPhotoUrl)
+
         return  (
             <div className="layout-profile">
                 {/* <div>
-                    <img src="assets/layout/images/profile.png" alt="" />
+                    <img src={this.props.user.photourl} alt="" />
                 </div> */}
                 <button className="p-link layout-profile-link" onClick={this.onClick}>
-                    <span className="username">Vikram Thanigaivelan</span>
+                    <span className="username">{this.props.user.displayName}</span>
                     {/* <i className="pi pi-fw pi-cog"/> */}
                 </button>
                 <ul className={classNames({'layout-profile-expanded': this.state.expanded})}>
