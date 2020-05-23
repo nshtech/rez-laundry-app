@@ -36,7 +36,7 @@ export class CustomerSheet extends Component {
     }
 
     statusBodyTemplate(rowData) {
-        return <span className={rowData.laundrystatus}>{rowData.laundrystatus}</span>;
+        return <span className={rowData.laundrystatus}>{rowData.laundrystatus.replace(/-/g,' ')}</span>;
     }
 
     export() {
