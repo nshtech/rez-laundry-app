@@ -49,8 +49,7 @@ export class CustomerSheet extends Component {
                 customerArray.push(childSnapshot.toJSON());
             });
       });
-      console.log('customer Array: ');
-      console.log(customerArray);
+
     
       var header = <div style={{textAlign:'left'}}>
           <Button type="button" icon="pi pi-external-link" iconPos="left" label="CSV" onClick={this.export}>
