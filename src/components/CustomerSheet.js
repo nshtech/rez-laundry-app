@@ -125,6 +125,7 @@ export class CustomerSheet extends Component {
             </Button>
 
         </div>;
+        //loading = {true} loadingIcon = "pi pi-spinner"
         return (
             <div>
                 <Growl ref={(el) => this.growl = el} sticky={true} />
