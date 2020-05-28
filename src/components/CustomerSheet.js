@@ -49,9 +49,9 @@ save() {
  renderStatusFilter() {
    var statuses =  [
      {label: 'Picked Up', value: 'picked-up'},
-      {label: 'Being Cleaned', value: 'being-cleaned'},
-      {label: 'Out for Delivery', value: 'out-for-delivery'},
-      {label: 'Delivered', value: 'delivered'},
+      {label: 'Out of Service', value: 'out-of-service'},
+      {label: 'Delivered to SH', value: 'delivered-to-SH'},
+      {label: 'Delivered to Dorm', value: 'delivered-to-dorm'},
       {label: 'Bag Missing', value: 'bag-missing'}
           ];
      return (
