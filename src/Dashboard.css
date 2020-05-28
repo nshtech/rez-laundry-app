@@ -7,7 +7,7 @@
 
 /* BAG STATUSES FOR DATATABLE */
 
-.delivered {
+.delivered-to-dorm {
     border-radius: 2px;
     padding: .25em .5em;
     text-transform: uppercase;
@@ -29,7 +29,7 @@
     color: #C63737;
 }
 
-.being-cleaned {
+/*.being-cleaned {
     border-radius: 2px;
     padding: .25em .5em;
     text-transform: uppercase;
@@ -38,7 +38,7 @@
     letter-spacing: .3px;
     background-color: #FEEDAF;
     color: #8A5340;
-}
+}*/
 
 .picked-up {
     border-radius: 2px;
@@ -51,7 +51,7 @@
     color: #23547B;
 }
 
-.out-for-delivery {
+.delivered-to-SH {
     border-radius: 2px;
     padding: .25em .5em;
     text-transform: uppercase;
@@ -60,6 +60,17 @@
     letter-spacing: .3px;
     background-color: #ECCFFF;
     color: #694382;
+}
+
+.out-of-service {
+    border-radius: 2px;
+    padding: .25em .5em;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+    background-color: lightgrey;
+    color: #474549;
 }
 
 .status-proposal {
