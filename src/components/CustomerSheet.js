@@ -1,25 +1,15 @@
 import React, { Component } from 'react';
-import { CarService } from '../service/CarService';
-import { Panel } from 'primereact/panel';
-import { Checkbox } from 'primereact/checkbox';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
-import { InputText } from 'primereact/inputtext';
-import { Chart } from 'primereact/chart';
 import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
-import { FullCalendar } from 'primereact/fullcalendar';
-import { MultiSelect } from 'primereact/multiselect';
-import dayGridPlugin, { DayBgRow } from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import timeGridPlugin from '@fullcalendar/timegrid';
+import { Column } from 'primereact/column'
 
 import firebase from 'firebase/app';
 import 'firebase/database';
 
 
 import customerData from '../customers.json';
-import classNames from 'classnames';
+// import classNames from 'classnames';
 
 import '../Dashboard.css';
 //import { arrayToHash } from '@fullcalendar/core/util/object';
@@ -32,7 +22,10 @@ export class CustomerSheet extends Component {
         this.state = {
             customers: customerData,
             selectedStatus: null,
+            editing: false
         };
+        this.edit = this.edit.bind(this);
+        this.save = this.save.bind(this);
         this.export = this.export.bind(this);
         this.onStatusFilterChange = this.onStatusFilterChange.bind(this);
 
@@ -40,6 +33,14 @@ export class CustomerSheet extends Component {
  export() {
      this.dt.exportCSV();
  }
+
+ edit() {
+    this.setState({editing: true});
+ }
+
+save() {
+    this.setState({ editing: false });
+}
 
  statusBodyTemplate(rowData) {
      return <span className={rowData.laundrystatus}>{rowData.laundrystatus.replace(/-/g,' ')}</span>;
@@ -67,7 +68,7 @@ export class CustomerSheet extends Component {
     render() {
         const customerArray = [];
         const statusFilter = this.renderStatusFilter();
-        const customerInfo = firebase.database().ref('/customers').on('value', function(snapshot) {
+        firebase.database().ref('/customers').on('value', function(snapshot) {
             snapshot.forEach(function(childSnapshot) {
                 customerArray.push(childSnapshot.toJSON());
             });
@@ -81,24 +82,34 @@ export class CustomerSheet extends Component {
     // })
     // db.child('users/' + userid + '/posted_tasks/' + taskId).set('unstarted');
 
-
-      var header = <div style={{textAlign:'left'}}>
-          <Button type="button" icon="pi pi-external-link" iconPos="left" label="CSV" onClick={this.export}>
-          </Button>
+      if (this.state.editing) {
+          var header = <div style={{ textAlign: 'left' }}>
+              <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-external-link" iconPos="left" label="CSV" onClick={this.export}>
+              </Button>
+              <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-pencil" iconPos="left" label="SAVE" onClick={this.save}>
+              </Button>
+          </div>;
+      } else {
+          var header = <div style={{ textAlign: 'left' }}>
+              <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-external-link" iconPos="left" label="CSV" onClick={this.export}>
+              </Button>
+              <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-pencil" iconPos="left" label="EDIT" onClick={this.edit}>
+              </Button>
           </div>;
 
+      }
         return (
             <div>
-                    <div className="card">
-                        <h1 style={{ fontSize: '16px' }}>Customer Database</h1>
-                        <DataTable value={customerArray} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} >
-                            <Column field= "id" header="ID" sortable={true} />
-                            <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
-                            <Column field="email" header="Email" sortable={true} />
-                            <Column field="phone" header="Phone" sortable={true} />
-                            <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter}  body={this.statusBodyTemplate}/>
-                        </DataTable>
-                        </div>
+                <div className="card">
+                    <h1 style={{ fontSize: '16px' }}>Customer Database</h1>
+                    <DataTable value={customerArray} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} >
+                        <Column field="id" header="ID" sortable={true} />
+                        <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
+                        <Column field="email" header="Email" sortable={true} />
+                        <Column field="phone" header="Phone" sortable={true} />
+                        <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
+                    </DataTable>
+                </div>
 
                 {/* </div> */}
             </div>

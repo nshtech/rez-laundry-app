@@ -1,4 +1,12 @@
+/* HEADER */
+.headerbutton{
+    background-color: #FFCDD2;
+    border-color: #6a09a4;
+    margin-right: 10;
+}
+
 /* BAG STATUSES FOR DATATABLE */
+
 .delivered {
     border-radius: 2px;
     padding: .25em .5em;
@@ -58,4 +66,3 @@
     background-color: #FFD8B2;
     color: #805B36;
 }
-    

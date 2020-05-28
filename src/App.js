@@ -1,4 +1,4 @@
-import React, {Component, useEffect} from 'react';
+import React, {Component} from 'react';
 import classNames from 'classnames';
 import {AppTopbar} from './AppTopbar';
 import {AppFooter} from './AppFooter';
@@ -9,8 +9,6 @@ import {Route} from 'react-router-dom';
 import {Dashboard} from './components/Dashboard';
 import { Calendar } from './components/Calendar';
 import { BagTracker } from './components/BagTracker';
-import { LogIn } from './components/LogIn';
-import { CustomerSheet } from './components/CustomerSheet';
 import {FormsDemo} from './components/FormsDemo';
 import {SampleDemo} from './components/SampleDemo';
 import {DataDemo} from './components/DataDemo';
@@ -37,7 +35,6 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 
 import 'firebase/auth';
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 
 const firebaseConfig = {
     apiKey: "AIzaSyAfTUULx93uJ8x9gZN1gmTCYFT9zTDz_Xc",
@@ -148,7 +145,7 @@ class App extends Component {
 
     createMenu() {
         this.menu = [
-            {label: 'Dashboard', icon: 'pi pi-fw pi-home', hover: 'yellow', command: () => {window.location = '#/'}},
+            {label: 'Dashboard', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/'}},
             { label: 'Calendar', icon: 'pi pi-fw pi-calendar', to: '/calendar'},
             { label: 'BagTracker', icon: 'pi pi-fw pi-check', to: '/bagtracker' }
         ];
@@ -194,19 +191,12 @@ class App extends Component {
             signInWithGoogle,
         } = this.props;
 
-        const logo = this.state.layoutColorMode === 'dark' ? 'assets/layout/images/logo-white.svg': 'assets/layout/images/logo.svg';
-
         const wrapperClass = classNames('layout-wrapper', {
             'layout-overlay': this.state.layoutMode === 'overlay',
             'layout-static': this.state.layoutMode === 'static',
             'layout-static-sidebar-inactive': this.state.staticMenuInactive && this.state.layoutMode === 'static',
             'layout-overlay-sidebar-active': this.state.overlayMenuActive && this.state.layoutMode === 'overlay',
             'layout-mobile-sidebar-active': this.state.mobileMenuActive
-        });
-
-        const sidebarClassName = classNames("layout-sidebar", {
-            'layout-sidebar-dark': this.state.layoutColorMode === 'dark',
-            // 'layout-sidebar-light': this.state.layoutColorMode === 'light'
         });
 
 
@@ -286,7 +276,6 @@ class App extends Component {
                                 <div className="login-centered">
                                     <Button label="Log In" className="p-button-raised p-button-secondary" onClick={this.login} />
                                 </div>
-                                {/* <img className="login-logo" src="images/purple-logo.png" />  */}
                             </div>
                         </div>
                     </div>
