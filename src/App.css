@@ -50,3 +50,9 @@
     color: #f4f4f4;
     text-decoration: none;
 }
+
+.item a:hover {
+    color: #6a09a4;
+    font-weight: bold;
+    text-decoration: none;
+}
