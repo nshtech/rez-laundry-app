@@ -50,6 +50,14 @@ export class CustomerSheet extends Component {
             });
       });
 
+    // const db = firebase.database().ref()
+    // const fullAddress = values.address + ', ' + values.city + ', ' + values.state;
+    // db.child('customers/' + taskId).set({
+    //         id: 01,
+    //         reshall: values.title
+    // })
+    // db.child('users/' + userid + '/posted_tasks/' + taskId).set('unstarted');
+
     
       var header = <div style={{textAlign:'left'}}>
           <Button type="button" icon="pi pi-external-link" iconPos="left" label="CSV" onClick={this.export}>
