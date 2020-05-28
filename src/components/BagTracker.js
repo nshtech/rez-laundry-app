@@ -8,10 +8,8 @@ import 'firebase/database';
 
 
 import customerData from '../customers.json'
-// import classNames from 'classnames';
 
 import '../Dashboard.css';
-//import { arrayToHash } from '@fullcalendar/core/util/object';
 
 
 export class BagTracker extends Component {
@@ -42,7 +40,7 @@ export class BagTracker extends Component {
 
 
         var header = <div style={{ textAlign: 'left' }}>
-            <Button type="button" icon="pi pi-external-link" iconPos="left" label="CSV" onClick={this.export}>
+            <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-external-link" iconPos="left" label="CSV" onClick={this.export}>
             </Button>
         </div>;
         return (
