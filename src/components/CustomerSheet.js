@@ -97,14 +97,14 @@ save() {
               </Button>
           </div>;
 
-      }
+      } //loading = {true} loadingIcon = "pi pi-spinner"
         return (
             <div>
                 <div className="card">
                     <h1 style={{ fontSize: '16px' }}>Customer Database</h1>
                     <DataTable value={customerArray} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} >
                         <Column field="id" header="ID" sortable={true} />
-                        <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
+                        <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name"/>
                         <Column field="email" header="Email" sortable={true} />
                         <Column field="phone" header="Phone" sortable={true} />
                         <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
