@@ -129,7 +129,7 @@ class App extends Component {
                 mobileMenuActive: !mobileMenuActive
             });
         }
-       
+
         event.preventDefault();
     }
 
@@ -148,7 +148,7 @@ class App extends Component {
 
     createMenu() {
         this.menu = [
-            {label: 'Dashboard', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/'}},
+            {label: 'Dashboard', icon: 'pi pi-fw pi-home', hover: 'yellow', command: () => {window.location = '#/'}},
             { label: 'Calendar', icon: 'pi pi-fw pi-calendar', to: '/calendar'},
             { label: 'BagTracker', icon: 'pi pi-fw pi-check', to: '/bagtracker' },
             // {
@@ -231,7 +231,7 @@ class App extends Component {
             // 'layout-sidebar-light': this.state.layoutColorMode === 'light'
         });
 
-        
+
 
         if (this.state.user && this.state.user.email.includes('studentholdings.org')) {
             const db = firebase.database().ref()
@@ -261,7 +261,7 @@ class App extends Component {
 
             localStorage.setItem('user', JSON.stringify(this.state.user))
         }
-        
+
 
         return (
             <div>
