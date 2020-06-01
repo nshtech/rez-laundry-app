@@ -10,6 +10,7 @@ import 'firebase/database';
 import customerData from '../customers.json'
 
 import '../Dashboard.css';
+import {InputText} from "primereact/inputtext";
 
 
 export class BagTracker extends Component {
@@ -25,6 +26,22 @@ export class BagTracker extends Component {
 
     statusBodyTemplate(rowData) {
         return <span className={rowData.laundrystatus}>{rowData.laundrystatus.replace(/-/g, ' ')}</span>;
+    }
+
+    onEditorValueChange(props, value) {
+        firebase.database().ref('/customers/' + props.rowData.id + '/' + props.field).set(value)
+        let updatedCars = [...props.value];
+        updatedCars[props.rowIndex][props.field] = value;
+        this.setState({ customers: updatedCars });
+        console.log(props)
+    }
+
+    inputTextEditor(props, field) {
+        return <InputText type="text" onChange={(e) => this.onEditorValueChange(props, e.target.value)} />;
+    }
+
+    generalEditor(props) {
+        return this.inputTextEditor(props, ' ');
     }
 
     export() {

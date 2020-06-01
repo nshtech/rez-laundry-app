@@ -58,6 +58,52 @@ export class CustomerSheet extends Component {
         console.log(props)
     }
 
+    onEditorValueChange2(value) {
+        var query = firebase.database().ref("customers").orderByKey();
+        query.once("value")
+            .then(function(snapshot){
+            snapshot.forEach(function(childSnapshot){
+                var key = childSnapshot.key;
+                firebase.database().ref('/customers/' + key + '/' + "laundrystatus").set("bag-missing")
+            });
+        });
+    }
+
+    pickedUpEditor(value) {
+        var query = firebase.database().ref("customers").orderByKey();
+        query.once("value")
+            .then(function(snapshot){
+                snapshot.forEach(function(childSnapshot){
+                    var key = childSnapshot.key;
+                    firebase.database().ref('/customers/' + key + '/' + "laundrystatus").set("picked-up")
+                });
+            });
+    }
+
+    shEditor(value) {
+        var query = firebase.database().ref("customers").orderByKey();
+        query.once("value")
+            .then(function(snapshot){
+                snapshot.forEach(function(childSnapshot){
+                    var key = childSnapshot.key;
+                    firebase.database().ref('/customers/' + key + '/' + "laundrystatus").set("delivered-to-SH")
+                });
+            });
+    }
+
+    dormEditor(value) {
+        var query = firebase.database().ref("customers").orderByKey();
+        query.once("value")
+            .then(function(snapshot){
+                snapshot.forEach(function(childSnapshot){
+                    var key = childSnapshot.key;
+                    firebase.database().ref('/customers/' + key + '/' + "laundrystatus").set("delivered-to-dorm")
+                });
+            });
+    }
+
+
+
     inputTextEditor(props, field) {
         return <InputText type="text" onChange={(e) => this.onEditorValueChange(props, e.target.value)} />;
     }
@@ -65,6 +111,7 @@ export class CustomerSheet extends Component {
     generalEditor(props) {
         return this.inputTextEditor(props, ' ');
     }
+
     phoneValidator(props) {
         let value = props.rowData[props.field]
         return value[3] === '-' && value.length === 12;
@@ -123,7 +170,12 @@ export class CustomerSheet extends Component {
             </Button>
             <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="SAVE" onClick={this.save}>
             </Button>
-
+            <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="PICKED UP" onClick={this.pickedUpEditor}>
+            </Button>
+            <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="SH" onClick={this.shEditor}>
+            </Button>
+            <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="DORM" onClick={this.dormEditor}>
+            </Button>
         </div>;
         //loading = {true} loadingIcon = "pi pi-spinner"
         return (
@@ -136,7 +188,7 @@ export class CustomerSheet extends Component {
                         <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
                         <Column field="email" header="Edit email" sortable={true} style={{ color: 'blue' }} editor={this.generalEditor} editorValidator={this.emailValidator} />
                         <Column field="phone" header="Edit phone" sortable={true} style={{ color: 'blue' }} editor={this.generalEditor} editorValidator={this.phoneValidator}/>
-                        <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
+                        <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} editor={this.generalEditor}/>
                     </DataTable>
                 </div>
             </div>
@@ -149,6 +201,12 @@ export class CustomerSheet extends Component {
             <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-pencil" iconPos="left" label="EDIT" onClick={this.edit}>
             </Button>
             <Button type="button" style={{ color: '#6a09a4', backgroundColor: 'white', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="SAVE">
+            </Button>
+            <Button type="button" style={{ color: '#6a09a4', backgroundColor: 'white', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="PICKED UP">
+            </Button>
+            <Button type="button" style={{ color: '#6a09a4', backgroundColor: 'white', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="SH">
+            </Button>
+            <Button type="button" style={{ color: '#6a09a4', backgroundColor: 'white', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="DORM">
             </Button>
         </div>;
         return (
