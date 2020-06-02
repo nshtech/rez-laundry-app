@@ -33,6 +33,8 @@ export class BagTracker extends Component {
         this.save = this.save.bind(this);
         this.export = this.export.bind(this);
         this.onStatusFilterChange = this.onStatusFilterChange.bind(this);
+        this.bagStatusEditor = this.bagStatusEditor.bind(this)
+        this.displaySelection = this.displaySelection.bind(this)
     }
     export() {
         this.dt.exportCSV();
@@ -47,6 +49,7 @@ export class BagTracker extends Component {
     save() {
         this.setState({ editing: false });
         this.growl.clear();
+        // console.log(this.state.selectedCustomers)
         // window.location.reload(false);
     }
 
@@ -69,28 +72,24 @@ export class BagTracker extends Component {
         });
     }
 
-    bagStatusEditor(selectedCustomers, customers, newstatus) {
-        if (selectedCustomers) {
-            var ids = Object.keys(selectedCustomers).map(function (key) {
-                return selectedCustomers[key].id;
+    bagStatusEditor(currentcustomers, newstatus) {
+        console.log(currentcustomers)
+        if (currentcustomers) {
+            var ids = Object.keys(currentcustomers).map(function (key) {
+                return currentcustomers[key].id;
             });
-            console.log(customers)
-            // let updatedCars = [...props.value];
-            // updatedCars[props.rowIndex][props.field] = value;
-            // this.setState({ customers: updatedCars });
             var query = firebase.database().ref("customers").orderByKey();
             query.once("value")
                 .then(function (snapshot) {
                     snapshot.forEach(function (childSnapshot) {
                         var key = childSnapshot.key;
-                        if (ids.includes(key)) {
+                        if (ids.includes(key)){
+                            var key = childSnapshot.key;
                             firebase.database().ref('/customers/' + key + '/' + "laundrystatus").set(newstatus)
                         }
-                        
                     });
             });
         }
-
     }
 
     inputTextEditor(props, field) {
@@ -100,12 +99,6 @@ export class BagTracker extends Component {
     displaySelection(data) {
         if (this.state.editing && (!data || data.length === 0)) {
             return <div style={{ textAlign: 'left' }}>No Selection</div>;
-        }
-        else {
-            if (data instanceof Array)
-                return <ul style={{ textAlign: 'left', margin: 0 }}>{data.map((car, i) => <li key={car.vin}>{car.vin + ' - ' + car.year + ' - ' + car.brand + ' - ' + car.color}</li>)}</ul>;
-            else
-                return <div style={{ textAlign: 'left' }}>Selected Car: {data.vin + ' - ' + data.year + ' - ' + data.brand + ' - ' + data.color}</div>
         }
     }
 
@@ -146,6 +139,7 @@ export class BagTracker extends Component {
 
     render() {
         const statusFilter = this.renderStatusFilter();
+        const currentcustomers = this.state.selectedCustomers;
 
         /* --------------- RETURN ---------------- */
         /* ---------------- edit mode ------------*/
@@ -157,11 +151,11 @@ export class BagTracker extends Component {
                 </Button>
                 <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="SAVE" onClick={this.save}>
                 </Button>
-                <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="PICKED UP" onClick={this.bagStatusEditor(this.state.selectedCustomers, this.state.customers, "picked-up")}>
+                <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="PICKED UP" onClick={() => {this.bagStatusEditor(currentcustomers, 'picked-up')}}>
                 </Button>
-                <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="SH" onClick={this.bagStatusEditor(this.state.selectedCustomers, this.state.customers, "delivered-to-SH")}>
+                <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="SH" onClick={() => { this.bagStatusEditor(currentcustomers, 'delivered-to-SH') }}>
                 </Button>
-                <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="DORM" onClick={this.bagStatusEditor(this.state.selectedCustomers, this.state.customers, "delivered-to-dorm")}>
+                <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="DORM" onClick={() => { this.bagStatusEditor(currentcustomers, 'delivered-to-dorm') }}>
                 </Button>
             </div>;
             //loading = {true} loadingIcon = "pi pi-spinner"
