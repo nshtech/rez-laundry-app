@@ -62,6 +62,13 @@
     color: #694382;
 }
 
+.delivered-to-SH-button {
+    margin-right: 10;
+    background-color: #ECCFFF;
+    color: #694382;
+    border-color: #694382;
+}
+
 .out-of-service {
     border-radius: 2px;
     padding: .25em .5em;
