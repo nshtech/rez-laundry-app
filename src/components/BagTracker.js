@@ -4,7 +4,6 @@ import { Dropdown } from 'primereact/dropdown';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column'
 import { InputText } from 'primereact/inputtext';
-import { Growl } from 'primereact/growl';
 
 import firebase from 'firebase/app';
 import 'firebase/database';
@@ -72,27 +71,33 @@ export class BagTracker extends Component {
         });
     }
 
-    bagStatusEditor(currentcustomers, newstatus) {
-        console.log(currentcustomers)
+    async bagStatusEditor(currentcustomers, newstatus) {
+        const curr = await this.dothisfirst(currentcustomers, newstatus)
+        console.log(curr)
+        this.setState({ editing: false });
+        window.location.reload();
+    }
+
+    dothisfirst(currentcustomers, newstatus) {
+        // console.log(currentcustomers)
         if (currentcustomers) {
             var ids = Object.keys(currentcustomers).map(function (key) {
                 return currentcustomers[key].id;
             });
+            console.log(ids)
             var query = firebase.database().ref("customers").orderByKey();
             query.once("value")
                 .then(function (snapshot) {
                     snapshot.forEach(function (childSnapshot) {
                         var key = childSnapshot.key;
-                        if (ids.includes(key)){
+                        if (ids.includes(key)) {
                             var key = childSnapshot.key;
                             firebase.database().ref('/customers/' + key + '/' + "laundrystatus").set(newstatus)
                         }
                     });
-            });
+                });
         }
-        this.setState({ editing: false });
-        this.growl.clear();
-        window.location.reload();
+        return currentcustomers
     }
 
     inputTextEditor(props, field) {
