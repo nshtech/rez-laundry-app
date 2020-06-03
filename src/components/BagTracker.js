@@ -78,6 +78,35 @@ export class BagTracker extends Component {
         window.location.reload();
     }
 
+    async weightStatusEditor(currentcustomers, newstatus) {
+        const curr = await this.weightfirst(currentcustomers, newstatus)
+        console.log(curr)
+        this.setState({ editing: false });
+        window.location.reload();
+    }
+
+    weightfirst(currentcustomers, newstatus) {
+        // console.log(currentcustomers)
+        if (currentcustomers) {
+            var ids = Object.keys(currentcustomers).map(function (key) {
+                return currentcustomers[key].id;
+            });
+            console.log(ids)
+            var query = firebase.database().ref("customers").orderByKey();
+            query.once("value")
+                .then(function (snapshot) {
+                    snapshot.forEach(function (childSnapshot) {
+                        var key = childSnapshot.key;
+                        if (ids.includes(key)) {
+                            var key = childSnapshot.key;
+                            firebase.database().ref('/customers/' + key + '/' + "weightstatus").set(newstatus)
+                        }
+                    });
+                });
+        }
+        return currentcustomers
+    }
+
     dothisfirst(currentcustomers, newstatus) {
         // console.log(currentcustomers)
         if (currentcustomers) {
@@ -114,6 +143,9 @@ export class BagTracker extends Component {
     /* --------------- Filters ---------------- */
     statusBodyTemplate(rowData) {
         return <span className={rowData.laundrystatus}>{rowData.laundrystatus.replace(/-/g, ' ')}</span>;
+    }
+    weightBodyTemplate(rowData) {
+        return <span className={rowData.weightstatus}>{rowData.weightstatus}</span>;
     }
 
     renderStatusFilter() {
@@ -186,6 +218,10 @@ export class BagTracker extends Component {
                     </Button>
                     <Button type="button" style={{ color: '#C63737', backgroundColor: '#FFCDD2', borderColor: '#C63737', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="MISSING" onClick={() => { this.bagStatusEditor(currentcustomers, 'bag-missing') }}>
                     </Button>
+                    <Button type="button" style={{ color: '#474549', backgroundColor: 'lightgrey', borderColor: '#474549', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="UNDERWEIGHT BAG" onClick={() => { this.weightStatusEditor(currentcustomers, 'underweight') }}>
+                    </Button>
+                    <Button type="button" style={{ color: '#C63737', backgroundColor: '#FFCDD2', borderColor: '#C63737', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="OVERWEIGHT BAG" onClick={() => { this.weightStatusEditor(currentcustomers, 'overweight') }}>
+                    </Button>
                 </div>
                 <div>
 
@@ -206,6 +242,7 @@ export class BagTracker extends Component {
                             <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
                             <Column field="reshall" header="Residential Hall" sortable={true}/>
                             <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate}/>
+                            <Column field="weightstatus" header="Bag Weight" sortable={true} body={this.weightBodyTemplate}/>
                         </DataTable>
                     </div>
                 </div>
@@ -229,6 +266,7 @@ export class BagTracker extends Component {
                             <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
                             <Column field="reshall" header="Residential Hall" sortable={true} />
                             <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
+                            <Column field="weightstatus" header="Bag Weight" sortable={true} body={this.weightBodyTemplate} editor={this.generalEditor}/>
                         </DataTable>
                     </div>
                 </div>
