@@ -7,7 +7,7 @@ import {AppProfile} from './AppProfile';
 import { Button } from 'primereact/button';
 import {Route} from 'react-router-dom';
 import {Dashboard} from './components/Dashboard';
-import { Calendar } from './components/Calendar';
+import { CustomerSearch } from './components/CustomerSearch';
 import { BagTracker } from './components/BagTracker';
 import {FormsDemo} from './components/FormsDemo';
 import {SampleDemo} from './components/SampleDemo';
@@ -146,7 +146,7 @@ class App extends Component {
     createMenu() {
         this.menu = [
             {label: 'Dashboard', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/'}},
-            { label: 'Calendar', icon: 'pi pi-fw pi-calendar', to: '/calendar'},
+            { label: 'CustomerSearch', icon: 'pi pi-fw pi-search', to: '/customersearch'},
             { label: 'BagTracker', icon: 'pi pi-fw pi-check', to: '/bagtracker' }
         ];
     }
@@ -247,7 +247,7 @@ class App extends Component {
                         </div>
                         <div className="layout-main">
                             <Route path="/" exact component={Dashboard} />
-                            <Route path="/calendar" component={Calendar} />
+                            <Route path="/customersearch" component={CustomerSearch} />
                             <Route path="/bagtracker" component={BagTracker} />
                             <Route path="/forms" component={FormsDemo} />
                             <Route path="/sample" component={SampleDemo} />
