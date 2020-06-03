@@ -3,6 +3,7 @@ import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column'
+import { Chart } from 'primereact/chart'
 import { InputText } from 'primereact/inputtext';
 import { Growl } from 'primereact/growl';
 
@@ -70,29 +71,50 @@ export class CustomerSearch extends Component {
 
     render() {
         const statusFilter = this.renderStatusFilter();
+        const data = {
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            datasets: [
+                {
+                    label: 'First Dataset',
+                    data: [65, 59, 80, 81, 56, 55, 40],
+                    fill: false,
+                    backgroundColor: '#42A5F5',
+                    borderColor: '#42A5F5'
+                },
+                {
+                    label: 'Second Dataset',
+                    data: [28, 48, 40, 19, 86, 27, 90],
+                    fill: false,
+                    backgroundColor: '#66BB6A',
+                    borderColor: '#66BB6A'
+                }
+            ]
+        };
         if (this.state.selectedCustomer) {
             var header = <div style={{ textAlign: 'left' }}></div>
             var customer = this.state.selectedCustomer
             return (
-                <div>
-                    <div className="card">
-                    <h1>{customer.name}</h1>
-                    <p>Customer ID: {customer.id}</p>
-                    <p>Email: {customer.email}</p>
-                    <p>Phone: {customer.phone}</p>
-                    <p>Laundry Status: {customer.laundrystatus}</p>
-                    <p>DISPLAY OVERAGES HERE</p>
-                    </div>
-                    <div className="card">
-                        <p>This page is for visualization of the customer database and internal editting of administrative customer information. </p>
-                        <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} selectionMode="single"
+                <div style={{display: 'flex'}}>
+                    <div className="card card-search">
+                        <DataTable value={this.state.customers} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} selectionMode="single"
                             responsive={true} autoLayout={true} selection={this.state.selectedCustomer} onSelectionChange={e => this.setState({ selectedCustomer: e.value })}>
                             <Column field="id" header="ID" sortable={true} />
                             <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
-                            <Column field="email" header="Email" sortable={true} />
-                            <Column field="phone" header="Phone" sortable={true} />
-                            <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
                         </DataTable>
+                    </div>
+                    <div className="card card-list">
+                        <h1>{customer.name}</h1>
+                        <div style={{ display: 'flex' }}>
+                            <h3 style={{ paddingRight: 5 }}>Customer ID:  </h3><p style={{ paddingTop: 4, paddingRight: 15 }}>{customer.id}</p>
+                            <h3 style={{ paddingRight: 5 }}>Email: </h3><p style={{ paddingTop: 4, paddingRight: 15 }}>{customer.email}</p>
+                            <h3 style={{ paddingRight: 5 }}>Phone: </h3><p style={{ paddingTop: 4, paddingRight: 15 }}>{customer.phone}</p>
+                        </div>
+                        <div style={{ display: 'flex' }}>
+                            <h3 style={{ paddingRight: 5 }}>Residential Hall:  </h3><p style={{ paddingTop: 4, paddingRight: 15 }}>{customer.reshall}</p>
+                            <h3 style={{ paddingRight: 5 }}>Laundry Plan: </h3><p style={{ paddingTop: 4, paddingRight: 15 }}>{customer.plan}</p>
+                        </div>
+                        <h3>Bag Weight History</h3>
+                        <Chart type="line" data={data} />
                     </div>
                 </div>
             );
@@ -101,20 +123,16 @@ export class CustomerSearch extends Component {
             </div>;
     
             return (
-                <div>
-                    <div className="card">
-                        <h1>Select a Customer Below</h1>
-                    </div>
-                    <div className="card">
-                        <p>This page is for visualization of the customer database and internal editting of administrative customer information. </p>
-                        <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} selectionMode="single"
+                <div style={{ display: 'flex' }}>
+                    <div className="card card-search">
+                        <DataTable value={this.state.customers} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} selectionMode="single"
                         responsive={true} autoLayout={true} selection={this.state.selectedCustomer} onSelectionChange={e => this.setState({ selectedCustomer: e.value })}>
                             <Column field="id" header="ID" sortable={true} />
                             <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
-                            <Column field="email" header="Email" sortable={true} />
-                            <Column field="phone" header="Phone" sortable={true} />
-                            <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
                         </DataTable>
+                    </div>
+                    <div className="card card-list">
+                        <h1>Select a Customer</h1>
                     </div>
                 </div>
             );

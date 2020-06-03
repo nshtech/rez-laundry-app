@@ -204,8 +204,7 @@ export class BagTracker extends Component {
                             <Column selectionMode="multiple" style={{ width: '3em' }} />
                             <Column field="id" header="ID" sortable={true} />
                             <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
-                            <Column field="email" header="Edit email" sortable={true}/>
-                            <Column field="phone" header="Edit phone" sortable={true}/>
+                            <Column field="reshall" header="Residential Hall" sortable={true}/>
                             <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate}/>
                         </DataTable>
                     </div>
@@ -228,8 +227,7 @@ export class BagTracker extends Component {
                         <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}>
                             <Column field="id" header="ID" sortable={true} />
                             <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
-                            <Column field="email" header="Email" sortable={true} />
-                            <Column field="phone" header="Phone" sortable={true} />
+                            <Column field="reshall" header="Residential Hall" sortable={true} />
                             <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
                         </DataTable>
                     </div>

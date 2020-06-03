@@ -84,3 +84,12 @@
     background-color: #FFD8B2;
     color: #805B36;
 }
+
+/* CUSTOMER SEARCH */
+.card-search {
+    max-width: 40%;
+}
+.card-list {
+    min-width: 60%;
+
+}
