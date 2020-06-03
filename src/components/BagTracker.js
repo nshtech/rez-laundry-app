@@ -127,25 +127,19 @@ export class BagTracker extends Component {
         this.setState({ selectedStatus: event.value });
     }
 
-    // componentDidMount() {
-    //     const customerArray = [];
-    //     firebase.database().ref('/customers').on('value', function (snapshot) {
-    //         snapshot.forEach(function (childSnapshot) {
-    //             customerArray.push(childSnapshot.toJSON());
-    //         });
-    //     });
-    //     this.setState({ customers: customerArray });
-    // }
-
-    render() {
-        const statusFilter = this.renderStatusFilter();
-        const currentcustomers = this.state.selectedCustomers;
+    componentDidMount() {
         const customerArray = [];
         firebase.database().ref('/customers').on('value', function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
                 customerArray.push(childSnapshot.toJSON());
             });
         });
+        this.setState({ customers: customerArray });
+    }
+
+    render() {
+        const statusFilter = this.renderStatusFilter();
+        const currentcustomers = this.state.selectedCustomers;
 
         /* --------------- RETURN ---------------- */
         /* ---------------- edit mode ------------*/
@@ -170,7 +164,7 @@ export class BagTracker extends Component {
                     <Growl ref={(el) => this.growl = el} sticky={true} />
                     <div className="card">
                         <h1 style={{ fontSize: '16px' }}>Rez Ops Bag Tracker</h1>
-                        <DataTable value={customerArray} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} 
+                        <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} 
                         editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}
                         footer={this.displaySelection(this.state.selectedCustomers)} selection={this.state.selectedCustomers} onSelectionChange={e => this.setState({ selectedCustomers: e.value })}>
                             <Column selectionMode="multiple" style={{ width: '3em' }} />
@@ -204,7 +198,7 @@ export class BagTracker extends Component {
                     <Growl ref={(el) => this.growl = el} />
                     <div className="card">
                         <h1 style={{ fontSize: '16px' }}>Rez Ops Bag Tracker</h1>
-                        <DataTable value={customerArray} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}>
+                        <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}>
                             <Column field="id" header="ID" sortable={true} />
                             <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
                             <Column field="email" header="Email" sortable={true} />
