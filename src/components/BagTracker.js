@@ -27,6 +27,7 @@ export class BagTracker extends Component {
             customers: [],
             selectedStatus: null,
             editing: false,
+            loading: true,
             selectedCustomers: null
         };
         this.edit = this.edit.bind(this);
@@ -35,6 +36,7 @@ export class BagTracker extends Component {
         this.onStatusFilterChange = this.onStatusFilterChange.bind(this);
         this.bagStatusEditor = this.bagStatusEditor.bind(this)
         this.displaySelection = this.displaySelection.bind(this)
+        this.loadInitialState = this.loadInitialState.bind(this)
     }
     export() {
         this.dt.exportCSV();
@@ -90,6 +92,9 @@ export class BagTracker extends Component {
                     });
             });
         }
+        this.setState({ editing: false });
+        this.growl.clear();
+        window.location.reload();
     }
 
     inputTextEditor(props, field) {
@@ -127,14 +132,33 @@ export class BagTracker extends Component {
         this.setState({ selectedStatus: event.value });
     }
 
-    componentDidMount() {
-        const customerArray = [];
-        firebase.database().ref('/customers').on('value', function (snapshot) {
-            snapshot.forEach(function (childSnapshot) {
-                customerArray.push(childSnapshot.toJSON());
+    // componentDidMount() {
+    //     const customerArray = [];
+    //     firebase.database().ref('/customers').on('value', function (snapshot) {
+    //         snapshot.forEach(function (childSnapshot) {
+    //             customerArray.push(childSnapshot.toJSON());
+    //         });
+    //     });
+    //     this.setState({ customers: customerArray });
+    // }
+
+    loadInitialState = async () => {
+        try {
+            const customerArray = [];
+            firebase.database().ref('/customers').on('value', function (snapshot) {
+                snapshot.forEach(function (childSnapshot) {
+                    customerArray.push(childSnapshot.toJSON());
+                });
             });
-        });
-        this.setState({ customers: customerArray });
+            this.setState({ customers: customerArray });
+            this.setState({ loading: false });
+        } catch (error) {
+            this.setState({ loading: true });
+        }
+    }
+
+    componentWillMount() {
+        this.loadInitialState()
     }
 
     render() {
@@ -143,72 +167,73 @@ export class BagTracker extends Component {
 
         /* --------------- RETURN ---------------- */
         /* ---------------- edit mode ------------*/
-        if (this.state.editing) {
-            var header = <div style={{ textAlign: 'left' }}>
-                <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-external-link" iconPos="left" label="CSV" onClick={this.export}>
-                </Button>
-                <Button type="button" style={{ color: '#6a09a4', backgroundColor: 'white', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-pencil" iconPos="left" label="EDIT">
-                </Button>
-                <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="SAVE" onClick={this.save}>
-                </Button>
-                <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="PICKED UP" onClick={() => {this.bagStatusEditor(currentcustomers, 'picked-up')}}>
-                </Button>
-                <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="SH" onClick={() => { this.bagStatusEditor(currentcustomers, 'delivered-to-SH') }}>
-                </Button>
-                <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="DORM" onClick={() => { this.bagStatusEditor(currentcustomers, 'delivered-to-dorm') }}>
-                </Button>
-            </div>;
-            //loading = {true} loadingIcon = "pi pi-spinner"
-            return (
-                <div>
-                    <Growl ref={(el) => this.growl = el} sticky={true} />
-                    <div className="card">
-                        <h1 style={{ fontSize: '16px' }}>Rez Ops Bag Tracker</h1>
-                        <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} 
-                        editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}
-                        footer={this.displaySelection(this.state.selectedCustomers)} selection={this.state.selectedCustomers} onSelectionChange={e => this.setState({ selectedCustomers: e.value })}>
-                            <Column selectionMode="multiple" style={{ width: '3em' }} />
-                            <Column field="id" header="ID" sortable={true} />
-                            <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
-                            <Column field="email" header="Edit email" sortable={true}/>
-                            <Column field="phone" header="Edit phone" sortable={true}/>
-                            <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate}/>
-                        </DataTable>
+        if (this.state.loading) {
+            return <p>Loading</p>
+        }
+        else {
+            if (this.state.editing) {
+                var header = <div style={{ textAlign: 'left' }}>
+                    <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-external-link" iconPos="left" label="CSV" onClick={this.export}>
+                    </Button>
+                    <Button type="button" style={{ color: '#6a09a4', backgroundColor: 'white', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-pencil" iconPos="left" label="EDIT" onClick={this.save}>
+                    </Button>
+                    <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="PICKED UP" onClick={() => {this.bagStatusEditor(currentcustomers, 'picked-up')}}>
+                    </Button>
+                    <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="SH" onClick={() => { this.bagStatusEditor(currentcustomers, 'delivered-to-SH') }}>
+                    </Button>
+                    <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="DORM" onClick={() => { this.bagStatusEditor(currentcustomers, 'delivered-to-dorm') }}>
+                    </Button>
+                </div>;
+                //loading = {true} loadingIcon = "pi pi-spinner"
+                return (
+                    <div id="elmid">
+                        <Growl ref={(el) => this.growl = el} sticky={true} />
+                        <div className="card">
+                            <h1 style={{ fontSize: '16px' }}>Rez Ops Bag Tracker</h1>
+                            <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} 
+                            editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}
+                            footer={this.displaySelection(this.state.selectedCustomers)} selection={this.state.selectedCustomers} onSelectionChange={e => this.setState({ selectedCustomers: e.value })}>
+                                <Column selectionMode="multiple" style={{ width: '3em' }} />
+                                <Column field="id" header="ID" sortable={true} />
+                                <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
+                                <Column field="email" header="Edit email" sortable={true}/>
+                                <Column field="phone" header="Edit phone" sortable={true}/>
+                                <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate}/>
+                            </DataTable>
+                        </div>
                     </div>
-                </div>
-            );
-            /* ---------------- NOT edit mode ------------*/
-        } else {
-            var header = <div style={{ textAlign: 'left' }}>
-                <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-external-link" iconPos="left" label="CSV" onClick={this.export}>
-                </Button>
-                <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-pencil" iconPos="left" label="EDIT" onClick={this.edit}>
-                </Button>
-                <Button type="button" style={{ color: '#6a09a4', backgroundColor: 'white', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="SAVE">
-                </Button>
-                <Button type="button" style={{ color: '#6a09a4', backgroundColor: 'white', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="PICKED UP">
-                </Button>
-                <Button type="button" style={{ color: '#6a09a4', backgroundColor: 'white', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="SH">
-                </Button>
-                <Button type="button" style={{ color: '#6a09a4', backgroundColor: 'white', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="DORM">
-                </Button>
-            </div>;
-            return (
-                <div>
-                    <Growl ref={(el) => this.growl = el} />
-                    <div className="card">
-                        <h1 style={{ fontSize: '16px' }}>Rez Ops Bag Tracker</h1>
-                        <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}>
-                            <Column field="id" header="ID" sortable={true} />
-                            <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
-                            <Column field="email" header="Email" sortable={true} />
-                            <Column field="phone" header="Phone" sortable={true} />
-                            <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
-                        </DataTable>
+                );
+                /* ---------------- NOT edit mode ------------*/
+            } else {
+                var header = <div style={{ textAlign: 'left' }}>
+                    <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-external-link" iconPos="left" label="CSV" onClick={this.export}>
+                    </Button>
+                    <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-pencil" iconPos="left" label="EDIT" onClick={this.edit}>
+                    </Button>
+                    <Button type="button" style={{ color: '#6a09a4', backgroundColor: 'white', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="PICKED UP">
+                    </Button>
+                    <Button type="button" style={{ color: '#6a09a4', backgroundColor: 'white', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="SH">
+                    </Button>
+                    <Button type="button" style={{ color: '#6a09a4', backgroundColor: 'white', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="DORM">
+                    </Button>
+                </div>;
+                return (
+                    <div id="elmid">
+                        <Growl ref={(el) => this.growl = el} />
+                        <div className="card">
+                            <h1 style={{ fontSize: '16px' }}>Rez Ops Bag Tracker</h1>
+                            <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}>
+                                <Column field="id" header="ID" sortable={true} />
+                                <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
+                                <Column field="email" header="Email" sortable={true} />
+                                <Column field="phone" header="Phone" sortable={true} />
+                                <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
+                            </DataTable>
+                        </div>
                     </div>
-                </div>
-            );
+                );
 
+            }
         }
     }
 }
