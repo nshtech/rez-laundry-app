@@ -80,6 +80,11 @@ export class CustomerSheet extends Component {
         return <span className={rowData.laundrystatus}>{rowData.laundrystatus.replace(/-/g, ' ')}</span>;
     }
 
+    weightBodyTemplate(rowData) {
+        return <span className={rowData.weightstatus}>{rowData.weightstatus}</span>;
+
+    }
+
     renderStatusFilter() {
         var statuses =  [
             {label: 'Picked Up', value: 'picked-up'},
@@ -137,6 +142,7 @@ export class CustomerSheet extends Component {
                         <Column field="email" header="Edit email" sortable={true} style={{ color: 'blue' }} editor={this.generalEditor} editorValidator={this.emailValidator} />
                         <Column field="phone" header="Edit phone" sortable={true} style={{ color: 'blue' }} editor={this.generalEditor} editorValidator={this.phoneValidator}/>
                         <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} editor={this.generalEditor}/>
+                        <Column field="weightstatus" header="Bag Weight" sortable={true} body={this.weightBodyTemplate} editor={this.generalEditor}/>
                     </DataTable>
                 </div>
             </div>
@@ -162,6 +168,7 @@ export class CustomerSheet extends Component {
                         <Column field="email" header="Email" sortable={true} />
                         <Column field="phone" header="Phone" sortable={true} />
                         <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
+                        <Column field="weightstatus" header="Bag Weight" sortable={true} body={this.weightBodyTemplate} />
                     </DataTable>
                 </div>
             </div>
