@@ -80,6 +80,28 @@
     color: #474549;
 }
 
+.underweight {
+    border-radius: 2px;
+    padding: .25em .5em;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+    background-color: lightgrey;
+    color: #474549;
+}
+
+.overweight {
+    border-radius: 2px;
+    padding: .25em .5em;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+    background-color: #FFCDD2;
+    color: #C63737;
+}
+
 .status-proposal {
     background-color: #FFD8B2;
     color: #805B36;
