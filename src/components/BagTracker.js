@@ -146,18 +146,15 @@ export class BagTracker extends Component {
     // }
 
     loadInitialState = async () => {
-        try {
-            const customerArray = [];
-            firebase.database().ref('/customers').on('value', function (snapshot) {
-                snapshot.forEach(function (childSnapshot) {
-                    customerArray.push(childSnapshot.toJSON());
-                });
+        const customerArray = [];
+        firebase.database().ref('/customers').on('value', function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+                customerArray.push(childSnapshot.toJSON());
             });
-            this.setState({ customers: customerArray });
-            this.setState({ loading: false });
-        } catch (error) {
-            this.setState({ loading: true });
-        }
+        });
+        this.setState({ customers: customerArray });
+        this.setState({ loading: false });
+
     }
 
     componentWillMount() {
@@ -170,80 +167,76 @@ export class BagTracker extends Component {
 
         /* --------------- RETURN ---------------- */
         /* ---------------- edit mode ------------*/
-        if (this.state.loading) {
-            return <p>Loading</p>
-        }
-        else {
-            if (this.state.editing) {
-                var header = <div style={{ textAlign: 'left' }}>
-                    <div style={{ marginBottom: 10 }}>
-                        <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-external-link" iconPos="left" label="CSV" onClick={this.export}>
-                        </Button>
-                        <Button type="button" style={{ color: 'white', backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="SAVE" onClick={this.save}>
-                        </Button>
-                    </div>
-                    <div>
-                        <Button type="button" style={{ color: '#23547B', backgroundColor: '#B3E5FC', borderColor: '#23547B', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="PICKED UP" onClick={() => {this.bagStatusEditor(currentcustomers, 'picked-up')}}>
-                        </Button>
-                        <Button type="button" style={{ color: '#694382', backgroundColor: '#ECCFFF', borderColor: '#694382', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="SH" onClick={() => { this.bagStatusEditor(currentcustomers, 'delivered-to-SH') }}>
-                        </Button>
-                        <Button type="button" style={{ color: '#256029', backgroundColor: '#C8E6C9', borderColor: '#256029', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="DORM" onClick={() => { this.bagStatusEditor(currentcustomers, 'delivered-to-dorm') }}>
-                        </Button>
-                        <Button type="button" style={{ color: '#474549', backgroundColor: 'lightgrey', borderColor: '#474549', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="NO SERVICE" onClick={() => { this.bagStatusEditor(currentcustomers, 'out-of-service') }}>
-                        </Button>
-                        <Button type="button" style={{ color: '#C63737', backgroundColor: '#FFCDD2', borderColor: '#C63737', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="MISSING" onClick={() => { this.bagStatusEditor(currentcustomers, 'bag-missing') }}>
-                        </Button>
-                    </div>
-                    <div>
-
-                    </div>
-                </div>;
-                //loading = {true} loadingIcon = "pi pi-spinner"
-                return (
-                    <div id="elmid">
-                        <div className="card">
-                            <h1>Rez Ops Bag Tracker</h1>
-                            <p>The BagTracker is used to update bag statuses, including location, warnings, or overages of bags each the week.</p>
-                            <p>ONLY individuals running operations should be accessing this page.</p>
-                            <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} 
-                            editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}
-                            footer={this.displaySelection(this.state.selectedCustomers)} selection={this.state.selectedCustomers} onSelectionChange={e => this.setState({ selectedCustomers: e.value })}>
-                                <Column selectionMode="multiple" style={{ width: '3em' }} />
-                                <Column field="id" header="ID" sortable={true} />
-                                <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
-                                <Column field="email" header="Edit email" sortable={true}/>
-                                <Column field="phone" header="Edit phone" sortable={true}/>
-                                <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate}/>
-                            </DataTable>
-                        </div>
-                    </div>
-                );
-                /* ---------------- NOT edit mode ------------*/
-            } else {
-                var header = <div style={{ textAlign: 'left' }}>
+        if (this.state.editing) {
+            var header = <div style={{ textAlign: 'left' }}>
+                <div style={{ marginBottom: 10 }}>
                     <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-external-link" iconPos="left" label="CSV" onClick={this.export}>
                     </Button>
-                    <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-pencil" iconPos="left" label="EDIT" onClick={this.edit}>
+                    <Button type="button" style={{ color: 'white', backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="SAVE" onClick={this.save}>
                     </Button>
-                </div>;
-                return (
-                    <div id="elmid">
-                        <div className="card">
-                            <h1>Rez Ops Bag Tracker</h1>
-                            <p>The BagTracker is used to update bag statuses, including location, warnings, or overages of bags each the week.</p>
-                            <p>ONLY individuals running operations should be accessing this page.</p>
-                            <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}>
-                                <Column field="id" header="ID" sortable={true} />
-                                <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
-                                <Column field="email" header="Email" sortable={true} />
-                                <Column field="phone" header="Phone" sortable={true} />
-                                <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
-                            </DataTable>
-                        </div>
-                    </div>
-                );
+                </div>
+                <div>
+                    <Button type="button" style={{ color: '#23547B', backgroundColor: '#B3E5FC', borderColor: '#23547B', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="PICKED UP" onClick={() => {this.bagStatusEditor(currentcustomers, 'picked-up')}}>
+                    </Button>
+                    <Button type="button" style={{ color: '#694382', backgroundColor: '#ECCFFF', borderColor: '#694382', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="SH" onClick={() => { this.bagStatusEditor(currentcustomers, 'delivered-to-SH') }}>
+                    </Button>
+                    <Button type="button" style={{ color: '#256029', backgroundColor: '#C8E6C9', borderColor: '#256029', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="DORM" onClick={() => { this.bagStatusEditor(currentcustomers, 'delivered-to-dorm') }}>
+                    </Button>
+                    <Button type="button" style={{ color: '#474549', backgroundColor: 'lightgrey', borderColor: '#474549', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="NO SERVICE" onClick={() => { this.bagStatusEditor(currentcustomers, 'out-of-service') }}>
+                    </Button>
+                    <Button type="button" style={{ color: '#C63737', backgroundColor: '#FFCDD2', borderColor: '#C63737', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="MISSING" onClick={() => { this.bagStatusEditor(currentcustomers, 'bag-missing') }}>
+                    </Button>
+                </div>
+                <div>
 
-            }
+                </div>
+            </div>;
+            //loading = {true} loadingIcon = "pi pi-spinner"
+            return (
+                <div id="elmid">
+                    <div className="card">
+                        <h1>Rez Ops Bag Tracker</h1>
+                        <p>The BagTracker is used to update bag statuses, including location, warnings, or overages of bags each the week.</p>
+                        <p>ONLY individuals running operations should be accessing this page.</p>
+                        <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} 
+                        editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}
+                        footer={this.displaySelection(this.state.selectedCustomers)} selection={this.state.selectedCustomers} onSelectionChange={e => this.setState({ selectedCustomers: e.value })}>
+                            <Column selectionMode="multiple" style={{ width: '3em' }} />
+                            <Column field="id" header="ID" sortable={true} />
+                            <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
+                            <Column field="email" header="Edit email" sortable={true}/>
+                            <Column field="phone" header="Edit phone" sortable={true}/>
+                            <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate}/>
+                        </DataTable>
+                    </div>
+                </div>
+            );
+            /* ---------------- NOT edit mode ------------*/
+        } else {
+            var header = <div style={{ textAlign: 'left' }}>
+                <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-external-link" iconPos="left" label="CSV" onClick={this.export}>
+                </Button>
+                <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-pencil" iconPos="left" label="EDIT" onClick={this.edit}>
+                </Button>
+            </div>;
+            return (
+                <div id="elmid">
+                    <div className="card">
+                        <h1>Rez Ops Bag Tracker</h1>
+                        <p>The BagTracker is used to update bag statuses, including location, warnings, or overages of bags each the week.</p>
+                        <p>ONLY individuals running operations should be accessing this page.</p>
+                        <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}>
+                            <Column field="id" header="ID" sortable={true} />
+                            <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
+                            <Column field="email" header="Email" sortable={true} />
+                            <Column field="phone" header="Phone" sortable={true} />
+                            <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
+                        </DataTable>
+                    </div>
+                </div>
+            );
+
         }
+
     }
 }
