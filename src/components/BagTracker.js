@@ -45,12 +45,10 @@ export class BagTracker extends Component {
     /* --------------- Editing ---------------- */
     edit() {
         this.setState({ editing: true });
-        this.growl.show({ severity: 'info', summary: 'Editing Enabled', detail: 'Save changes before continuing' });
     }
 
     save() {
         this.setState({ editing: false });
-        this.growl.clear();
         // console.log(this.state.selectedCustomers)
         // window.location.reload(false);
     }
@@ -191,11 +189,13 @@ export class BagTracker extends Component {
                         <Button type="button" style={{ color: '#C63737', backgroundColor: '#FFCDD2', borderColor: '#C63737', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="MISSING" onClick={() => { this.bagStatusEditor(currentcustomers, 'bag-missing') }}>
                         </Button>
                     </div>
+                    <div>
+
+                    </div>
                 </div>;
                 //loading = {true} loadingIcon = "pi pi-spinner"
                 return (
                     <div id="elmid">
-                        <Growl ref={(el) => this.growl = el} sticky={true} />
                         <div className="card">
                             <h1>Rez Ops Bag Tracker</h1>
                             <p>The BagTracker is used to update bag statuses, including location, warnings, or overages of bags each the week.</p>
@@ -223,7 +223,6 @@ export class BagTracker extends Component {
                 </div>;
                 return (
                     <div id="elmid">
-                        <Growl ref={(el) => this.growl = el} />
                         <div className="card">
                             <h1>Rez Ops Bag Tracker</h1>
                             <p>The BagTracker is used to update bag statuses, including location, warnings, or overages of bags each the week.</p>
