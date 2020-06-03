@@ -104,16 +104,17 @@ export class CustomerSearch extends Component {
                     </div>
                     <div className="card card-list">
                         <h1>{customer.name}</h1>
+                        <h3 style={{ marginBlockStart: 0, marginBlockEnd: 0}}>Account Information</h3>
                         <div style={{ display: 'flex' }}>
-                            <h3 style={{ paddingRight: 5 }}>Customer ID:  </h3><p style={{ paddingTop: 4, paddingRight: 15 }}>{customer.id}</p>
-                            <h3 style={{ paddingRight: 5 }}>Email: </h3><p style={{ paddingTop: 4, paddingRight: 15 }}>{customer.email}</p>
-                            <h3 style={{ paddingRight: 5 }}>Phone: </h3><p style={{ paddingTop: 4, paddingRight: 15 }}>{customer.phone}</p>
+                            <p style={{ marginBlockStart: '0.5em', marginBlockEnd: 0, paddingRight: 15 }}>Customer ID: {customer.id}</p>
+                            <p style={{ marginBlockStart: '0.5em', marginBlockEnd: 0, paddingRight: 15 }}>Laundry Plan: {customer.plan}</p>
                         </div>
                         <div style={{ display: 'flex' }}>
-                            <h3 style={{ paddingRight: 5 }}>Residential Hall:  </h3><p style={{ paddingTop: 4, paddingRight: 15 }}>{customer.reshall}</p>
-                            <h3 style={{ paddingRight: 5 }}>Laundry Plan: </h3><p style={{ paddingTop: 4, paddingRight: 15 }}>{customer.plan}</p>
+                            <p style={{ marginBlockStart: '0.5em', marginBlockEnd: '1em', paddingRight: 15 }}>Residential Hall: {customer.reshall}</p>
+                            <p style={{ marginBlockStart: '0.5em', marginBlockEnd: '1em', paddingRight: 15 }}>Email: {customer.email}</p>
+                            <p style={{ marginBlockStart: '0.5em', marginBlockEnd: '1em', paddingRight: 15 }}>Phone: {customer.phone}</p>
                         </div>
-                        <h3>Bag Weight History</h3>
+                        <h3 style={{ marginBlockStart: '1em', marginBlockEnd: 0 }}>Bag Weight History</h3>
                         <Chart type="line" data={data} />
                     </div>
                 </div>
