@@ -120,8 +120,6 @@ export class CustomerSheet extends Component {
         var header = <div style={{ textAlign: 'left' }}>
             <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-external-link" iconPos="left" label="CSV" onClick={this.export}>
             </Button>
-            <Button type="button" style={{ color: '#6a09a4', backgroundColor: 'white', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-pencil" iconPos="left" label="EDIT">
-            </Button>
             <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="SAVE" onClick={this.save}>
             </Button>
         </div>;
@@ -130,7 +128,9 @@ export class CustomerSheet extends Component {
             <div>
                 <Growl ref={(el) => this.growl = el} sticky={true} />
                 <div className="card">
-                    <h1 style={{ fontSize: '16px' }}>Customer Database</h1>
+                    <h1>Customer Database</h1>
+                    <p>This page is for visualization of the customer database and internal editting of administrative customer information. </p>
+                    <p>All members of the RezLaundry team should have read and write access to this database.</p>
                     <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px'}} responsive={true} autoLayout={true} editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}>
                         <Column field="id" header="ID" sortable={true} />
                         <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
@@ -148,14 +148,14 @@ export class CustomerSheet extends Component {
             </Button>
             <Button type="button" style={{ backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-pencil" iconPos="left" label="EDIT" onClick={this.edit}>
             </Button>
-            <Button type="button" style={{ color: '#6a09a4', backgroundColor: 'white', borderColor: '#6a09a4', marginRight: 10 }} icon="pi pi-save" iconPos="left" label="SAVE">
-            </Button>
         </div>;
         return (
             <div>
                 <Growl ref={(el) => this.growl = el} />
                 <div className="card">
-                    <h1 style={{ fontSize: '16px' }}>Customer Database</h1>
+                    <h1>Customer Database</h1>
+                    <p>This page is for visualization of the customer database and internal editting of administrative customer information. </p>
+                    <p>All members of the RezLaundry team should have read and write access to this database.</p>
                     <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}>
                         <Column field="id" header="ID" sortable={true} />
                         <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name"/>
