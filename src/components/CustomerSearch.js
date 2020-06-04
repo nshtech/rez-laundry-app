@@ -5,7 +5,7 @@ import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column'
 import { Chart } from 'primereact/chart'
 import { InputText } from 'primereact/inputtext';
-import { Growl } from 'primereact/growl';
+import { Editor } from 'primereact/editor';
 
 import firebase from 'firebase/app';
 import 'firebase/database';
@@ -104,18 +104,28 @@ export class CustomerSearch extends Component {
                     </div>
                     <div className="card card-list">
                         <h1>{customer.name}</h1>
-                        <h3 style={{ marginBlockStart: 0, marginBlockEnd: 0}}>Account Information</h3>
                         <div style={{ display: 'flex' }}>
-                            <p style={{ marginBlockStart: '0.5em', marginBlockEnd: 0, paddingRight: 15 }}>Customer ID: {customer.id}</p>
-                            <p style={{ marginBlockStart: '0.5em', marginBlockEnd: 0, paddingRight: 15 }}>Laundry Plan: {customer.plan}</p>
+                            <p className={customer.laundrystatus} style={{ marginRight: 15 }}>{customer.laundrystatus.replace(/-/g, ' ')}</p>
+                            <p className={customer.weightstatus}>{customer.weightstatus}</p>
                         </div>
                         <div style={{ display: 'flex' }}>
-                            <p style={{ marginBlockStart: '0.5em', marginBlockEnd: '1em', paddingRight: 15 }}>Residential Hall: {customer.reshall}</p>
-                            <p style={{ marginBlockStart: '0.5em', marginBlockEnd: '1em', paddingRight: 15 }}>Email: {customer.email}</p>
-                            <p style={{ marginBlockStart: '0.5em', marginBlockEnd: '1em', paddingRight: 15 }}>Phone: {customer.phone}</p>
+                            <div style={{ minWidth: '50%'  }}>
+                                <h3 style={{ marginBlockStart: 0, marginBlockEnd: '0.25em' }}>Account Information</h3>
+                                <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Customer ID: {customer.id}</p>
+                                <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Laundry Plan: {customer.plan}</p>
+                                <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Max Weight: {customer.maxweight}</p>
+                            </div>
+                            <div style={{ minWidth: '50%' }}>
+                                <h3 style={{ marginBlockStart: 0, marginBlockEnd: '0.25em' }}>Contact Information</h3>
+                                <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Residential Hall: {customer.reshall}</p>
+                                <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Email: {customer.email}</p>
+                                <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Phone: {customer.phone}</p>
+                            </div>
                         </div>
+
                         <h3 style={{ marginBlockStart: '1em', marginBlockEnd: 0 }}>Bag Weight History</h3>
-                        <Chart type="line" data={data} />
+                        {/* <Chart type="line" data={data} /> */}
+                        {/* <Editor style={{ height: '320px' }} value={this.state.text} onTextChange={(e) => this.setState({ text: e.htmlValue })} /> */}
                     </div>
                 </div>
             );

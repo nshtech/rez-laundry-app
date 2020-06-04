@@ -244,11 +244,11 @@ export class BagTracker extends Component {
                         footer={this.displaySelection(this.state.selectedCustomers)} selection={this.state.selectedCustomers} onSelectionChange={e => this.setState({ selectedCustomers: e.value })}>
                             <Column selectionMode="multiple" style={{ width: '3em' }} />
                             <Column field="id" header="ID" sortable={true} />
-                            <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
+                            <Column field="name" header="Name" style={{ maxWidth: 150 }} sortable filter filterPlaceholder="Search by name" />
                             <Column field="reshall" header="Residential Hall" sortable={true}/>
-                            <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate}/>
-                            <Column field="weightstatus" header="Weight Status" sortable={true} body={this.weightBodyTemplate}/>
-                            <Column field="weeklyweight" header="Bag Weight" sortable={true} editor={this.generalEditor}/>
+                            <Column field="laundrystatus" header="Bag Status" style={{ maxWidth: 150 }} sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate}/>
+                            <Column field="weightstatus" header="Weight Status" style={{ maxWidth: 150 }} sortable={true} body={this.weightBodyTemplate}/>
+                            <Column field="weeklyweight" header="Bag Weight" style={{ maxWidth: 100 }} sortable={true} style={{ backgroundColor: '#6a09a4', color: 'white' }} editor={this.generalEditor}/>
 
                         </DataTable>
                     </div>
@@ -270,11 +270,11 @@ export class BagTracker extends Component {
                         <p>ONLY individuals running operations should be accessing this page.</p>
                         <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}>
                             <Column field="id" header="ID" sortable={true} />
-                            <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
+                            <Column field="name" header="Name" style={{ maxWidth: 150 }} sortable filter filterPlaceholder="Search by name" />
                             <Column field="reshall" header="Residential Hall" sortable={true} />
-                            <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
-                            <Column field="weightstatus" header="Weight Status" sortable={true} body={this.weightBodyTemplate}/>
-                            <Column field="weeklyweight" header="Bag Weight" sortable={true}/>
+                            <Column field="laundrystatus" header="Bag Status" style={{ maxWidth: 150 }} sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
+                            <Column field="weightstatus" header="Weight Status" style={{ maxWidth: 150 }} sortable={true} body={this.weightBodyTemplate}/>
+                            <Column field="weeklyweight" header="Bag Weight" style={{ maxWidth: 100 }} sortable={true}/>
                         </DataTable>
                     </div>
                 </div>
