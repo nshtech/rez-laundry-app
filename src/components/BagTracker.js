@@ -49,6 +49,7 @@ export class BagTracker extends Component {
 
     save() {
         this.setState({ editing: false });
+        window.location.reload();
         // console.log(this.state.selectedCustomers)
         // window.location.reload(false);
     }
@@ -57,9 +58,11 @@ export class BagTracker extends Component {
     updateWeightStatus(props,value) {
         if (props.rowData.weeklyweight > props.rowData.maxweight) {
             firebase.database().ref('/customers/' + props.rowData.id + '/'+'weightstatus').set('overweight')
+            return value
         }
         else {
             firebase.database().ref('/customers/' + props.rowData.id + '/'+'weightstatus').set('underweight')
+            return value
         }
     }
 
@@ -67,6 +70,7 @@ export class BagTracker extends Component {
         firebase.database().ref('/customers/' + props.rowData.id + '/' + props.field).set(value)
         let updatedCars = [...props.value];
         updatedCars[props.rowIndex][props.field] = value;
+        this.setState({ customers: updatedCars });
 
         const curr = await this.updateWeightStatus(props,value);
         console.log('row data: ');
@@ -74,19 +78,14 @@ export class BagTracker extends Component {
         updatedCars[props.rowIndex]['weightstatus'] = props.rowData.weightstatus;
         this.setState({ customers: updatedCars });
         console.log(props)
-        this.setState({ editing: false });
-        window.location.reload();
-
-        
+        // this.setState({ editing: false });
+        // window.location.reload(); 
     }
 
 
 
     inputTextEditor(props, field) {
-        return <InputText type="text" onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-            this.onEditorValueChange(props, e.target.value);}
-         }} />
+        return <InputText type="text" onChange={(e) => {this.onEditorValueChange(props, e.target.value);}}/>
     }
 
     generalEditor(props) {

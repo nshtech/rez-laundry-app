@@ -59,7 +59,7 @@ export class CustomerSheet extends Component {
     }
 
     inputTextEditor(props, field) {
-        return <InputText type="text" onChange={(e) => this.onEditorValueChange(props, e.target.value)} />;
+        return <InputText type="text" value={props.rowData[field]} onChange={(e) => this.onEditorValueChange(props, e.target.value)} />;
     }
 
     generalEditor(props) {
@@ -140,8 +140,8 @@ export class CustomerSheet extends Component {
                         <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
                         <Column field="email" header="Edit email" sortable={true} style={{ color: 'blue' }} editor={this.generalEditor} editorValidator={this.emailValidator} />
                         <Column field="phone" header="Edit phone" sortable={true} style={{ color: 'blue' }} editor={this.generalEditor} editorValidator={this.phoneValidator}/>
-                        <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} editor={this.generalEditor}/>
-                        <Column field="weightstatus" header="Bag Weight" sortable={true} body={this.weightBodyTemplate} editor={this.generalEditor}/>
+                        <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate}/>
+                        <Column field="weightstatus" header="Bag Weight" sortable={true} body={this.weightBodyTemplate}/>
                     </DataTable>
                 </div>
             </div>
