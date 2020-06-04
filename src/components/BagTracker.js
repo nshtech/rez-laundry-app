@@ -36,6 +36,7 @@ export class BagTracker extends Component {
         this.bagStatusEditor = this.bagStatusEditor.bind(this)
         this.displaySelection = this.displaySelection.bind(this)
         this.loadInitialState = this.loadInitialState.bind(this)
+        this.generalEditor = this.generalEditor.bind(this);
     }
     export() {
         this.dt.exportCSV();
@@ -52,12 +53,44 @@ export class BagTracker extends Component {
         // window.location.reload(false);
     }
 
-    onEditorValueChange(props, value) {
+
+    updateWeightStatus(props,value) {
+        if (props.rowData.weeklyweight > props.rowData.maxweight) {
+            firebase.database().ref('/customers/' + props.rowData.id + '/'+'weightstatus').set('overweight')
+        }
+        else {
+            firebase.database().ref('/customers/' + props.rowData.id + '/'+'weightstatus').set('underweight')
+        }
+    }
+
+    async onEditorValueChange(props, value) {
         firebase.database().ref('/customers/' + props.rowData.id + '/' + props.field).set(value)
         let updatedCars = [...props.value];
         updatedCars[props.rowIndex][props.field] = value;
+
+        const curr = await this.updateWeightStatus(props,value);
+        console.log('row data: ');
+        console.log(props.rowData);
+        updatedCars[props.rowIndex]['weightstatus'] = props.rowData.weightstatus;
         this.setState({ customers: updatedCars });
         console.log(props)
+        this.setState({ editing: false });
+        window.location.reload();
+
+        
+    }
+
+
+
+    inputTextEditor(props, field) {
+        return <InputText type="text" onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+            this.onEditorValueChange(props, e.target.value);}
+         }} />
+    }
+
+    generalEditor(props) {
+        return this.inputTextEditor(props, ' ');
     }
 
     onEditorValueChange2(value) {
@@ -78,34 +111,6 @@ export class BagTracker extends Component {
         window.location.reload();
     }
 
-    async weightStatusEditor(currentcustomers, newstatus) {
-        const curr = await this.weightfirst(currentcustomers, newstatus)
-        console.log(curr)
-        this.setState({ editing: false });
-        window.location.reload();
-    }
-
-    weightfirst(currentcustomers, newstatus) {
-        // console.log(currentcustomers)
-        if (currentcustomers) {
-            var ids = Object.keys(currentcustomers).map(function (key) {
-                return currentcustomers[key].id;
-            });
-            console.log(ids)
-            var query = firebase.database().ref("customers").orderByKey();
-            query.once("value")
-                .then(function (snapshot) {
-                    snapshot.forEach(function (childSnapshot) {
-                        var key = childSnapshot.key;
-                        if (ids.includes(key)) {
-                            var key = childSnapshot.key;
-                            firebase.database().ref('/customers/' + key + '/' + "weightstatus").set(newstatus)
-                        }
-                    });
-                });
-        }
-        return currentcustomers
-    }
 
     dothisfirst(currentcustomers, newstatus) {
         // console.log(currentcustomers)
@@ -129,9 +134,6 @@ export class BagTracker extends Component {
         return currentcustomers
     }
 
-    inputTextEditor(props, field) {
-        return <InputText type="text" onChange={(e) => this.onEditorValueChange(props, e.target.value)} />;
-    }
 
     displaySelection(data) {
         if (this.state.editing && (!data || data.length === 0)) {
@@ -142,11 +144,18 @@ export class BagTracker extends Component {
 
     /* --------------- Filters ---------------- */
     statusBodyTemplate(rowData) {
-        return <span className={rowData.laundrystatus}>{rowData.laundrystatus.replace(/-/g, ' ')}</span>;
+        return <span className={rowData.laundrystatus}>{rowData.laundrystatus.replace(/-/g,' ')}</span>
     }
     weightBodyTemplate(rowData) {
         return <span className={rowData.weightstatus}>{rowData.weightstatus}</span>;
     }
+
+    /*weeklyWeightTemplate(rowData) {
+        const dates = Object.keys(rowData.weeklyweight);
+        console.log(dates);
+        const recentDate = Math.max(dates);
+        return <span> {rowData.weeklyweight.recentDate}</span>;
+    } */
 
     renderStatusFilter() {
         var statuses = [
@@ -218,10 +227,7 @@ export class BagTracker extends Component {
                     </Button>
                     <Button type="button" style={{ color: '#C63737', backgroundColor: '#FFCDD2', borderColor: '#C63737', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="MISSING" onClick={() => { this.bagStatusEditor(currentcustomers, 'bag-missing') }}>
                     </Button>
-                    <Button type="button" style={{ color: '#474549', backgroundColor: 'lightgrey', borderColor: '#474549', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="UNDERWEIGHT BAG" onClick={() => { this.weightStatusEditor(currentcustomers, 'underweight') }}>
-                    </Button>
-                    <Button type="button" style={{ color: '#C63737', backgroundColor: '#FFCDD2', borderColor: '#C63737', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="OVERWEIGHT BAG" onClick={() => { this.weightStatusEditor(currentcustomers, 'overweight') }}>
-                    </Button>
+                    
                 </div>
                 <div>
 
@@ -242,7 +248,9 @@ export class BagTracker extends Component {
                             <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
                             <Column field="reshall" header="Residential Hall" sortable={true}/>
                             <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate}/>
-                            <Column field="weightstatus" header="Bag Weight" sortable={true} body={this.weightBodyTemplate}/>
+                            <Column field="weightstatus" header="Weight Status" sortable={true} body={this.weightBodyTemplate}/>
+                            <Column field="weeklyweight" header="Bag Weight" sortable={true} editor={this.generalEditor}/>
+
                         </DataTable>
                     </div>
                 </div>
@@ -266,7 +274,8 @@ export class BagTracker extends Component {
                             <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
                             <Column field="reshall" header="Residential Hall" sortable={true} />
                             <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
-                            <Column field="weightstatus" header="Bag Weight" sortable={true} body={this.weightBodyTemplate} editor={this.generalEditor}/>
+                            <Column field="weightstatus" header="Weight Status" sortable={true} body={this.weightBodyTemplate}/>
+                            <Column field="weeklyweight" header="Bag Weight" sortable={true}/>
                         </DataTable>
                     </div>
                 </div>
@@ -276,3 +285,5 @@ export class BagTracker extends Component {
 
     }
 }
+
+//<Column field="weeklyweight" header="Bag Weight" sortable={true} editor={this.generalEditor}/>
