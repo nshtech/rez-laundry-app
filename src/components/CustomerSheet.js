@@ -77,12 +77,11 @@ export class CustomerSheet extends Component {
 
 /* --------------- Filters ---------------- */
     statusBodyTemplate(rowData) {
-        return <span className={rowData.laundrystatus}>{rowData.laundrystatus.replace(/-/g, ' ')}</span>;
+        return <span className={rowData.laundrystatus}>{rowData.laundrystatus.replace(/-/g,' ')}</span>;
     }
 
     weightBodyTemplate(rowData) {
         return <span className={rowData.weightstatus}>{rowData.weightstatus}</span>;
-
     }
 
     renderStatusFilter() {
@@ -168,7 +167,7 @@ export class CustomerSheet extends Component {
                         <Column field="email" header="Email" sortable={true} />
                         <Column field="phone" header="Phone" sortable={true} />
                         <Column field="laundrystatus" header="Bag Status" sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
-                        <Column field="weightstatus" header="Bag Weight" sortable={true} body={this.weightBodyTemplate} />
+                        <Column field="weightstatus" header="Weight Status" sortable={true} body={this.weightBodyTemplate} />
                     </DataTable>
                 </div>
             </div>
