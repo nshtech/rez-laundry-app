@@ -53,8 +53,7 @@ export class BagTracker extends Component {
 
 
     updateWeightStatus(props,value) {
-        console.log(props.rowData.maxweight)
-        console.log(props.rowData.weeklyweight)
+
         if (value > props.rowData.maxweight) {
             firebase.database().ref('/customers/' + props.rowData.id + '/'+'weightstatus').set('overweight')
             let updatedCars = [...props.value];
@@ -74,22 +73,10 @@ export class BagTracker extends Component {
     }
 
     async onEditorValueChange(props, value) {
-        console.log("THIS IS THE VALUE BEING SET")
-        console.log(value)
+
         firebase.database().ref('/customers/' + props.rowData.id + '/' + props.field).set(value)
-        // let updatedCars = [...props.value];
-        // updatedCars[props.rowIndex][props.field] = value;
-        // this.setState({ customers: updatedCars });
-
         const curr = await this.updateWeightStatus(props,value);
-        // console.log('row data: ');
-        // console.log(props.rowData);
-        // updatedCars[props.rowIndex]['weightstatus'] = props.rowData.weightstatus;
-        // this.setState({ customers: updatedCars });
-        console.log(props)
     }
-
-
 
     inputTextEditor(props, field) {
         return <InputText type="text" value={props.rowData[field]} style={{ maxWidth: 100 }} onChange={(e) => { this.onEditorValueChange(props, e.target.value);}}/>
@@ -110,16 +97,26 @@ export class BagTracker extends Component {
         });
     }
 
-    async bagStatusEditor(currentcustomers, newstatus) {
-        const curr = await this.dothisfirst(currentcustomers, newstatus)
-        console.log(curr)
-        this.setState({ editing: false });
-        window.location.reload();
+    bagStatusEditor(allcustomers, currentcustomers, newstatus) {
+        let updatedCars = [...allcustomers];
+  
+        if (currentcustomers) {
+            var ids = Object.keys(currentcustomers).map(function (key) {
+                return currentcustomers[key].id;
+            });
+            updatedCars.map(each => {
+                if (ids.includes(each.id)) {
+                    each.laundrystatus = newstatus;
+                    
+                }
+            })
+            this.setState({ customers: updatedCars });
+        }
+        this.dothisfirst(currentcustomers, newstatus)
     }
 
 
     dothisfirst(currentcustomers, newstatus) {
-        // console.log(currentcustomers)
         if (currentcustomers) {
             var ids = Object.keys(currentcustomers).map(function (key) {
                 return currentcustomers[key].id;
@@ -200,6 +197,7 @@ export class BagTracker extends Component {
 
     render() {
         const statusFilter = this.renderStatusFilter();
+        const allcustomers = this.state.customers;
         const currentcustomers = this.state.selectedCustomers;
 
         /* --------------- RETURN ---------------- */
@@ -213,15 +211,15 @@ export class BagTracker extends Component {
                     </Button>
                 </div>
                 <div>
-                    <Button type="button" style={{ color: '#23547B', backgroundColor: '#B3E5FC', borderColor: '#23547B', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="PICKED UP" onClick={() => {this.bagStatusEditor(currentcustomers, 'picked-up')}}>
+                    <Button type="button" style={{ color: '#23547B', backgroundColor: '#B3E5FC', borderColor: '#23547B', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="PICKED UP" onClick={() => { this.bagStatusEditor(allcustomers, currentcustomers, 'picked-up')}}>
                     </Button>
-                    <Button type="button" style={{ color: '#694382', backgroundColor: '#ECCFFF', borderColor: '#694382', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="SH" onClick={() => { this.bagStatusEditor(currentcustomers, 'delivered-to-SH') }}>
+                    <Button type="button" style={{ color: '#694382', backgroundColor: '#ECCFFF', borderColor: '#694382', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="SH" onClick={() => { this.bagStatusEditor(allcustomers, currentcustomers, 'delivered-to-SH') }}>
                     </Button>
-                    <Button type="button" style={{ color: '#256029', backgroundColor: '#C8E6C9', borderColor: '#256029', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="DORM" onClick={() => { this.bagStatusEditor(currentcustomers, 'delivered-to-dorm') }}>
+                    <Button type="button" style={{ color: '#256029', backgroundColor: '#C8E6C9', borderColor: '#256029', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="DORM" onClick={() => { this.bagStatusEditor(allcustomers, currentcustomers, 'delivered-to-dorm') }}>
                     </Button>
-                    <Button type="button" style={{ color: '#474549', backgroundColor: 'lightgrey', borderColor: '#474549', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="NO SERVICE" onClick={() => { this.bagStatusEditor(currentcustomers, 'out-of-service') }}>
+                    <Button type="button" style={{ color: '#474549', backgroundColor: 'lightgrey', borderColor: '#474549', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="NO SERVICE" onClick={() => { this.bagStatusEditor(allcustomers, currentcustomers, 'out-of-service') }}>
                     </Button>
-                    <Button type="button" style={{ color: '#C63737', backgroundColor: '#FFCDD2', borderColor: '#C63737', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="MISSING" onClick={() => { this.bagStatusEditor(currentcustomers, 'bag-missing') }}>
+                    <Button type="button" style={{ color: '#C63737', backgroundColor: '#FFCDD2', borderColor: '#C63737', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="MISSING" onClick={() => { this.bagStatusEditor(allcustomers, currentcustomers, 'bag-missing') }}>
                     </Button>
                     
                 </div>
