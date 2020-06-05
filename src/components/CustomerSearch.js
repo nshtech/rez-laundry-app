@@ -26,37 +26,36 @@ export class CustomerSearch extends Component {
         super();
         this.state = {
             customers: [],
-            selectedStatus: null,
+            selectedCustomer: null,
             editing: false,
-            selectedCustomer: null
+            newplan: null,
+            newphone: null
         };
-        this.onStatusFilterChange = this.onStatusFilterChange.bind(this);
+        this.edit = this.edit.bind(this);
+        this.save = this.save.bind(this);
+        this.onPlanValueChange = this.onPlanValueChange.bind(this)
+    }
+
+    edit() {
+        this.setState({ editing: true });
+    }
+
+    save(customer) {
+        this.setState({ editing: false });
+        console.log(this.state.newplan)
+        // const newcustomer = [...this.state.selectedCustomer]
+        // if (this.state.newplan) {
+        //     newcustomer.plan = this.state.newplan
+        // }
+        // this.setState({ newplan: value });
+        firebase.database().ref('/customers/' + customer.id + '/plan').set(this.state.newplan)
+    }
+
+    onPlanValueChange(value) {
+        this.setState({ newplan: value });
     }
 
     /* --------------- Filters ---------------- */
-    statusBodyTemplate(rowData) {
-        return <span className={rowData.laundrystatus}>{rowData.laundrystatus.replace(/-/g, ' ')}</span>;
-    }
-
-    renderStatusFilter() {
-        var statuses = [
-            { label: 'Picked Up', value: 'picked-up' },
-            { label: 'Out of Service', value: 'out-of-service' },
-            { label: 'Delivered to SH', value: 'delivered-to-SH' },
-            { label: 'Delivered to Dorm', value: 'delivered-to-dorm' },
-            { label: 'Bag Missing', value: 'bag-missing' }
-        ];
-        return (
-            <Dropdown value={this.state.selectedStatus} options={statuses} onChange={this.onStatusFilterChange}
-                showClear={true} placeholder="Select a Status" className="p-column-filter" />
-        );
-    }
-
-    onStatusFilterChange(event) {
-        this.dt.filter(event.value, 'laundrystatus', 'equals');
-        this.setState({ selectedStatus: event.value });
-    }
-
     componentDidMount() {
         const customerArray = [];
         firebase.database().ref('/customers').on('value', function (snapshot) {
@@ -70,31 +69,12 @@ export class CustomerSearch extends Component {
     }
 
     render() {
-        const statusFilter = this.renderStatusFilter();
-        const data = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            datasets: [
-                {
-                    label: 'First Dataset',
-                    data: [65, 59, 80, 81, 56, 55, 40],
-                    fill: false,
-                    backgroundColor: '#42A5F5',
-                    borderColor: '#42A5F5'
-                },
-                {
-                    label: 'Second Dataset',
-                    data: [28, 48, 40, 19, 86, 27, 90],
-                    fill: false,
-                    backgroundColor: '#66BB6A',
-                    borderColor: '#66BB6A'
-                }
-            ]
-        };
         if (this.state.selectedCustomer) {
             var header = <div style={{ textAlign: 'left' }}></div>
             var customer = this.state.selectedCustomer
-            return (
-                <div style={{display: 'flex'}}>
+            if (this.state.editing) {
+                return (
+                <div style={{ display: 'flex' }}>
                     <div className="card card-search">
                         <DataTable value={this.state.customers} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} selectionMode="single"
                             responsive={true} autoLayout={true} selection={this.state.selectedCustomer} onSelectionChange={e => this.setState({ selectedCustomer: e.value })}>
@@ -109,25 +89,88 @@ export class CustomerSearch extends Component {
                             <p className={customer.weightstatus}>{customer.weightstatus}</p>
                         </div>
                         <div style={{ display: 'flex' }}>
-                            <div style={{ minWidth: '50%'  }}>
+                            <div style={{ minWidth: '50%' }}>
                                 <h3 style={{ marginBlockStart: 0, marginBlockEnd: '0.25em' }}>Account Information</h3>
-                                <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Customer ID: {customer.id}</p>
-                                <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Laundry Plan: {customer.plan}</p>
-                                <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Max Weight: {customer.maxweight}</p>
+                                <p style={{ marginBlockStart: 0, marginBlockEnd: '1em', paddingRight: 15 }}>Customer ID: {customer.id}</p>
+                                <div className="p-field p-grid">
+                                    <label htmlFor="firstname3" className="p-col-fixed" style={{ width: '110px' }}>Laundry Plan:</label>
+                                    <div className="p-col">
+                                        <InputText type="text" placeholder={customer.plan} onChange={(e) => { this.onPlanValueChange(e.target.value); }}/>
+                                    </div>
+                                </div>
+                                <div className="p-field p-grid">
+                                    <label htmlFor="lastname3" className="p-col-fixed" style={{ width: '110px' }}>Max Weight:</label>
+                                    <div className="p-col">
+                                        <InputText type="text" placeholder={customer.maxweight}/>
+                                    </div>
+                                </div>
                             </div>
                             <div style={{ minWidth: '50%' }}>
                                 <h3 style={{ marginBlockStart: 0, marginBlockEnd: '0.25em' }}>Contact Information</h3>
-                                <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Residential Hall: {customer.reshall}</p>
-                                <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Email: {customer.email}</p>
-                                <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Phone: {customer.phone}</p>
+                                <div className="p-field p-grid">
+                                    <label htmlFor="firstname3" className="p-col-fixed" style={{ width: '120px' }}>Residential Hall:</label>
+                                    <div className="p-col">
+                                        <InputText type="text" placeholder={customer.reshall} />
+                                    </div>
+                                </div>
+                                <div className="p-field p-grid">
+                                    <label htmlFor="lastname3" className="p-col-fixed" style={{ width: '120px' }}>Email:</label>
+                                    <div className="p-col">
+                                        <InputText type="text" placeholder={customer.email} />
+                                    </div>
+                                </div>
+                                <div className="p-field p-grid">
+                                    <label htmlFor="lastname3" className="p-col-fixed" style={{ width: '120px' }}>Phone:</label>
+                                    <div className="p-col">
+                                        <InputText type="text" placeholder={customer.phone} />
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        {/* <h3 style={{ marginBlockStart: '1em', marginBlockEnd: 0 }}>Bag Weight History</h3> */}
-                        {/* <Chart type="line" data={data} /> */}
-                        {/* <Editor style={{ height: '320px' }} value={this.state.text} onTextChange={(e) => this.setState({ text: e.htmlValue })} /> */}
+                        <Button type="button" style={{ color: 'white', backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginTop: 30 }} icon="pi pi-save" iconPos="left" label="SAVE" onClick={() => {this.save(customer)}}>
+                        </Button>
                     </div>
                 </div>
-            );
+                );
+            } else {
+                return (
+                    <div style={{display: 'flex'}}>
+                        <div className="card card-search">
+                            <DataTable value={this.state.customers} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} selectionMode="single"
+                                responsive={true} autoLayout={true} selection={this.state.selectedCustomer} onSelectionChange={e => this.setState({ selectedCustomer: e.value })}>
+                                <Column field="id" header="ID" sortable={true} />
+                                <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
+                            </DataTable>
+                        </div>
+                        <div className="card card-list">
+                            <h1>{customer.name}</h1>
+                            <div style={{ display: 'flex' }}>
+                                <p className={customer.laundrystatus} style={{ marginRight: 15 }}>{customer.laundrystatus.replace(/-/g, ' ')}</p>
+                                <p className={customer.weightstatus}>{customer.weightstatus}</p>
+                            </div>
+                            <div style={{ display: 'flex' }}>
+                                <div style={{ minWidth: '50%'  }}>
+                                    <h3 style={{ marginBlockStart: 0, marginBlockEnd: '0.25em' }}>Account Information</h3>
+                                    <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Customer ID: {customer.id}</p>
+                                    <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Laundry Plan: {customer.plan}</p>
+                                    <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Max Weight: {customer.maxweight}</p>
+                                </div>
+                                <div style={{ minWidth: '50%' }}>
+                                    <h3 style={{ marginBlockStart: 0, marginBlockEnd: '0.25em' }}>Contact Information</h3>
+                                    <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Residential Hall: {customer.reshall}</p>
+                                    <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Email: {customer.email}</p>
+                                    <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Phone: {customer.phone}</p>
+                                </div>
+                            </div>
+                            <Button type="button" style={{ color: 'white', backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginTop: 30 }} icon="pi pi-pencil" iconPos="left" label="EDIT" onClick={this.edit}>
+                            </Button>
+                            {/* <h3 style={{ marginBlockStart: '1em', marginBlockEnd: 0 }}>Bag Weight History</h3> */}
+                            {/* <Chart type="line" data={data} /> */}
+                            {/* <Editor style={{ height: '320px' }} value={this.state.text} onTextChange={(e) => this.setState({ text: e.htmlValue })} /> */}
+                        </div>
+                    </div>
+                );
+            }
         } else {
             var header = <div style={{ textAlign: 'left' }}>
             </div>;

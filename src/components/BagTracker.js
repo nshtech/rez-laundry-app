@@ -56,18 +56,18 @@ export class BagTracker extends Component {
 
         if (value > props.rowData.maxweight) {
             firebase.database().ref('/customers/' + props.rowData.id + '/'+'weightstatus').set('overweight')
-            let updatedCars = [...props.value];
-            updatedCars[props.rowIndex][props.field] = value;
-            updatedCars[props.rowIndex]['weightstatus'] = 'overweight';
-            this.setState({ customers: updatedCars });
+            let updatedCustomers = [...props.value];
+            updatedCustomers[props.rowIndex][props.field] = value;
+            updatedCustomers[props.rowIndex]['weightstatus'] = 'overweight';
+            this.setState({ customers: updatedCustomers });
             return value
         }
         else {
             firebase.database().ref('/customers/' + props.rowData.id + '/'+'weightstatus').set('underweight')
-            let updatedCars = [...props.value];
-            updatedCars[props.rowIndex][props.field] = value;
-            updatedCars[props.rowIndex]['weightstatus'] = 'underweight';
-            this.setState({ customers: updatedCars });
+            let updatedCustomers = [...props.value];
+            updatedCustomers[props.rowIndex][props.field] = value;
+            updatedCustomers[props.rowIndex]['weightstatus'] = 'underweight';
+            this.setState({ customers: updatedCustomers });
             return value
         }
     }
@@ -98,19 +98,19 @@ export class BagTracker extends Component {
     }
 
     bagStatusEditor(allcustomers, currentcustomers, newstatus) {
-        let updatedCars = [...allcustomers];
+        let updatedCustomers = [...allcustomers];
   
         if (currentcustomers) {
             var ids = Object.keys(currentcustomers).map(function (key) {
                 return currentcustomers[key].id;
             });
-            updatedCars.map(each => {
+            updatedCustomers.map(each => {
                 if (ids.includes(each.id)) {
                     each.laundrystatus = newstatus;
                     
                 }
             })
-            this.setState({ customers: updatedCars });
+            this.setState({ customers: updatedCustomers });
         }
         this.dothisfirst(currentcustomers, newstatus)
     }

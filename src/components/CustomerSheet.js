@@ -52,9 +52,9 @@ export class CustomerSheet extends Component {
 
     onEditorValueChange(props, value) {
         firebase.database().ref('/customers/' + props.rowData.id + '/' + props.field).set(value)
-        let updatedCars = [...props.value];
-        updatedCars[props.rowIndex][props.field] = value;
-        this.setState({ customers: updatedCars });
+        let updatedCustomers = [...props.value];
+        updatedCustomers[props.rowIndex][props.field] = value;
+        this.setState({ customers: updatedCustomers });
         console.log(props)
     }
 
