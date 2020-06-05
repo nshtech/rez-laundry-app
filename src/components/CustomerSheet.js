@@ -94,7 +94,7 @@ export class CustomerSheet extends Component {
                 ];
         return (
             <Dropdown value={this.state.selectedStatus} options={statuses} onChange={this.onStatusFilterChange}
-                        showClear={true} placeholder="Select a Status" className="p-column-filter"/>
+                showClear={true} placeholder="Select a Status" className="p-column-filter" style={{ maxWidth: 200, minWidth: 50 }}/>
         );
     }
 

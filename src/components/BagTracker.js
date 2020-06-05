@@ -49,16 +49,16 @@ export class BagTracker extends Component {
 
     save() {
         this.setState({ editing: false });
-        // window.location.reload();
-        // console.log(this.state.selectedCustomers)
-        // window.location.reload(false);
     }
 
 
     updateWeightStatus(props,value) {
-        if (props.rowData.weeklyweight > props.rowData.maxweight) {
+        console.log(props.rowData.maxweight)
+        console.log(props.rowData.weeklyweight)
+        if (value > props.rowData.maxweight) {
             firebase.database().ref('/customers/' + props.rowData.id + '/'+'weightstatus').set('overweight')
             let updatedCars = [...props.value];
+            updatedCars[props.rowIndex][props.field] = value;
             updatedCars[props.rowIndex]['weightstatus'] = 'overweight';
             this.setState({ customers: updatedCars });
             return value
@@ -66,32 +66,33 @@ export class BagTracker extends Component {
         else {
             firebase.database().ref('/customers/' + props.rowData.id + '/'+'weightstatus').set('underweight')
             let updatedCars = [...props.value];
-            updatedCars[props.rowIndex]['weightstatus'] = 'overweight';
+            updatedCars[props.rowIndex][props.field] = value;
+            updatedCars[props.rowIndex]['weightstatus'] = 'underweight';
             this.setState({ customers: updatedCars });
             return value
         }
     }
 
     async onEditorValueChange(props, value) {
+        console.log("THIS IS THE VALUE BEING SET")
+        console.log(value)
         firebase.database().ref('/customers/' + props.rowData.id + '/' + props.field).set(value)
-        let updatedCars = [...props.value];
-        updatedCars[props.rowIndex][props.field] = value;
-        this.setState({ customers: updatedCars });
+        // let updatedCars = [...props.value];
+        // updatedCars[props.rowIndex][props.field] = value;
+        // this.setState({ customers: updatedCars });
 
         const curr = await this.updateWeightStatus(props,value);
-        console.log('row data: ');
-        console.log(props.rowData);
-        updatedCars[props.rowIndex]['weightstatus'] = props.rowData.weightstatus;
-        this.setState({ customers: updatedCars });
+        // console.log('row data: ');
+        // console.log(props.rowData);
+        // updatedCars[props.rowIndex]['weightstatus'] = props.rowData.weightstatus;
+        // this.setState({ customers: updatedCars });
         console.log(props)
-        // this.setState({ editing: false });
-        // window.location.reload(); 
     }
 
 
 
     inputTextEditor(props, field) {
-        return <InputText type="text" onChange={(e) => {this.onEditorValueChange(props, e.target.value);}}/>
+        return <InputText type="text" value={props.rowData[field]} style={{ maxWidth: 100 }} onChange={(e) => { this.onEditorValueChange(props, e.target.value);}}/>
     }
 
     generalEditor(props) {
@@ -181,16 +182,6 @@ export class BagTracker extends Component {
         this.setState({ selectedStatus: event.value });
     }
 
-    // componentDidMount() {
-    //     const customerArray = [];
-    //     firebase.database().ref('/customers').on('value', function (snapshot) {
-    //         snapshot.forEach(function (childSnapshot) {
-    //             customerArray.push(childSnapshot.toJSON());
-    //         });
-    //     });
-    //     this.setState({ customers: customerArray });
-    // }
-
     loadInitialState = async () => {
         const customerArray = [];
         firebase.database().ref('/customers').on('value', function (snapshot) {
@@ -254,7 +245,7 @@ export class BagTracker extends Component {
                             <Column field="reshall" header="Residential Hall" sortable={true}/>
                             <Column field="laundrystatus" header="Bag Status" style={{ maxWidth: 150 }} sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate}/>
                             <Column field="weightstatus" header="Weight Status" style={{ maxWidth: 150 }} sortable={true} body={this.weightBodyTemplate}/>
-                            <Column field="weeklyweight" header="Bag Weight" style={{ maxWidth: 100 }} sortable={true} style={{ backgroundColor: '#6a09a4', color: 'white' }} editor={this.generalEditor}/>
+                            <Column field="weeklyweight" header="Bag Weight" sortable={true} style={{ backgroundColor: '#6a09a4', color: 'white', maxWidth: 100 }} editor={this.generalEditor}/>
                         </DataTable>
                     </div>
                 </div>
