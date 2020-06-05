@@ -49,7 +49,7 @@ export class BagTracker extends Component {
 
     save() {
         this.setState({ editing: false });
-        window.location.reload();
+        // window.location.reload();
         // console.log(this.state.selectedCustomers)
         // window.location.reload(false);
     }
@@ -58,10 +58,16 @@ export class BagTracker extends Component {
     updateWeightStatus(props,value) {
         if (props.rowData.weeklyweight > props.rowData.maxweight) {
             firebase.database().ref('/customers/' + props.rowData.id + '/'+'weightstatus').set('overweight')
+            let updatedCars = [...props.value];
+            updatedCars[props.rowIndex]['weightstatus'] = 'overweight';
+            this.setState({ customers: updatedCars });
             return value
         }
         else {
             firebase.database().ref('/customers/' + props.rowData.id + '/'+'weightstatus').set('underweight')
+            let updatedCars = [...props.value];
+            updatedCars[props.rowIndex]['weightstatus'] = 'overweight';
+            this.setState({ customers: updatedCars });
             return value
         }
     }
@@ -166,7 +172,7 @@ export class BagTracker extends Component {
         ];
         return (
             <Dropdown value={this.state.selectedStatus} options={statuses} onChange={this.onStatusFilterChange}
-                showClear={true} placeholder="Select a Status" className="p-column-filter" />
+                showClear={true} placeholder="Select a Status" className="p-column-filter" style={{maxWidth: 200, minWidth: 50}} />
         );
     }
 
@@ -249,7 +255,6 @@ export class BagTracker extends Component {
                             <Column field="laundrystatus" header="Bag Status" style={{ maxWidth: 150 }} sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate}/>
                             <Column field="weightstatus" header="Weight Status" style={{ maxWidth: 150 }} sortable={true} body={this.weightBodyTemplate}/>
                             <Column field="weeklyweight" header="Bag Weight" style={{ maxWidth: 100 }} sortable={true} style={{ backgroundColor: '#6a09a4', color: 'white' }} editor={this.generalEditor}/>
-
                         </DataTable>
                     </div>
                 </div>

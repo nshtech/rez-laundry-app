@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "rez-laundry-app"
+  },
+  "targets": {
+    "rez-laundry-app": {
+      "hosting": {
+        "ops": [
+          "rez-laundry-app"
+        ]
+      }
+    }
   }
 }
