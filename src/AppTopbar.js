@@ -23,10 +23,6 @@ export class AppTopbar extends Component {
                 </button>
 
                 <div className="layout-topbar-icons">
-                    <span className="layout-topbar-search">
-                        <InputText type="text" placeholder="Search" />
-                        <span className="layout-topbar-search-icon pi pi-search"/>
-                    </span>
                     <button className="p-link" onClick={this.props.logout}>
                         <span className="layout-topbar-item-text">Logout</span>
                         <span className="layout-topbar-icon pi pi-fw pi-power-off" />
