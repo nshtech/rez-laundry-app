@@ -75,6 +75,17 @@ export class BagTracker extends Component {
     async onEditorValueChange(props, value) {
 
         firebase.database().ref('/customers/' + props.rowData.id + '/' + props.field).set(value)
+        const db = firebase.database().ref();
+        var currWeight = value;
+        var currDate = new Date().toDateString();
+        const maxweight = props.rowData.maxweight;
+        db.child('/customers/'+props.rowData.id+'/weeklyweight/').once("value")
+            .then(snapshot => {
+                if (!snapshot.val()) {
+                    db.child('/customers/'+props.rowData.id+'/weeklyweight/'+ currDate).set(0)
+                }
+                db.child('/customers/'+props.rowData.id+'/weeklyweight/'+ currDate).set('('+currWeight+','+maxweight+')');
+            })
         const curr = await this.updateWeightStatus(props,value);
     }
 
@@ -152,13 +163,6 @@ export class BagTracker extends Component {
     weightBodyTemplate(rowData) {
         return <span className={rowData.weightstatus}>{rowData.weightstatus}</span>;
     }
-
-    /*weeklyWeightTemplate(rowData) {
-        const dates = Object.keys(rowData.weeklyweight);
-        console.log(dates);
-        const recentDate = Math.max(dates);
-        return <span> {rowData.weeklyweight.recentDate}</span>;
-    } */
 
     renderStatusFilter() {
         var statuses = [
@@ -243,7 +247,7 @@ export class BagTracker extends Component {
                             <Column field="reshall" header="Residential Hall" sortable={true}/>
                             <Column field="laundrystatus" header="Bag Status" style={{ maxWidth: 150 }} sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate}/>
                             <Column field="weightstatus" header="Weight Status" style={{ maxWidth: 150 }} sortable={true} body={this.weightBodyTemplate}/>
-                            <Column field="weeklyweight" header="Bag Weight" sortable={true} style={{ backgroundColor: '#6a09a4', color: 'white', maxWidth: 100 }} editor={this.generalEditor}/>
+                            <Column field="weekweight" header="Bag Weight" sortable={true} style={{ backgroundColor: '#6a09a4', color: 'white', maxWidth: 100 }} editor={this.generalEditor}/>
                         </DataTable>
                     </div>
                 </div>
@@ -268,7 +272,7 @@ export class BagTracker extends Component {
                             <Column field="reshall" header="Residential Hall" sortable={true} />
                             <Column field="laundrystatus" header="Bag Status" style={{ maxWidth: 150 }} sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
                             <Column field="weightstatus" header="Weight Status" style={{ maxWidth: 150 }} sortable={true} body={this.weightBodyTemplate}/>
-                            <Column field="weeklyweight" header="Bag Weight" style={{ maxWidth: 100 }} sortable={true}/>
+                            <Column field="weekweight" header="Bag Weight" style={{ maxWidth: 100 }} sortable={true} />
                         </DataTable>
                     </div>
                 </div>
@@ -278,5 +282,3 @@ export class BagTracker extends Component {
 
     }
 }
-
-//<Column field="weeklyweight" header="Bag Weight" sortable={true} editor={this.generalEditor}/>
