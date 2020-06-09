@@ -79,12 +79,12 @@ export class BagTracker extends Component {
         var currWeight = value;
         var currDate = new Date().toDateString();
         const maxweight = props.rowData.maxweight;
-        db.child('/customers/'+props.rowData.id+'/weeklyweight/').once("value")
+        db.child('/orders/'+ currDate).once("value")
             .then(snapshot => {
                 if (!snapshot.val()) {
-                    db.child('/customers/'+props.rowData.id+'/weeklyweight/'+ currDate).set(0)
+                    db.child('/orders/' + currDate + '/' + props.rowData.id).set(0)
                 }
-                db.child('/customers/'+props.rowData.id+'/weeklyweight/'+ currDate).set('('+currWeight+','+maxweight+')');
+                db.child('/orders/' + currDate + '/' + props.rowData.id).set('('+currWeight+','+maxweight+')');
             })
         const curr = await this.updateWeightStatus(props,value);
     }

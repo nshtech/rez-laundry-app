@@ -9,6 +9,7 @@ import {Route} from 'react-router-dom';
 import {Dashboard} from './components/Dashboard';
 import { CustomerSearch } from './components/CustomerSearch';
 import { BagTracker } from './components/BagTracker';
+import { OrderSheet } from './components/OrderSheet';
 import {FormsDemo} from './components/FormsDemo';
 import {SampleDemo} from './components/SampleDemo';
 import {DataDemo} from './components/DataDemo';
@@ -147,7 +148,8 @@ class App extends Component {
         this.menu = [
             {label: 'Dashboard', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/'}},
             { label: 'CustomerSearch', icon: 'pi pi-fw pi-search', to: '/customersearch'},
-            { label: 'BagTracker', icon: 'pi pi-fw pi-check', to: '/bagtracker' }
+            { label: 'BagTracker', icon: 'pi pi-fw pi-check', to: '/bagtracker' },
+            { label: 'OrderSheet', icon: 'pi pi-fw pi-check', to: '/ordersheet' }
         ];
     }
 
@@ -249,6 +251,7 @@ class App extends Component {
                             <Route path="/" exact component={Dashboard} />
                             <Route path="/customersearch" component={CustomerSearch} />
                             <Route path="/bagtracker" component={BagTracker} />
+                            <Route path="/ordersheet" component={OrderSheet} />
                             <Route path="/forms" component={FormsDemo} />
                             <Route path="/sample" component={SampleDemo} />
                             <Route path="/data" component={DataDemo} />
