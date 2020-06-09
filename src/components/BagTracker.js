@@ -52,7 +52,7 @@ export class BagTracker extends Component {
     }
 
 
-    updateWeightStatus(props,value) {
+    updateWeightStatus(props,value, currDate) {
 
         if (value > props.rowData.maxweight) {
             firebase.database().ref('/customers/' + props.rowData.id + '/'+'weightstatus').set('overweight')
@@ -79,14 +79,25 @@ export class BagTracker extends Component {
         var currWeight = value;
         var currDate = new Date().toDateString();
         const maxweight = props.rowData.maxweight;
-        db.child('/orders/'+ currDate).once("value")
+        db.child('/orders/' + currDate + props.rowData.id).once("value")
             .then(snapshot => {
                 if (!snapshot.val()) {
-                    db.child('/orders/' + currDate + '/' + props.rowData.id).set(0)
+                    db.child('/orders/' + currDate + props.rowData.id).set(0)
+                    db.child('/orders/' + currDate + props.rowData.id + '/weight').set(currWeight);
+                    db.child('/orders/' + currDate + props.rowData.id + '/maxweight').set(maxweight);
+                    db.child('/orders/' + currDate + props.rowData.id + '/id').set(props.rowData.id);
+                    db.child('/orders/' + currDate + props.rowData.id + '/laundrystatus').set(props.rowData.laundrystatus);
+                    db.child('/orders/' + currDate + props.rowData.id + '/weightstatus').set(props.rowData.weightstatus);
                 }
-                db.child('/orders/' + currDate + '/' + props.rowData.id).set('('+currWeight+','+maxweight+')');
+                db.child('/orders/' + currDate + props.rowData.id + '/date').set(currDate);
+                db.child('/orders/' + currDate + props.rowData.id + '/weight').set(currWeight);
+                db.child('/orders/' + currDate + props.rowData.id + '/maxweight').set(maxweight);
+                db.child('/orders/' + currDate + props.rowData.id + '/id').set(props.rowData.id);
+                db.child('/orders/' + currDate + props.rowData.id + '/laundrystatus').set(props.rowData.laundrystatus);
+                db.child('/orders/' + currDate + props.rowData.id + '/weightstatus').set(props.rowData.weightstatus);
+
             })
-        const curr = await this.updateWeightStatus(props,value);
+        const curr = await this.updateWeightStatus(props,value, currDate);
     }
 
     inputTextEditor(props, field) {

@@ -21,6 +21,7 @@ export class OrderSheet extends Component {
         super();
         this.state = {
             customers: [],
+            orders: [],
             selectedStatus: null,
             editing: false
         };
@@ -105,32 +106,34 @@ export class OrderSheet extends Component {
             snapshot.forEach(function (childSnapshot) {
                 customerArray.push(childSnapshot.toJSON());
             });
-            console.log(customerArray)
-            console.log(customerArray[0])
         });
         this.setState({ customers: customerArray });
+        const orderArray = [];
+        firebase.database().ref('/orders').on('value', function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+                orderArray.push(childSnapshot.toJSON());
+            });
+        });
+        this.setState({ orders: orderArray });
     }
 
     render() {
         const statusFilter = this.renderStatusFilter();
-
         /* --------------- RETURN ---------------- */
         /* ---------------- edit mode ------------*/
-        var header = <div style={{ textAlign: 'left' }}>
-        </div>;
+        var header = <div style={{ textAlign: 'left' }}></div>;
         return (
             <div>
                 <Growl ref={(el) => this.growl = el} />
                 <div className="card">
                     <h1>Order Database</h1>
                     <p>All members of the RezLaundry team should have read and write access to this database.</p>
-                    <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}>
+                    <DataTable value={this.state.orders} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}>
+                        <Column field="date" header="Date" sortable={true} />
                         <Column field="id" header="ID" sortable={true} />
-                        <Column field="name" header="Name" style={{ maxWidth: 150 }} sortable filter filterPlaceholder="Search by name" />
-                        <Column field="email" header="Email" sortable={true} />
-                        <Column field="phone" header="Phone" sortable={true} />
-                        <Column field="laundrystatus" header="Bag Status" style={{ maxWidth: 150 }} sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
-                        <Column field="weightstatus" header="Weight Status" style={{ maxWidth: 150 }} sortable={true} body={this.weightBodyTemplate} />
+                        <Column field="weight" header="Weight" sortable={true} />
+                        <Column field="weightstatus" header="Overweight" sortable={true} body={this.weightBodyTemplate} />
+                        <Column field="laundrystatus" header="Status" sortable={true} body={this.statusBodyTemplate}/>
                     </DataTable>
                 </div>
             </div>
