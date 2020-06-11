@@ -78,20 +78,19 @@ export class BagTracker extends Component {
         const db = firebase.database().ref();
         var currWeight = value;
         var currDate = new Date().toDateString();
-        const maxweight = props.rowData.maxweight;
         db.child('/orders/' + currDate + props.rowData.id).once("value")
             .then(snapshot => {
                 if (!snapshot.val()) {
                     db.child('/orders/' + currDate + props.rowData.id).set(0)
                     db.child('/orders/' + currDate + props.rowData.id + '/weight').set(currWeight);
-                    db.child('/orders/' + currDate + props.rowData.id + '/maxweight').set(maxweight);
+                    db.child('/orders/' + currDate + props.rowData.id + '/maxweight').set(props.rowData.maxweight);
                     db.child('/orders/' + currDate + props.rowData.id + '/id').set(props.rowData.id);
                     db.child('/orders/' + currDate + props.rowData.id + '/laundrystatus').set(props.rowData.laundrystatus);
                     db.child('/orders/' + currDate + props.rowData.id + '/weightstatus').set(props.rowData.weightstatus);
                 }
                 db.child('/orders/' + currDate + props.rowData.id + '/date').set(currDate);
                 db.child('/orders/' + currDate + props.rowData.id + '/weight').set(currWeight);
-                db.child('/orders/' + currDate + props.rowData.id + '/maxweight').set(maxweight);
+                db.child('/orders/' + currDate + props.rowData.id + '/maxweight').set(props.rowData.maxweight);
                 db.child('/orders/' + currDate + props.rowData.id + '/id').set(props.rowData.id);
                 db.child('/orders/' + currDate + props.rowData.id + '/laundrystatus').set(props.rowData.laundrystatus);
                 db.child('/orders/' + currDate + props.rowData.id + '/weightstatus').set(props.rowData.weightstatus);
@@ -121,7 +120,9 @@ export class BagTracker extends Component {
 
     bagStatusEditor(allcustomers, currentcustomers, newstatus) {
         let updatedCustomers = [...allcustomers];
-  
+        const db = firebase.database().ref()
+        var currDate = new Date().toDateString();
+
         if (currentcustomers) {
             var ids = Object.keys(currentcustomers).map(function (key) {
                 return currentcustomers[key].id;
@@ -129,6 +130,28 @@ export class BagTracker extends Component {
             updatedCustomers.map(each => {
                 if (ids.includes(each.id)) {
                     each.laundrystatus = newstatus;
+                    if (newstatus == 'out-of-service') {
+                        each.weightstatus = 'N/A'
+                        each.weekweight = 'N/A'
+                    }
+                    db.child('/orders/' + currDate + each.id).once("value")
+                        .then(snapshot => {
+                            if (!snapshot.val()) {
+                                db.child('/orders/' + currDate + each.id).set(0)
+                                db.child('/orders/' + currDate + each.id + '/weight').set(each.weekweight);
+                                db.child('/orders/' + currDate + each.id + '/maxweight').set(each.maxweight);
+                                db.child('/orders/' + currDate + each.id + '/id').set(each.id);
+                                db.child('/orders/' + currDate + each.id + '/laundrystatus').set(each.laundrystatus);
+                                db.child('/orders/' + currDate + each.id + '/weightstatus').set(each.weightstatus);
+                            }
+                            db.child('/orders/' + currDate + each.id + '/date').set(currDate);
+                            db.child('/orders/' + currDate + each.id + '/weight').set(each.weekweight);
+                            db.child('/orders/' + currDate + each.id + '/maxweight').set(each.maxweight);
+                            db.child('/orders/' + currDate + each.id + '/id').set(each.id);
+                            db.child('/orders/' + currDate + each.id + '/laundrystatus').set(each.laundrystatus);
+                            db.child('/orders/' + currDate + each.id + '/weightstatus').set(each.weightstatus);
+
+                        })    
                     
                 }
             })
