@@ -78,22 +78,23 @@ export class BagTracker extends Component {
         const db = firebase.database().ref();
         var currWeight = value;
         var currDate = new Date().toDateString();
+        var currTime = new Date().toLocaleTimeString('it-IT');
         db.child('/orders/' + currDate + props.rowData.id).once("value")
             .then(snapshot => {
                 if (!snapshot.val()) {
-                    db.child('/orders/' + currDate + props.rowData.id).set(0)
-                    db.child('/orders/' + currDate + props.rowData.id + '/weight').set(currWeight);
-                    db.child('/orders/' + currDate + props.rowData.id + '/maxweight').set(props.rowData.maxweight);
-                    db.child('/orders/' + currDate + props.rowData.id + '/id').set(props.rowData.id);
-                    db.child('/orders/' + currDate + props.rowData.id + '/laundrystatus').set(props.rowData.laundrystatus);
-                    db.child('/orders/' + currDate + props.rowData.id + '/weightstatus').set(props.rowData.weightstatus);
+                    db.child('/orders/' + currDate +' '+currTime+'-'+ props.rowData.id).set(0)
+                    db.child('/orders/' + currDate +' '+currTime+'-'+props.rowData.id + '/weight').set(currWeight);
+                    db.child('/orders/' + currDate+' '+currTime+'-' + props.rowData.id + '/maxweight').set(props.rowData.maxweight);
+                    db.child('/orders/' + currDate +' '+currTime+'-'+ props.rowData.id + '/id').set(props.rowData.id);
+                    db.child('/orders/' + currDate +' '+currTime+'-'+ props.rowData.id + '/laundrystatus').set(props.rowData.laundrystatus);
+                    db.child('/orders/' + currDate +' '+currTime+'-'+ props.rowData.id + '/weightstatus').set(props.rowData.weightstatus);
                 }
-                db.child('/orders/' + currDate + props.rowData.id + '/date').set(currDate);
-                db.child('/orders/' + currDate + props.rowData.id + '/weight').set(currWeight);
-                db.child('/orders/' + currDate + props.rowData.id + '/maxweight').set(props.rowData.maxweight);
-                db.child('/orders/' + currDate + props.rowData.id + '/id').set(props.rowData.id);
-                db.child('/orders/' + currDate + props.rowData.id + '/laundrystatus').set(props.rowData.laundrystatus);
-                db.child('/orders/' + currDate + props.rowData.id + '/weightstatus').set(props.rowData.weightstatus);
+                db.child('/orders/' + currDate +' '+currTime+'-'+ props.rowData.id + '/date').set(currDate+' '+ currTime);
+                db.child('/orders/' + currDate +' '+currTime+'-'+ props.rowData.id + '/weight').set(currWeight);
+                db.child('/orders/' + currDate +' '+currTime+'-'+ props.rowData.id + '/maxweight').set(props.rowData.maxweight);
+                db.child('/orders/' + currDate +' '+currTime+'-'+ props.rowData.id + '/id').set(props.rowData.id);
+                db.child('/orders/' + currDate +' '+currTime+'-'+ props.rowData.id + '/laundrystatus').set(props.rowData.laundrystatus);
+                db.child('/orders/' + currDate +' '+currTime+'-'+ props.rowData.id + '/weightstatus').set(props.rowData.weightstatus);
 
             })
         const curr = await this.updateWeightStatus(props,value, currDate);
@@ -122,6 +123,7 @@ export class BagTracker extends Component {
         let updatedCustomers = [...allcustomers];
         const db = firebase.database().ref()
         var currDate = new Date().toDateString();
+        var currTime = new Date().toLocaleTimeString('it-IT');
 
         if (currentcustomers) {
             var ids = Object.keys(currentcustomers).map(function (key) {
@@ -137,19 +139,19 @@ export class BagTracker extends Component {
                     db.child('/orders/' + currDate + each.id).once("value")
                         .then(snapshot => {
                             if (!snapshot.val()) {
-                                db.child('/orders/' + currDate + each.id).set(0)
-                                db.child('/orders/' + currDate + each.id + '/weight').set(each.weekweight);
-                                db.child('/orders/' + currDate + each.id + '/maxweight').set(each.maxweight);
-                                db.child('/orders/' + currDate + each.id + '/id').set(each.id);
-                                db.child('/orders/' + currDate + each.id + '/laundrystatus').set(each.laundrystatus);
-                                db.child('/orders/' + currDate + each.id + '/weightstatus').set(each.weightstatus);
+                                db.child('/orders/' + currDate +' '+currTime+'-'+ each.id).set(0)
+                                db.child('/orders/' + currDate +' '+currTime+'-'+ each.id + '/weight').set(each.weekweight);
+                                db.child('/orders/' + currDate +' '+currTime+'-'+ each.id + '/maxweight').set(each.maxweight);
+                                db.child('/orders/' + currDate +' '+currTime+'-'+ each.id + '/id').set(each.id);
+                                db.child('/orders/' + currDate +' '+currTime+'-'+ each.id + '/laundrystatus').set(each.laundrystatus);
+                                db.child('/orders/' + currDate +' '+currTime+'-'+ each.id + '/weightstatus').set(each.weightstatus);
                             }
-                            db.child('/orders/' + currDate + each.id + '/date').set(currDate);
-                            db.child('/orders/' + currDate + each.id + '/weight').set(each.weekweight);
-                            db.child('/orders/' + currDate + each.id + '/maxweight').set(each.maxweight);
-                            db.child('/orders/' + currDate + each.id + '/id').set(each.id);
-                            db.child('/orders/' + currDate + each.id + '/laundrystatus').set(each.laundrystatus);
-                            db.child('/orders/' + currDate + each.id + '/weightstatus').set(each.weightstatus);
+                            db.child('/orders/' + currDate +' '+currTime+'-'+ each.id + '/date').set(currDate+' '+ currTime);
+                            db.child('/orders/' + currDate +' '+currTime+'-'+ each.id + '/weight').set(each.weekweight);
+                            db.child('/orders/' + currDate +' '+currTime+'-'+ each.id + '/maxweight').set(each.maxweight);
+                            db.child('/orders/' + currDate +' '+currTime+'-'+ each.id + '/id').set(each.id);
+                            db.child('/orders/' + currDate +' '+currTime+'-'+ each.id + '/laundrystatus').set(each.laundrystatus);
+                            db.child('/orders/' + currDate +' '+currTime+'-'+ each.id + '/weightstatus').set(each.weightstatus);
 
                         })    
                     
