@@ -135,6 +135,8 @@ export class BagTracker extends Component {
                     if (newstatus == 'out-of-service') {
                         each.weightstatus = 'N/A'
                         each.weekweight = 'N/A'
+                        db.child('/customers/'+each.id+'/weekweight').set('N/A');
+                        db.child('/customers/'+each.id+'/weightstatus').set('N/A');
                     }
                     db.child('/orders/' + currDate + each.id).once("value")
                         .then(snapshot => {
