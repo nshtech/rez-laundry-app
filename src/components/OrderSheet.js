@@ -129,11 +129,11 @@ export class OrderSheet extends Component {
                     <h1>Order Database</h1>
                     <p>All members of the RezLaundry team should have read and write access to this database.</p>
                     <DataTable value={this.state.orders} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}>
-                        <Column field="date" header="Date" sortable={true} />
-                        <Column field="id" header="ID" sortable={true} />
-                        <Column field="weight" header="Weight" sortable={true} />
+                        <Column field="date" header="Date" sortable={true} filter filterPlaceholder="Search by date"/>
+                        <Column field="id" header="ID" sortable={true} filter filterPlaceholder="Search by ID"/>
+                        <Column field="weight" header="Weight" sortable={true} filter filterPlaceholder="Search by weight"/>
                         <Column field="weightstatus" header="Overweight" sortable={true} body={this.weightBodyTemplate} />
-                        <Column field="laundrystatus" header="Status" sortable={true} body={this.statusBodyTemplate}/>
+                        <Column field="laundrystatus" header="Status" sortable={true} body={this.statusBodyTemplate} filter filterElement={statusFilter}/>
                     </DataTable>
                 </div>
             </div>
