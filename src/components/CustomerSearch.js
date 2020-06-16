@@ -26,6 +26,7 @@ export class CustomerSearch extends Component {
         super();
         this.state = {
             customers: [],
+            orders: [],
             selectedCustomer: null,
             editing: false,
             newplan: null,
@@ -34,6 +35,7 @@ export class CustomerSearch extends Component {
         this.edit = this.edit.bind(this);
         this.save = this.save.bind(this);
         this.onPlanValueChange = this.onPlanValueChange.bind(this)
+        this.getCustomerHistory = this.getCustomerHistory.bind(this)
     }
 
     edit() {
@@ -55,6 +57,22 @@ export class CustomerSearch extends Component {
         this.setState({ newplan: value });
     }
 
+    getCustomerHistory(customer) {
+        var history = []
+        firebase.database().ref('/orders').on('value', function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+                var cid = childSnapshot.key;
+                var res = cid.split('-');
+                console.log(res[1])
+                if (res[1] === customer.id) {
+                    history.push(childSnapshot.toJSON())
+                }
+            });
+        });
+        console.log(history)
+        return history;
+    }
+
     /* --------------- Filters ---------------- */
     componentDidMount() {
         const customerArray = [];
@@ -62,16 +80,22 @@ export class CustomerSearch extends Component {
             snapshot.forEach(function (childSnapshot) {
                 customerArray.push(childSnapshot.toJSON());
             });
-            console.log(customerArray)
-            console.log(customerArray[0])
         });
         this.setState({ customers: customerArray });
+        const orderArray = [];
+        firebase.database().ref('/orders').on('value', function (snapshot) {
+            snapshot.forEach(function (childSnapshot) {
+                orderArray.push(childSnapshot.toJSON());
+            });
+        });
+        this.setState({ orders: orderArray });
     }
 
     render() {
         if (this.state.selectedCustomer) {
             var header = <div style={{ textAlign: 'left' }}></div>
             var customer = this.state.selectedCustomer
+            var history = this.getCustomerHistory(customer)
             if (this.state.editing) {
                 return (
                 <div style={{ display: 'flex' }}>
@@ -138,8 +162,8 @@ export class CustomerSearch extends Component {
                         <div className="card card-search">
                             <DataTable value={this.state.customers} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} selectionMode="single"
                                 responsive={true} autoLayout={true} selection={this.state.selectedCustomer} onSelectionChange={e => this.setState({ selectedCustomer: e.value })}>
-                                <Column field="id" header="ID" sortable={true} />
-                                <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
+                                <Column field="id" header="ID" sortable={true} filter filterPlaceholder="Search id"/>
+                                <Column field="name" header="Name" sortable filter filterPlaceholder="Search name" />
                             </DataTable>
                         </div>
                         <div className="card card-list">
@@ -180,8 +204,8 @@ export class CustomerSearch extends Component {
                     <div className="card card-search">
                         <DataTable value={this.state.customers} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} selectionMode="single"
                         responsive={true} autoLayout={true} selection={this.state.selectedCustomer} onSelectionChange={e => this.setState({ selectedCustomer: e.value })}>
-                            <Column field="id" header="ID" sortable={true} />
-                            <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
+                            <Column field="id" header="ID" sortable={true} filter filterPlaceholder="Search id"/>
+                            <Column field="name" header="Name" sortable filter filterPlaceholder="Search name" />
                         </DataTable>
                     </div>
                     <div className="card card-list">
