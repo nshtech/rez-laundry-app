@@ -94,7 +94,7 @@ export class CustomerSheet extends Component {
                 ];
         return (
             <Dropdown value={this.state.selectedStatus} options={statuses} onChange={this.onStatusFilterChange}
-                showClear={true} placeholder="Select a Status" className="p-column-filter" style={{ maxWidth: 200, minWidth: 50 }}/>
+                showClear={true} placeholder="Filter Status" className="p-column-filter" style={{ maxWidth: 200, minWidth: 50 }}/>
         );
     }
 
@@ -137,7 +137,7 @@ export class CustomerSheet extends Component {
                     <p>All members of the RezLaundry team should have read and write access to this database.</p>
                     <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px'}} responsive={true} autoLayout={true} editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}>
                         <Column field="id" header="ID" sortable={true} />
-                        <Column field="name" header="Name" style={{ maxWidth: 150 }} sortable filter filterPlaceholder="Search by name" />
+                        <Column field="name" header="Name" style={{ maxWidth: 150 }} sortable filter filterPlaceholder="Search name" />
                         <Column field="email" header="Edit email" sortable={true} style={{ backgroundColor: '#6a09a4', color: 'white' }} editor={this.generalEditor} editorValidator={this.emailValidator} />
                         <Column field="phone" header="Edit phone" sortable={true} style={{ backgroundColor: '#6a09a4', color: 'white' }} editor={this.generalEditor} editorValidator={this.phoneValidator}/>
                         <Column field="laundrystatus" header="Bag Status" style={{ maxWidth: 150 }} sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate}/>
@@ -163,7 +163,7 @@ export class CustomerSheet extends Component {
                     <p>All members of the RezLaundry team should have read and write access to this database.</p>
                     <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}>
                         <Column field="id" header="ID" sortable={true} />
-                        <Column field="name" header="Name" style={{ maxWidth: 150 }} sortable filter filterPlaceholder="Search by name"/>
+                        <Column field="name" header="Name" style={{ maxWidth: 150 }} sortable filter filterPlaceholder="Search name"/>
                         <Column field="email" header="Email" sortable={true} />
                         <Column field="phone" header="Phone" sortable={true} />
                         <Column field="laundrystatus" header="Bag Status" style={{ maxWidth: 150 }} sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />

@@ -146,10 +146,10 @@ class App extends Component {
 
     createMenu() {
         this.menu = [
-            {label: 'Dashboard', icon: 'pi pi-fw pi-users', command: () => {window.location = '#/'}},
-            { label: 'CustomerSearch', icon: 'pi pi-fw pi-search', to: '/customersearch'},
-            { label: 'BagTracker', icon: 'pi pi-fw pi-check', to: '/bagtracker' },
-            { label: 'OrderSheet', icon: 'pi pi-fw pi-inbox', to: '/ordersheet' }
+            {label: 'Customers', icon: 'pi pi-fw pi-users', command: () => {window.location = '#/'}},
+            { label: 'Orders', icon: 'pi pi-fw pi-inbox', to: '/ordersheet' },
+            { label: 'Customer Search', icon: 'pi pi-fw pi-search', to: '/customersearch' },
+            { label: 'BagTracker', icon: 'pi pi-fw pi-check', to: '/bagtracker' }
         ];
     }
 
