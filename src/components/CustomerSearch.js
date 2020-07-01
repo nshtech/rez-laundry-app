@@ -143,6 +143,14 @@ export class CustomerSearch extends Component {
             var header = <div style={{ textAlign: 'left' }}></div>
             var customer = this.state.selectedCustomer
             var history = this.getCustomerHistory(customer)
+            var laundryStatusDisplay = {
+                'picked-up': 'picked up',
+                'delivered-to-SH': 'delivered to SH',
+                'delivered-to-dorm': 'delivered to dorm',
+                'out-of-service': 'out of service',
+                'bag-missing': 'bag missing'
+            }
+
             if (this.state.editing) {
                 return (
                 <div style={{ display: 'flex' }}>
@@ -156,7 +164,7 @@ export class CustomerSearch extends Component {
                     <div className="card card-list">
                         <h1>{customer.name}</h1>
                         <div style={{ display: 'flex' }}>
-                            <p className={customer.laundrystatus} style={{ marginRight: 15 }}>{customer.laundrystatus.replace(/-/g, ' ')}</p>
+                            <p className={customer.laundrystatus} style={{ marginRight: 15 }}>{laundryStatusDisplay[customer.laundrystatus]}</p>
                             <p className={customer.weightstatus}>{customer.weightstatus}</p>
                         </div>
                         <div style={{ display: 'flex' }}>
@@ -216,7 +224,7 @@ export class CustomerSearch extends Component {
                         <div className="card card-list">
                             <h1>{customer.name}</h1>
                             <div style={{ display: 'flex' }}>
-                                <p className={customer.laundrystatus} style={{ marginRight: 15 }}>{customer.laundrystatus.replace(/-/g, ' ')}</p>
+                                <p className={customer.laundrystatus} style={{ marginRight: 15 }}>{laundryStatusDisplay[customer.laundrystatus]}</p>
                                 <p className={customer.weightstatus}>{customer.weightstatus}</p>
                             </div>
                             <div style={{ display: 'flex' }}>
