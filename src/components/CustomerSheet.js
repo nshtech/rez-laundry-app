@@ -9,7 +9,7 @@ import { Growl } from 'primereact/growl';
 import firebase from 'firebase/app';
 import 'firebase/database';
 
-import validator from 'validator' 
+import validator from 'validator'
 
 
 import customerData from '../customers.json';
@@ -32,14 +32,14 @@ export class CustomerSheet extends Component {
         this.save = this.save.bind(this);
         this.export = this.export.bind(this);
         this.onStatusFilterChange = this.onStatusFilterChange.bind(this);
-        
+
         this.generalEditor = this.generalEditor.bind(this);
     }
     export() {
         this.dt.exportCSV();
     }
 
-/* --------------- Editing ---------------- */  
+/* --------------- Editing ---------------- */
     edit() {
         this.setState({editing: true});
         this.growl.show({ severity: 'info', summary: 'Editing Enabled', detail: 'Save changes before continuing' });
@@ -84,6 +84,10 @@ export class CustomerSheet extends Component {
         return <span className={rowData.weightstatus}>{rowData.weightstatus}</span>;
     }
 
+    activeBodyTemplate(rowData) {
+        return <span className={rowData.activestatus}>{rowData.activestatus}</span>;
+    }
+
     renderStatusFilter() {
         var statuses =  [
             {label: 'Picked Up', value: 'picked-up'},
@@ -114,7 +118,7 @@ export class CustomerSheet extends Component {
         });
         this.setState({ customers: customerArray });
     }
-    
+
     render() {
         const statusFilter = this.renderStatusFilter();
 
@@ -142,6 +146,7 @@ export class CustomerSheet extends Component {
                         <Column field="phone" header="Edit phone" sortable={true} style={{ backgroundColor: '#6a09a4', color: 'white' }} editor={this.generalEditor} editorValidator={this.phoneValidator}/>
                         <Column field="laundrystatus" header="Bag Status" style={{ maxWidth: 150 }} sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate}/>
                         <Column field="weightstatus" header="Weight Status" style={{ maxWidth: 150 }} sortable={true} body={this.weightBodyTemplate}/>
+                        <Column field="activestatus" header="Active/Inactive" style={{ maxWidth: 150 }} sortable={true} body={this.activeBodyTemplate}/>
                     </DataTable>
                 </div>
             </div>
@@ -168,6 +173,7 @@ export class CustomerSheet extends Component {
                         <Column field="phone" header="Phone" sortable={true} />
                         <Column field="laundrystatus" header="Bag Status" style={{ maxWidth: 150 }} sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
                         <Column field="weightstatus" header="Weight Status" style={{ maxWidth: 150 }}  sortable={true} body={this.weightBodyTemplate} />
+                        <Column field="activestatus" header="Active/Inactive" style={{ maxWidth: 150 }} sortable={true} body={this.activeBodyTemplate}/>
                     </DataTable>
                 </div>
             </div>

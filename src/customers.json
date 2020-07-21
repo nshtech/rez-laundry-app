@@ -6,7 +6,8 @@
     "email": "carolinelobel@studentholdings.org",
     "res-hall": "Delta Gamma",
     "laundrystatus": "picked-up",
-    "bag-condition": "good"
+    "bag-condition": "good",
+    "activestatus": "active"
   },
   {
     "id": "001",
@@ -15,7 +16,8 @@
     "email": "patricepower@studentholdings.org",
     "res-hall": "Delta Gamma",
     "laundrystatus": "being-cleaned",
-    "bag-condition": "bad"
+    "bag-condition": "bad",
+    "activestatus": "active"
   },
   {
     "id": "002",
@@ -24,7 +26,8 @@
     "email": "williewildcat@xyz.com",
     "res-hall": "Bobb Hall",
     "laundrystatus": "bag-missing",
-    "bag-condition": "good"
+    "bag-condition": "good",
+    "activestatus": "active"
   },
   {
     "id": "003",
@@ -33,7 +36,8 @@
     "email": "mortyshapiro@xyz.com",
     "res-hall": "McCulloch Hall",
     "laundrystatus": "picked-up",
-    "bag-condition": "good"
+    "bag-condition": "good",
+    "activestatus": "active"
   },
   {
     "id": "004",
@@ -42,7 +46,8 @@
     "email": "sophiefields@xyz.com",
     "res-hall": "Lincoln",
     "laundrystatus": "being-cleaned",
-    "bag-condition": "bad"
+    "bag-condition": "bad",
+    "activestatus": "active"
   },
   {
     "id": "005",
@@ -51,7 +56,8 @@
     "email": "zoelobel@xyz.com",
     "res-hall": "AEPi",
     "laundrystatus": "out-for-delivery",
-    "bag-condition": "good"
+    "bag-condition": "good",
+    "activestatus": "active"
   },
   {
     "id": "006",
@@ -60,7 +66,8 @@
     "email": "allysmith@xyz.com",
     "res-hall": "Alison",
     "laundrystatus": "delivered",
-    "bag-condition": "bad"
+    "bag-condition": "bad",
+    "activestatus": "active"
   },
   {
     "id": "007",
@@ -69,7 +76,8 @@
     "email": "samsmith@xyz.com",
     "res-hall": "Willard",
     "laundrystatus": "picked-up",
-    "bag-condition": "bad"
+    "bag-condition": "bad",
+    "activestatus": "active"
   },
   {
     "id": "008",
@@ -78,7 +86,8 @@
     "email": "johngreen@xyz.com",
     "res-hall": "1838 Chicago",
     "laundrystatus": "out-for-delivery",
-    "bag-condition": "bad"
+    "bag-condition": "bad",
+    "activestatus": "active"
   },
   {
     "id": "009",
@@ -87,7 +96,8 @@
     "email": "robertschmidt@xyz.com",
     "res-hall": "SMQ",
     "laundrystatus": "out-for-delivery",
-    "bag-condition": "bad"
+    "bag-condition": "bad",
+    "activestatus": "active"
   },
   {
     "id": "010",
@@ -96,7 +106,8 @@
     "email": "meredithgrey@xyz.com",
     "res-hall": "1856 Orrington",
     "laundrystatus": "picked-up",
-    "bag-condition": "good"
+    "bag-condition": "good",
+    "activestatus": "active"
   },
   {
     "id": "011",
@@ -105,7 +116,8 @@
     "email": "christinayang@xyz.com",
     "res-hall": "West Fairchild",
     "laundrystatus": "being-cleaned",
-    "bag-condition": "bad"
+    "bag-condition": "bad",
+    "activestatus": "active"
   },
   {
     "id": "012",
@@ -114,7 +126,8 @@
     "email": "alexkarev@xyz.com",
     "res-hall": "Jones Hall",
     "laundrystatus": "bag-missing",
-    "bag-condition": "good"
+    "bag-condition": "good",
+    "activestatus": "active"
   },
   {
     "id": "013",
@@ -123,7 +136,8 @@
     "email": "derekshepherd@xyz.com",
     "res-hall": "McCulloch Hall",
     "laundrystatus": "picked-up",
-    "bag-condition": "good"
+    "bag-condition": "good",
+    "activestatus": "active"
   },
   {
     "id": "014",
@@ -132,7 +146,8 @@
     "email": "lexiegrey@xyz.com",
     "res-hall": "Lincoln",
     "laundrystatus": "being-cleaned",
-    "bag-condition": "bad"
+    "bag-condition": "bad",
+    "activestatus": "active"
   },
   {
     "id": "015",
@@ -141,7 +156,8 @@
     "email": "richardwebber@xyz.com",
     "res-hall": "Bobb Hall",
     "laundrystatus": "out-for-delivery",
-    "bag-condition": "good"
+    "bag-condition": "good",
+    "activestatus": "active"
   },
   {
     "id": "016",
@@ -150,7 +166,8 @@
     "email": "arizonarobbins@xyz.com",
     "res-hall": "Willard",
     "laundrystatus": "delivered",
-    "bag-condition": "bad"
+    "bag-condition": "bad",
+    "activestatus": "active"
   },
   {
     "id": "017",
@@ -159,7 +176,8 @@
     "email": "marksloan@xyz.com",
     "res-hall": "McCulloch Hall",
     "laundrystatus": "picked-up",
-    "bag-condition": "bad"
+    "bag-condition": "bad",
+    "activestatus": "inactive"
   },
   {
     "id": "018",
@@ -168,7 +186,8 @@
     "email": "mirandabailey@xyz.com",
     "res-hall": "1838 Chicago",
     "laundrystatus": "out-for-delivery",
-    "bag-condition": "bad"
+    "bag-condition": "bad",
+    "activestatus": "inactive"
   },
   {
     "id": "019",
@@ -177,6 +196,7 @@
     "email": "jowilson@xyz.com",
     "res-hall": "SMQ",
     "laundrystatus": "delivered",
-    "bag-condition": "good"
+    "bag-condition": "good",
+    "activestatus": "inactive"
   }
 ]
