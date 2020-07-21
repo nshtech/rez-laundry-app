@@ -204,30 +204,30 @@ class App extends Component {
 
 
         if (this.state.user && this.state.user.email.includes('studentholdings.org')) {
-            const db = firebase.database().ref()
-            if (this.state.user.photourl) {
-                db.child('/users/' + this.state.user.uid).once("value")
-                    .then(snapshot => {
-                        if (!snapshot.val()) {
-                            db.child('/users/' + this.state.user.uid).set({
-                                username: this.state.user.displayName,
-                                email: this.state.user.email,
-                                photourl: this.state.user.photoUrl
-                            })
-                        }
-                    })
-            } else {
-                db.child('/users/' + this.state.user.uid).once("value")
-                    .then(snapshot => {
-                        if (!snapshot.val()) {
-                            db.child('/users/' + this.state.user.uid).set({
-                                username: this.state.user.displayName,
-                                email: this.state.user.email,
-                                photourl: "assets/layout/images/profile.png"
-                            })
-                        }
-                    })
-            }
+            // const db = firebase.database().ref()
+            // if (this.state.user.photourl) {
+            //     db.child('/users/' + this.state.user.uid).once("value")
+            //         .then(snapshot => {
+            //             if (!snapshot.val()) {
+            //                 db.child('/users/' + this.state.user.uid).set({
+            //                     username: this.state.user.displayName,
+            //                     email: this.state.user.email,
+            //                     photourl: this.state.user.photoUrl
+            //                 })
+            //             }
+            //         })
+            // } else {
+            //     db.child('/users/' + this.state.user.uid).once("value")
+            //         .then(snapshot => {
+            //             if (!snapshot.val()) {
+            //                 db.child('/users/' + this.state.user.uid).set({
+            //                     username: this.state.user.displayName,
+            //                     email: this.state.user.email,
+            //                     photourl: "assets/layout/images/profile.png"
+            //                 })
+            //             }
+            //         })
+            // }
 
             localStorage.setItem('user', JSON.stringify(this.state.user))
         }

@@ -30,7 +30,10 @@ export class CustomerSearch extends Component {
             selectedCustomer: null,
             editing: false,
             newplan: null,
-            newphone: null
+            newmax: null,
+            newreshall: null,
+            newphone: null,
+            newemail: null
         };
         this.edit = this.edit.bind(this);
         this.save = this.save.bind(this);
@@ -45,16 +48,60 @@ export class CustomerSearch extends Component {
     save(customer) {
         this.setState({ editing: false });
         console.log(this.state.newplan)
-        // const newcustomer = [...this.state.selectedCustomer]
-        // if (this.state.newplan) {
-        //     newcustomer.plan = this.state.newplan
-        // }
-        // this.setState({ newplan: value });
-        firebase.database().ref('/customers/' + customer.id + '/plan').set(this.state.newplan)
+        let allcustomers = [...this.state.customers];
+        let newcustomer = {...this.state.selectedCustomer};
+        if (this.state.newplan) {
+             newcustomer.plan = this.state.newplan;
+             firebase.database().ref('/customers/' + customer.id + '/plan').set(newcustomer.plan);
+        }
+        if (this.state.newmax) {
+            newcustomer.maxweight = this.state.newmax;
+            firebase.database().ref('/customers/' + customer.id + '/maxweight').set(newcustomer.maxweight);
+       }
+        if (this.state.newreshall) {
+            newcustomer.reshall = this.state.newreshall;
+            firebase.database().ref('/customers/' + customer.id + '/reshall').set(newcustomer.reshall);
+        }
+        if (this.state.newphone) {
+            newcustomer.phone = this.state.newphone;
+            firebase.database().ref('/customers/' + customer.id + '/phone').set(newcustomer.phone);
+        }
+        if (this.state.newemail) {
+            newcustomer.email = this.state.newemail;
+            firebase.database().ref('/customers/' + customer.id + '/email').set(newcustomer.email)
+        }
+        let count = 0;
+        let individual=null;
+        allcustomers.map(each => {
+            if (newcustomer.id == each.id) {
+                individual = {...allcustomers[count]};
+                individual= newcustomer;
+                allcustomers[count] = individual;
+            }
+            count = count+1
+        })
+        this.setState({ customers: allcustomers });
+        this.setState({selectedCustomer: newcustomer});
+        
     }
 
+    //CUSTOMER INFORMATION EDITING
     onPlanValueChange(value) {
         this.setState({ newplan: value });
+    }
+    onMaxweightValueChange(value) {
+        this.setState({ newmax: value });
+    }
+    onReshallValueChange(value) {
+        this.setState({ newreshall: value });
+    }
+    onPhoneValueChange(value) {
+        if(value[3] ==='-' && value.length===12) {
+            this.setState({ newphone: value });
+        }
+    }
+    onEmailValueChange(value) {
+        this.setState({ newemail: value });
     }
 
     getCustomerHistory(customer) {
@@ -96,6 +143,14 @@ export class CustomerSearch extends Component {
             var header = <div style={{ textAlign: 'left' }}></div>
             var customer = this.state.selectedCustomer
             var history = this.getCustomerHistory(customer)
+            var laundryStatusDisplay = {
+                'picked-up': 'picked up',
+                'delivered-to-SH': 'delivered to SH',
+                'delivered-to-dorm': 'delivered to dorm',
+                'out-of-service': 'out of service',
+                'bag-missing': 'bag missing'
+            }
+
             if (this.state.editing) {
                 return (
                 <div style={{ display: 'flex' }}>
@@ -109,7 +164,7 @@ export class CustomerSearch extends Component {
                     <div className="card card-list">
                         <h1>{customer.name}</h1>
                         <div style={{ display: 'flex' }}>
-                            <p className={customer.laundrystatus} style={{ marginRight: 15 }}>{customer.laundrystatus.replace(/-/g, ' ')}</p>
+                            <p className={customer.laundrystatus} style={{ marginRight: 15 }}>{laundryStatusDisplay[customer.laundrystatus]}</p>
                             <p className={customer.weightstatus}>{customer.weightstatus}</p>
                         </div>
                         <div style={{ display: 'flex' }}>
@@ -125,7 +180,7 @@ export class CustomerSearch extends Component {
                                 <div className="p-field p-grid">
                                     <label htmlFor="lastname3" className="p-col-fixed" style={{ width: '110px' }}>Max Weight:</label>
                                     <div className="p-col">
-                                        <InputText type="text" placeholder={customer.maxweight}/>
+                                        <InputText type="text" placeholder={customer.maxweight} onChange={(e) => { this.onMaxweightValueChange(e.target.value); }}/>
                                     </div>
                                 </div>
                             </div>
@@ -134,19 +189,19 @@ export class CustomerSearch extends Component {
                                 <div className="p-field p-grid">
                                     <label htmlFor="firstname3" className="p-col-fixed" style={{ width: '120px' }}>Residential Hall:</label>
                                     <div className="p-col">
-                                        <InputText type="text" placeholder={customer.reshall} />
+                                        <InputText type="text" placeholder={customer.reshall} onChange={(e) => { this.onReshallValueChange(e.target.value); }}/>
                                     </div>
                                 </div>
                                 <div className="p-field p-grid">
                                     <label htmlFor="lastname3" className="p-col-fixed" style={{ width: '120px' }}>Email:</label>
                                     <div className="p-col">
-                                        <InputText type="text" placeholder={customer.email} />
+                                        <InputText type="text" placeholder={customer.email} onChange={(e) => { this.onEmailValueChange(e.target.value); }}/>
                                     </div>
                                 </div>
                                 <div className="p-field p-grid">
                                     <label htmlFor="lastname3" className="p-col-fixed" style={{ width: '120px' }}>Phone:</label>
                                     <div className="p-col">
-                                        <InputText type="text" placeholder={customer.phone} />
+                                        <InputText type="text" placeholder={customer.phone} onChange={(e) => { this.onPhoneValueChange(e.target.value); }}/>
                                     </div>
                                 </div>
                             </div>
@@ -169,7 +224,7 @@ export class CustomerSearch extends Component {
                         <div className="card card-list">
                             <h1>{customer.name}</h1>
                             <div style={{ display: 'flex' }}>
-                                <p className={customer.laundrystatus} style={{ marginRight: 15 }}>{customer.laundrystatus.replace(/-/g, ' ')}</p>
+                                <p className={customer.laundrystatus} style={{ marginRight: 15 }}>{laundryStatusDisplay[customer.laundrystatus]}</p>
                                 <p className={customer.weightstatus}>{customer.weightstatus}</p>
                             </div>
                             <div style={{ display: 'flex' }}>

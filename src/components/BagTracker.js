@@ -77,24 +77,28 @@ export class BagTracker extends Component {
         firebase.database().ref('/customers/' + props.rowData.id + '/' + props.field).set(value)
         const db = firebase.database().ref();
         var currWeight = value;
-        var currDate = new Date().toDateString();
+        var currDay = new Date().getDate();
+        var currMonth = new Date().getMonth() +1;
+        var currYear = new Date().getFullYear();
+        var currDate = currMonth + '-'+currDay+'-'+currYear;
+        var fullDate = new Date().toDateString();
         var currTime = new Date().toLocaleTimeString('it-IT');
         db.child('/orders/' + currDate + props.rowData.id).once("value")
             .then(snapshot => {
                 if (!snapshot.val()) {
-                    db.child('/orders/' + currDate +' '+currTime+'-'+ props.rowData.id).set(0)
-                    db.child('/orders/' + currDate +' '+currTime+'-'+props.rowData.id + '/weight').set(currWeight);
-                    db.child('/orders/' + currDate+' '+currTime+'-' + props.rowData.id + '/maxweight').set(props.rowData.maxweight);
-                    db.child('/orders/' + currDate +' '+currTime+'-'+ props.rowData.id + '/id').set(props.rowData.id);
-                    db.child('/orders/' + currDate +' '+currTime+'-'+ props.rowData.id + '/laundrystatus').set(props.rowData.laundrystatus);
-                    db.child('/orders/' + currDate +' '+currTime+'-'+ props.rowData.id + '/weightstatus').set(props.rowData.weightstatus);
+                    db.child('/orders/' + currDate +' '+currTime+' - '+ props.rowData.id).set(0)
+                    db.child('/orders/' + currDate +' '+currTime+' - '+props.rowData.id + '/weight').set(currWeight);
+                    db.child('/orders/' + currDate+' '+currTime+' - ' + props.rowData.id + '/maxweight').set(props.rowData.maxweight);
+                    db.child('/orders/' + currDate +' '+currTime+' - '+ props.rowData.id + '/id').set(props.rowData.id);
+                    db.child('/orders/' + currDate +' '+currTime+' - '+ props.rowData.id + '/laundrystatus').set(props.rowData.laundrystatus);
+                    db.child('/orders/' + currDate +' '+currTime+' - '+ props.rowData.id + '/weightstatus').set(props.rowData.weightstatus);
                 }
-                db.child('/orders/' + currDate +' '+currTime+'-'+ props.rowData.id + '/date').set(currDate+' '+ currTime);
-                db.child('/orders/' + currDate +' '+currTime+'-'+ props.rowData.id + '/weight').set(currWeight);
-                db.child('/orders/' + currDate +' '+currTime+'-'+ props.rowData.id + '/maxweight').set(props.rowData.maxweight);
-                db.child('/orders/' + currDate +' '+currTime+'-'+ props.rowData.id + '/id').set(props.rowData.id);
-                db.child('/orders/' + currDate +' '+currTime+'-'+ props.rowData.id + '/laundrystatus').set(props.rowData.laundrystatus);
-                db.child('/orders/' + currDate +' '+currTime+'-'+ props.rowData.id + '/weightstatus').set(props.rowData.weightstatus);
+                db.child('/orders/' + currDate +' '+currTime+' - '+ props.rowData.id + '/date').set(currDate+' '+ currTime);
+                db.child('/orders/' + currDate +' '+currTime+' - '+ props.rowData.id + '/weight').set(currWeight);
+                db.child('/orders/' + currDate +' '+currTime+' - '+ props.rowData.id + '/maxweight').set(props.rowData.maxweight);
+                db.child('/orders/' + currDate +' '+currTime+' - '+ props.rowData.id + '/id').set(props.rowData.id);
+                db.child('/orders/' + currDate +' '+currTime+' - '+ props.rowData.id + '/laundrystatus').set(props.rowData.laundrystatus);
+                db.child('/orders/' + currDate +' '+currTime+' - '+ props.rowData.id + '/weightstatus').set(props.rowData.weightstatus);
 
             })
         const curr = await this.updateWeightStatus(props,value, currDate);
@@ -122,7 +126,11 @@ export class BagTracker extends Component {
     bagStatusEditor(allcustomers, currentcustomers, newstatus) {
         let updatedCustomers = [...allcustomers];
         const db = firebase.database().ref()
-        var currDate = new Date().toDateString();
+        var currDay = new Date().getDate();
+        var currMonth = new Date().getMonth() +1;
+        var currYear = new Date().getFullYear();
+        var currDate = currMonth + '-'+currDay+'-'+currYear;
+        //var currDate = new Date().toDateString();
         var currTime = new Date().toLocaleTimeString('it-IT');
 
         if (currentcustomers) {
@@ -141,19 +149,19 @@ export class BagTracker extends Component {
                     db.child('/orders/' + currDate + each.id).once("value")
                         .then(snapshot => {
                             if (!snapshot.val()) {
-                                db.child('/orders/' + currDate +' '+currTime+'-'+ each.id).set(0)
-                                db.child('/orders/' + currDate +' '+currTime+'-'+ each.id + '/weight').set(each.weekweight);
-                                db.child('/orders/' + currDate +' '+currTime+'-'+ each.id + '/maxweight').set(each.maxweight);
-                                db.child('/orders/' + currDate +' '+currTime+'-'+ each.id + '/id').set(each.id);
-                                db.child('/orders/' + currDate +' '+currTime+'-'+ each.id + '/laundrystatus').set(each.laundrystatus);
-                                db.child('/orders/' + currDate +' '+currTime+'-'+ each.id + '/weightstatus').set(each.weightstatus);
+                                db.child('/orders/' + currDate +' '+currTime+' - '+ each.id).set(0)
+                                db.child('/orders/' + currDate +' '+currTime+' - '+ each.id + '/weight').set(each.weekweight);
+                                db.child('/orders/' + currDate +' '+currTime+' - '+ each.id + '/maxweight').set(each.maxweight);
+                                db.child('/orders/' + currDate +' '+currTime+' - '+ each.id + '/id').set(each.id);
+                                db.child('/orders/' + currDate +' '+currTime+' - '+ each.id + '/laundrystatus').set(each.laundrystatus);
+                                db.child('/orders/' + currDate +' '+currTime+' - '+ each.id + '/weightstatus').set(each.weightstatus);
                             }
-                            db.child('/orders/' + currDate +' '+currTime+'-'+ each.id + '/date').set(currDate+' '+ currTime);
-                            db.child('/orders/' + currDate +' '+currTime+'-'+ each.id + '/weight').set(each.weekweight);
-                            db.child('/orders/' + currDate +' '+currTime+'-'+ each.id + '/maxweight').set(each.maxweight);
-                            db.child('/orders/' + currDate +' '+currTime+'-'+ each.id + '/id').set(each.id);
-                            db.child('/orders/' + currDate +' '+currTime+'-'+ each.id + '/laundrystatus').set(each.laundrystatus);
-                            db.child('/orders/' + currDate +' '+currTime+'-'+ each.id + '/weightstatus').set(each.weightstatus);
+                            db.child('/orders/' + currDate +' '+currTime+' - '+ each.id + '/date').set(currDate+' '+ currTime);
+                            db.child('/orders/' + currDate +' '+currTime+' - '+ each.id + '/weight').set(each.weekweight);
+                            db.child('/orders/' + currDate +' '+currTime+' - '+ each.id + '/maxweight').set(each.maxweight);
+                            db.child('/orders/' + currDate +' '+currTime+' - '+ each.id + '/id').set(each.id);
+                            db.child('/orders/' + currDate +' '+currTime+' - '+ each.id + '/laundrystatus').set(each.laundrystatus);
+                            db.child('/orders/' + currDate +' '+currTime+' - '+ each.id + '/weightstatus').set(each.weightstatus);
 
                         })    
                     
@@ -196,7 +204,14 @@ export class BagTracker extends Component {
 
     /* --------------- Filters ---------------- */
     statusBodyTemplate(rowData) {
-        return <span className={rowData.laundrystatus}>{rowData.laundrystatus.replace(/-/g,' ')}</span>
+        var laundryStatusDisplay = {
+            'picked-up': 'picked up',
+            'delivered-to-SH': 'delivered to SH',
+            'delivered-to-dorm': 'delivered to dorm',
+            'out-of-service': 'out of service',
+            'bag-missing': 'bag missing'
+        }
+        return <span className={rowData.laundrystatus}>{laundryStatusDisplay[rowData.laundrystatus]}</span>
     }
     weightBodyTemplate(rowData) {
         return <span className={rowData.weightstatus}>{rowData.weightstatus}</span>;
