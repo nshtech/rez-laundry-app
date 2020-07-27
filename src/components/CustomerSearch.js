@@ -109,11 +109,11 @@ export class CustomerSearch extends Component {
 
     //CUSTOMER INFORMATION EDITING
     onPlanYearValueChange(value) {
-        console.log('newPlanYear: ', value)
+        //console.log('newPlanYear: ', value)
         this.setState({ newplanYear: value });
     }
     onPlanQuarterValueChange(value) {
-        console.log('newPlanQuarter: ', value)
+        //console.log('newPlanQuarter: ', value)
         this.setState({ newplanQuarter: value });
     }
     onMaxweightValueChange(value) {
