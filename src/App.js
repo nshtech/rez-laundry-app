@@ -10,6 +10,7 @@ import {Dashboard} from './components/Dashboard';
 import { CustomerSearch } from './components/CustomerSearch';
 import { BagTracker } from './components/BagTracker';
 import { OrderSheet } from './components/OrderSheet';
+import { AddCustomers } from './components/AddCustomers';
 import {FormsDemo} from './components/FormsDemo';
 import {SampleDemo} from './components/SampleDemo';
 import {DataDemo} from './components/DataDemo';
@@ -149,7 +150,8 @@ class App extends Component {
             {label: 'Customers', icon: 'pi pi-fw pi-users', command: () => {window.location = '#/'}},
             { label: 'Orders', icon: 'pi pi-fw pi-inbox', to: '/ordersheet' },
             { label: 'Customer Search', icon: 'pi pi-fw pi-search', to: '/customersearch' },
-            { label: 'BagTracker', icon: 'pi pi-fw pi-check', to: '/bagtracker' }
+            { label: 'BagTracker', icon: 'pi pi-fw pi-check', to: '/bagtracker' },
+            { label: 'Add New Customers', icon: 'pi pi-fw pi-user-plus', to: '/addcustomers' }
         ];
     }
 
@@ -252,6 +254,7 @@ class App extends Component {
                             <Route path="/customersearch" component={CustomerSearch} />
                             <Route path="/bagtracker" component={BagTracker} />
                             <Route path="/ordersheet" component={OrderSheet} />
+                            <Route path="/addcustomers" component={AddCustomers} />
                             <Route path="/forms" component={FormsDemo} />
                             <Route path="/sample" component={SampleDemo} />
                             <Route path="/data" component={DataDemo} />
