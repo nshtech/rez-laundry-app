@@ -82,7 +82,7 @@ export class CustomerSearch extends Component {
         })
         this.setState({ customers: allcustomers });
         this.setState({selectedCustomer: newcustomer});
-        
+
     }
 
     //CUSTOMER INFORMATION EDITING
@@ -161,11 +161,11 @@ export class CustomerSearch extends Component {
                             <Column field="name" header="Name" sortable filter filterPlaceholder="Search by name" />
                         </DataTable>
                     </div>
-                    <div className="card card-list">
+                    <div className="card card-list"> <p className={customer.activestatus} style={{ marginRight: 15 }}>{customer.activestatus}</p>
                         <h1>{customer.name}</h1>
                         <div style={{ display: 'flex' }}>
                             <p className={customer.laundrystatus} style={{ marginRight: 15 }}>{laundryStatusDisplay[customer.laundrystatus]}</p>
-                            <p className={customer.weightstatus}>{customer.weightstatus}</p>
+                            <p className={customer.weightstatus} style={{ marginRight: 15 }}>{customer.weightstatus}</p>
                         </div>
                         <div style={{ display: 'flex' }}>
                             <div style={{ minWidth: '50%' }}>
@@ -221,15 +221,17 @@ export class CustomerSearch extends Component {
                                 <Column field="name" header="Name" sortable filter filterPlaceholder="Search name" />
                             </DataTable>
                         </div>
-                        <div className="card card-list">
+                        <div className="card card-list">  <p className={customer.activestatus} style={{ marginRight: 15 }}>{customer.activestatus}</p>
                             <h1>{customer.name}</h1>
                             <div style={{ display: 'flex' }}>
                                 <p className={customer.laundrystatus} style={{ marginRight: 15 }}>{laundryStatusDisplay[customer.laundrystatus]}</p>
-                                <p className={customer.weightstatus}>{customer.weightstatus}</p>
+                                <p className={customer.weightstatus} style={{ marginRight: 15 }}>{customer.weightstatus}</p>
+
                             </div>
                             <div style={{ display: 'flex' }}>
                                 <div style={{ minWidth: '50%'  }}>
                                     <h3 style={{ marginBlockStart: 0, marginBlockEnd: '0.25em' }}>Account Information</h3>
+                                    <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Customer ID: {customer.id}</p>
                                     <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Customer ID: {customer.id}</p>
                                     <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Laundry Plan: {customer.plan}</p>
                                     <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Max Weight: {customer.maxweight}</p>
@@ -253,7 +255,7 @@ export class CustomerSearch extends Component {
         } else {
             var header = <div style={{ textAlign: 'left' }}>
             </div>;
-    
+
             return (
                 <div style={{ display: 'flex' }}>
                     <div className="card card-search">
@@ -270,6 +272,6 @@ export class CustomerSearch extends Component {
             );
         }
 
-    
+
     }
 }

@@ -90,7 +90,26 @@
     background-color: lightgrey;
     color: #474549;
 }
-
+.active {
+    border-radius: 2px;
+    padding: .25em .5em;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+    background-color: palegreen;
+    color: #474549;
+}
+.inactive {
+    border-radius: 2px;
+    padding: .25em .5em;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+    background-color: #FFCDD2;
+    color: #474549;
+}
 .overweight {
     border-radius: 2px;
     padding: .25em .5em;

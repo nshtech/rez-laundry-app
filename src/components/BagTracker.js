@@ -24,6 +24,7 @@ export class BagTracker extends Component {
         super();
         this.state = {
             customers: [],
+            selectedActive: 'active',
             selectedStatus: null,
             editing: false,
             loading: true,
@@ -32,11 +33,15 @@ export class BagTracker extends Component {
         this.edit = this.edit.bind(this);
         this.save = this.save.bind(this);
         this.export = this.export.bind(this);
+        this.onActiveFilterChange = this.onActiveFilterChange.bind(this);
         this.onStatusFilterChange = this.onStatusFilterChange.bind(this);
         this.bagStatusEditor = this.bagStatusEditor.bind(this)
         this.displaySelection = this.displaySelection.bind(this)
         this.loadInitialState = this.loadInitialState.bind(this)
         this.generalEditor = this.generalEditor.bind(this);
+
+
+
     }
     export() {
         this.dt.exportCSV();
@@ -163,13 +168,14 @@ export class BagTracker extends Component {
                             db.child('/orders/' + currDate +' '+currTime+' - '+ each.id + '/laundrystatus').set(each.laundrystatus);
                             db.child('/orders/' + currDate +' '+currTime+' - '+ each.id + '/weightstatus').set(each.weightstatus);
 
-                        })    
-                    
+                        })
+
                 }
             })
             this.setState({ customers: updatedCustomers });
         }
         this.dothisfirst(currentcustomers, newstatus)
+
     }
 
 
@@ -187,6 +193,7 @@ export class BagTracker extends Component {
                         if (ids.includes(key)) {
                             var key = childSnapshot.key;
                             firebase.database().ref('/customers/' + key + '/' + "laundrystatus").set(newstatus)
+
                         }
                     });
                 });
@@ -217,6 +224,10 @@ export class BagTracker extends Component {
         return <span className={rowData.weightstatus}>{rowData.weightstatus}</span>;
     }
 
+    activeBodyTemplate(rowData) {
+        return <span className={rowData.activestatus}>{rowData.activestatus}</span>;
+    }
+
     renderStatusFilter() {
         var statuses = [
             { label: 'Picked Up', value: 'picked-up' },
@@ -225,15 +236,37 @@ export class BagTracker extends Component {
             { label: 'Delivered to Dorm', value: 'delivered-to-dorm' },
             { label: 'Bag Missing', value: 'bag-missing' }
         ];
+
         return (
+
             <Dropdown value={this.state.selectedStatus} options={statuses} onChange={this.onStatusFilterChange}
-                showClear={true} placeholder="Select a Status" className="p-column-filter" style={{maxWidth: 200, minWidth: 50}} />
+             showClear={true} placeholder="Select a Status" className="p-column-filter" style={{maxWidth: 200, minWidth: 50}} />
         );
     }
+
 
     onStatusFilterChange(event) {
         this.dt.filter(event.value, 'laundrystatus', 'equals');
         this.setState({ selectedStatus: event.value });
+    }
+    renderActiveFilter() {
+
+        var actives = [
+            { label: 'active', value: 'active' },
+            { label: 'inactive', value: 'inactive' }
+
+        ];
+
+        return (
+
+        <Button label="Remove Inactive" onClick={this.onActiveFilterChange}/>
+
+       );
+
+  }
+
+    onActiveFilterChange(event) {
+        this.dt.filter('active', 'activestatus', 'equals');
     }
 
     loadInitialState = async () => {
@@ -254,6 +287,7 @@ export class BagTracker extends Component {
 
     render() {
         const statusFilter = this.renderStatusFilter();
+        const activeFilter = this.renderActiveFilter();
         const allcustomers = this.state.customers;
         const currentcustomers = this.state.selectedCustomers;
 
@@ -278,7 +312,7 @@ export class BagTracker extends Component {
                     </Button>
                     <Button type="button" style={{ color: '#C63737', backgroundColor: '#FFCDD2', borderColor: '#C63737', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="MISSING" onClick={() => { this.bagStatusEditor(allcustomers, currentcustomers, 'bag-missing') }}>
                     </Button>
-                    
+
                 </div>
                 <div>
 
@@ -291,7 +325,7 @@ export class BagTracker extends Component {
                         <h1>Rez Ops Bag Tracker</h1>
                         <p>The BagTracker is used to update bag statuses, including location, warnings, or overages of bags each the week.</p>
                         <p>ONLY individuals running operations should be accessing this page.</p>
-                        <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} 
+                        <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true}
                         editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}
                         footer={this.displaySelection(this.state.selectedCustomers)} selection={this.state.selectedCustomers} onSelectionChange={e => this.setState({ selectedCustomers: e.value })}>
                             <Column selectionMode="multiple" style={{ width: '3em' }} />
@@ -314,6 +348,7 @@ export class BagTracker extends Component {
                 </Button>
             </div>;
             return (
+
                 <div id="elmid">
                     <div className="card">
                         <h1>Rez Ops Bag Tracker</h1>
@@ -325,7 +360,9 @@ export class BagTracker extends Component {
                             <Column field="reshall" header="Residential Hall" sortable={true} />
                             <Column field="laundrystatus" header="Bag Status" style={{ maxWidth: 150 }} sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
                             <Column field="weightstatus" header="Weight Status" style={{ maxWidth: 150 }} sortable={true} body={this.weightBodyTemplate}/>
+                            <Column field="activestatus" header="Active Status" style={{ maxWidth: 150 }} filter filterMatchMode={"equals"} filterElement={activeFilter} body={this.activeBodyTemplate} />
                             <Column field="weekweight" header="Bag Weight" style={{ maxWidth: 100 }} sortable={true} />
+
                         </DataTable>
                     </div>
                 </div>
