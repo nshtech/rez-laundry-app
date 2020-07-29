@@ -364,7 +364,7 @@ export class BagTracker extends Component {
                             <Column field="reshall" header="Residential Hall" sortable={true} />
                             <Column field="laundrystatus" header="Bag Status" style={{ maxWidth: 150 }} sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
                             <Column field="weightstatus" header="Weight Status" style={{ maxWidth: 150 }} sortable={true} body={this.weightBodyTemplate}/>
-                            <Column field="activestatus" header="Active Status" style={{ maxWidth: 150 }} body={this.activeBodyTemplate} />
+                            <Column field="activestatus" header="Active Status" style={{ maxWidth: 100 }} body={this.activeBodyTemplate} />
                             <Column field="weekweight" header="Bag Weight" style={{ maxWidth: 100 }} sortable={true} />
 
                         </DataTable>

@@ -180,7 +180,7 @@ export class CustomerSheet extends Component {
                         <Column field="phone" header="Phone" sortable={true} />
                         <Column field="laundrystatus" header="Bag Status" style={{ maxWidth: 150 }} sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
                         <Column field="weightstatus" header="Weight Status" style={{ maxWidth: 150 }}  sortable={true} body={this.weightBodyTemplate} />
-                        <Column field="activestatus" header="Active/Inactive" style={{ maxWidth: 150 }} sortable={true} body={this.activeBodyTemplate}/>
+                        <Column field="activestatus" header="Active" style={{ maxWidth: 100 }} sortable={true} body={this.activeBodyTemplate}/>
                     </DataTable>
                 </div>
             </div>
