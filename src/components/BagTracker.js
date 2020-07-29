@@ -106,6 +106,7 @@ export class BagTracker extends Component {
                 db.child('/orders/' + currDate +' '+currTime+' - '+ props.rowData.id + '/weightstatus').set(props.rowData.weightstatus);
 
             })
+        firebase.database().ref('/customers/' + props.rowData.id + '/last_updated').set(currDate + ' ' + currTime)
         const curr = await this.updateWeightStatus(props,value, currDate);
     }
 
@@ -273,7 +274,10 @@ export class BagTracker extends Component {
         const customerArray = [];
         firebase.database().ref('/customers').on('value', function (snapshot) {
             snapshot.forEach(function (childSnapshot) {
-                customerArray.push(childSnapshot.toJSON());
+                if (childSnapshot.val().activestatus === 'active' ) {
+                    customerArray.push(childSnapshot.toJSON());
+                }
+                
             });
         });
         this.setState({ customers: customerArray });
@@ -360,7 +364,7 @@ export class BagTracker extends Component {
                             <Column field="reshall" header="Residential Hall" sortable={true} />
                             <Column field="laundrystatus" header="Bag Status" style={{ maxWidth: 150 }} sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
                             <Column field="weightstatus" header="Weight Status" style={{ maxWidth: 150 }} sortable={true} body={this.weightBodyTemplate}/>
-                            <Column field="activestatus" header="Active Status" style={{ maxWidth: 150 }} filter filterMatchMode={"equals"} filterElement={activeFilter} body={this.activeBodyTemplate} />
+                            <Column field="activestatus" header="Active Status" style={{ maxWidth: 150 }} body={this.activeBodyTemplate} />
                             <Column field="weekweight" header="Bag Weight" style={{ maxWidth: 100 }} sortable={true} />
 
                         </DataTable>
