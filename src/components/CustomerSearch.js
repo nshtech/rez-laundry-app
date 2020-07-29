@@ -29,31 +29,53 @@ export class CustomerSearch extends Component {
             orders: [],
             selectedCustomer: null,
             editing: false,
-            newplan: null,
+            newplanYear: null,
+            newplanQuarter: null,
             newmax: null,
             newreshall: null,
             newphone: null,
-            newemail: null
+            newemail: null,
+
         };
         this.edit = this.edit.bind(this);
         this.save = this.save.bind(this);
-        this.onPlanValueChange = this.onPlanValueChange.bind(this)
+        this.onPlanYearValueChange = this.onPlanYearValueChange.bind(this)
+        this.onPlanQuarterValueChange = this.onPlanQuarterValueChange.bind(this)
         this.getCustomerHistory = this.getCustomerHistory.bind(this)
+        this.displayPlanQuarters = this.displayPlanQuarters.bind(this)
+        this.resetNewInfo = this.resetNewInfo.bind(this)
     }
 
     edit() {
         this.setState({ editing: true });
+        this.resetNewInfo();
     }
 
     save(customer) {
         this.setState({ editing: false });
-        console.log(this.state.newplan)
+        //console.log(this.state.newplan)
         let allcustomers = [...this.state.customers];
         let newcustomer = {...this.state.selectedCustomer};
-        if (this.state.newplan) {
-             newcustomer.plan = this.state.newplan;
+        if (this.state.newplanYear && this.state.newplanQuarter) {
+             newcustomer.plan = this.state.newplanYear+this.state.newplanQuarter;
+             //console.log('newplanQuarter: ', this.state.newplanQuarter);
+             //console.log('newplanYear', this.state.newplanYear)
              firebase.database().ref('/customers/' + customer.id + '/plan').set(newcustomer.plan);
         }
+        else if (this.state.newplanYear) {
+            newcustomer.plan = this.state.newplanYear+customer.plan.substring(9);
+            //console.log('newcustomer.plan: ', newcustomer.plan);
+            //console.log('newplanYear', this.state.newplanYear)
+            //console.log('customer quarter: ', customer.plan.substring(9));
+            firebase.database().ref('/customers/' + customer.id + '/plan').set(newcustomer.plan);
+       }
+       else if (this.state.newplanQuarter) {
+            newcustomer.plan = customer.plan.substring(0,9)+this.state.newplanQuarter;
+            //console.log('newcustomer.plan: ', newcustomer.plan);
+            //console.log('customer year', customer.plan.substring(0,9))
+            //console.log('newplanQuarter: ', this.state.newplanQuarter);
+            firebase.database().ref('/customers/' + customer.id + '/plan').set(newcustomer.plan);
+   }
         if (this.state.newmax) {
             newcustomer.maxweight = this.state.newmax;
             firebase.database().ref('/customers/' + customer.id + '/maxweight').set(newcustomer.maxweight);
@@ -86,8 +108,13 @@ export class CustomerSearch extends Component {
     }
 
     //CUSTOMER INFORMATION EDITING
-    onPlanValueChange(value) {
-        this.setState({ newplan: value });
+    onPlanYearValueChange(value) {
+        //console.log('newPlanYear: ', value)
+        this.setState({ newplanYear: value });
+    }
+    onPlanQuarterValueChange(value) {
+        //console.log('newPlanQuarter: ', value)
+        this.setState({ newplanQuarter: value });
     }
     onMaxweightValueChange(value) {
         this.setState({ newmax: value });
@@ -110,14 +137,45 @@ export class CustomerSearch extends Component {
             snapshot.forEach(function (childSnapshot) {
                 var cid = childSnapshot.key;
                 var res = cid.split('-');
-                console.log(res[1])
+                //console.log(res[1])
                 if (res[1] === customer.id) {
                     history.push(childSnapshot.toJSON())
                 }
             });
         });
-        console.log(history)
+        //console.log(history)
         return history;
+    }
+
+    displayPlanQuarters(customerPlan) {
+        if (customerPlan) {
+
+            if (customerPlan === 'F') {
+                const result = 'Fall Quarter';
+                return result;
+            }
+            else if (customerPlan === 'W') {
+                const result = 'Winter Quarter' ;
+                return result;
+            }
+            else if (customerPlan === 'S') {
+                const result = 'Spring Quarter' ;
+                return result;
+            }
+            else if (customerPlan === 'F-W-S') {
+                const result = 'Full Year' ;
+                return result;
+            }
+        }
+    }
+
+    resetNewInfo() {
+        this.setState({ newplanYear: null });
+        this.setState({ newplanQuarter: null });
+        this.setState({ newmax: null });
+        this.setState({ newreshall: null });
+        this.setState({ newphone: null });
+        this.setState({ newemail: null });
     }
 
     /* --------------- Filters ---------------- */
@@ -151,7 +209,22 @@ export class CustomerSearch extends Component {
                 'bag-missing': 'bag missing'
             }
 
+
             if (this.state.editing) {
+                const planSelectYear = [
+                    {label: '2020-2021', value: '2020-2021'},
+                    {label: '2021-2022', value: '2021-2022'},
+                    {label: '2022-2023', value: '2022-2023'},
+                    {label: '2023-2024', value: '2023-2024'}
+                ]
+                const planSelectQuarter = [
+                    {label: 'Full Year', value: '-F-W-S'},
+                    {label: 'Fall Quarter', value: '-F'},
+                    {label: 'Winter Quarter', value: '-W'},
+                    {label: 'Spring Quarter', value: '-S'},
+                ]
+                //this.setState({ newplanYear: null });
+                //this.setState({ newplanQuarter: null });
                 return (
                 <div style={{ display: 'flex' }}>
                     <div className="card card-search">
@@ -174,7 +247,9 @@ export class CustomerSearch extends Component {
                                 <div className="p-field p-grid">
                                     <label htmlFor="firstname3" className="p-col-fixed" style={{ width: '110px' }}>Laundry Plan:</label>
                                     <div className="p-col">
-                                        <InputText type="text" placeholder={customer.plan} onChange={(e) => { this.onPlanValueChange(e.target.value); }}/>
+                                        <Dropdown  value={this.state.newplanYear} options={planSelectYear} onChange={(e) => {this.onPlanYearValueChange(e.target.value);}} placeholder={customer.plan.substring(0,9)}/>
+                                        <Dropdown  value={this.state.newplanQuarter} options={planSelectQuarter} onChange={(e) => {this.onPlanQuarterValueChange(e.target.value);}} placeholder={this.displayPlanQuarters(customer.plan.substring(10))}/>
+                                        
                                     </div>
                                 </div>
                                 <div className="p-field p-grid">
@@ -275,3 +350,10 @@ export class CustomerSearch extends Component {
 
     }
 }
+<<<<<<< HEAD
+=======
+
+//<InputText type="text" placeholder={customer.plan} onChange={(e) => { this.onPlanValueChange(e.target.value); }}/>
+//placeholder={customer.plan.substring(0,9)}
+//placeholder={this.displayPlanQuarters(customer.plan.substring(10))}
+>>>>>>> 74a12a71f17d4b8f2feaf8246ad2c4be8ec6b799
