@@ -74,7 +74,14 @@ export class OrderSheet extends Component {
 
     /* --------------- Filters ---------------- */
     statusBodyTemplate(rowData) {
-        return <span className={rowData.laundrystatus}>{rowData.laundrystatus.replace(/-/g, ' ')}</span>;
+        var laundryStatusDisplay = {
+            'picked-up': 'picked up',
+            'delivered-to-SH': 'delivered to SH',
+            'delivered-to-dorm': 'delivered to dorm',
+            'out-of-service': 'out of service',
+            'bag-missing': 'bag missing'
+        }
+        return <span className={rowData.laundrystatus}>{laundryStatusDisplay[rowData.laundrystatus]}</span>
     }
 
     weightBodyTemplate(rowData) {
