@@ -30,8 +30,11 @@ export class AddCustomers extends Component {
             orders: [],
             selectedCustomer: null,
             editing: false,
-            newplanYear: null,
-            newplanQuarter: null,
+            idcount: null,
+            newfirstname: null,
+            newlastname: null,
+            newplanyear: null,
+            newplanquarter: null,
             newmax: null,
             newreshall: null,
             newphone: null,
@@ -45,11 +48,34 @@ export class AddCustomers extends Component {
         //this.getCustomerHistory = this.getCustomerHistory.bind(this)
         this.displayPlanQuarters = this.displayPlanQuarters.bind(this)
         this.resetNewInfo = this.resetNewInfo.bind(this)
+        this.addCustomer = this.addCustomer.bind(this)
+        this.padId = this.padId.bind(this)
     }
 
+
+    padId(idNum) {
+        var digitLength = (idNum.toString()).length;
+        if (digitLength === 1) {
+            var result = '0000'+idNum;
+        }
+        else if (digitLength === 2) {
+            var result = '000'+idNum;
+        }
+        else if (digitLength === 3) {
+            var result = '00'+idNum;
+        }
+        else if (digitLength === 4) {
+            var result = '0'+idNum;
+        }
+        else if (digitLength === 5) {
+            var result = idNum.toString();
+        }
+        return result;
+
+    }
     edit() {
         this.setState({ editing: true });
-        this.resetNewInfo();
+        //this.resetNewInfo();
     }
 
     save(customer) {
@@ -109,13 +135,23 @@ export class AddCustomers extends Component {
     }
 
     //CUSTOMER INFORMATION EDITING
+    onFirstNameValueChange(value) {
+        //console.log('new first name: ', value)
+        this.setState({newfirstname: value});
+        
+    }
+    onLastNameValueChange(value) {
+        //console.log('new last name: ', value)
+        this.setState({newlastname: value});
+    }
+
     onPlanYearValueChange(value) {
         //console.log('newPlanYear: ', value)
-        this.setState({ newplanYear: value });
+        this.setState({ newplanyear: value });
     }
     onPlanQuarterValueChange(value) {
         //console.log('newPlanQuarter: ', value)
-        this.setState({ newplanQuarter: value });
+        this.setState({ newplanquarter: value });
     }
     onMaxweightValueChange(value) {
         this.setState({ newmax: value });
@@ -131,22 +167,68 @@ export class AddCustomers extends Component {
     onEmailValueChange(value) {
         this.setState({ newemail: value });
     }
+    resetNewInfo() {
+        this.setState({newfirstname: null});
+        this.setState({newlastname: null});
+        this.setState({ newplanYear: null });
+        this.setState({ newplanQuarter: null });
+        this.setState({ newmax: null });
+        this.setState({ newreshall: null });
+        this.setState({ newphone: null });
+        this.setState({ newemail: null });
+    }
 
-    // getCustomerHistory(customer) {
-    //     var history = []
-    //     firebase.database().ref('/orders').on('value', function (snapshot) {
-    //         snapshot.forEach(function (childSnapshot) {
-    //             var cid = childSnapshot.key;
-    //             var res = cid.split('-');
-    //             //console.log(res[1])
-    //             if (res[1] === customer.id) {
-    //                 history.push(childSnapshot.toJSON())
-    //             }
-    //         });
-    //     });
-    //     //console.log(history)
-    //     return history;
-    // }
+    async addCustomer() {
+        //console.log('new first name: ', this.state.newfirstname);
+        //console.log('new last name: ', this.state.newlastname);
+        // console.log('new plan year: ', this.state.newplanyear);
+        // console.log('new plan quarter: ', this.state.newplanquarter);
+        // console.log('new max weight: ', this.state.newmax);
+        // console.log('new res hall: ', this.state.newreshall);
+        // console.log('new phone: ', this.state.newphone);
+        // console.log('new email: ', this.state.newemail);
+        //this.setState({idcount: this.state.idcount+1});
+        //console.log('updated id Count', this.state.idcount);
+        var idNum = this.padId(this.state.idcount);
+        var id = this.state.newfirstname.substring(0,1).toLowerCase() +this.state.newlastname.substring(0,1).toLowerCase()+idNum;
+        //console.log('NEW ID: ', id);
+        const db = firebase.database().ref()
+        //updating id count in firebase and then updating state variable
+        db.child('/idcount').set(this.state.idcount+1);
+        db.child('/idcount').once('value')
+            .then(snapshot => {
+                this.setState({idcount: snapshot.val()})
+                console.log('state var idcount: ', this.state.idcount);
+                //idNum = snapshot.val();
+                console.log('id from firebase: ', snapshot.val());
+            });
+
+        const fullname = this.state.newfirstname + ' ' + this.state.newlastname;
+        db.child('/customers/'+id).once("value")
+            .then(snapshot => {
+                if(!snapshot.val()) {
+                    db.child('/customers/'+id+'/activestatus').set("active");
+                    db.child('/customers/'+id+'/bag-condition').set("good");
+                    db.child('/customers/'+id+'/bag-missing').set("false");
+                    db.child('/customers/'+id+'/email').set(this.state.newemail);
+                    db.child('/customers/'+id+'/id').set(id);
+                    db.child('/customers/'+id+'/laundrystatus').set('out-of-service');
+                    db.child('/customers/'+id+'/maxweight').set(this.state.newmax);
+                    db.child('/customers/'+id+'/name').set(fullname);
+                    db.child('/customers/'+id+'/phone').set(this.state.newphone);
+                    db.child('/customers/'+id+'/plan').set(this.state.newplanyear+this.state.newplanquarter);
+                    db.child('/customers/'+id+'/reshall').set(this.state.newreshall);
+                    db.child('/customers/'+id+'/weekweight').set("N/A");
+                    db.child('/customers/'+id+'/weightstatus').set("N/A");
+
+                }
+            })
+        const curr  = await this.resetNewInfo();
+       
+        console.log('reset info: ', this.state.newfirstname);
+        //document.getElementById("form").reset();
+
+    }
 
     displayPlanQuarters(customerPlan) {
         if (customerPlan) {
@@ -170,14 +252,7 @@ export class AddCustomers extends Component {
         }
     }
 
-    resetNewInfo() {
-        this.setState({ newplanYear: null });
-        this.setState({ newplanQuarter: null });
-        this.setState({ newmax: null });
-        this.setState({ newreshall: null });
-        this.setState({ newphone: null });
-        this.setState({ newemail: null });
-    }
+
 
     /* --------------- Filters ---------------- */
     componentDidMount() {
@@ -195,6 +270,16 @@ export class AddCustomers extends Component {
             });
         });
         this.setState({ orders: orderArray });
+        //var idNum = 0;
+        firebase.database().ref('/idcount').once('value')
+            .then(snapshot => {
+                this.setState({idcount: snapshot.val()})
+                console.log('state var idcount: ', this.state.idcount);
+                //idNum = snapshot.val();
+                console.log('id from firebase: ', snapshot.val());
+            });
+        //console.log('var idNum: ', idNum);
+        //this.setState({idcount: idNum});
     }
 
     render() {
@@ -222,52 +307,48 @@ export class AddCustomers extends Component {
             ]
 
             return (
-            <div className="card">
+            <div className="card" id="form">
                 <h1>Add New Customer</h1>
 
 
                 <div className="p-fluid p-formgrid p-grid">
     <div className="p-field p-col-12 p-md-6">
         <label htmlFor="firstname6">First Name</label>
-        <InputText id="firstname" type="text" />
+        <InputText value={this.state.newfirstname} id="firstname" type="text" onChange={(e) => { this.onFirstNameValueChange(e.target.value); }}/>
     </div>
     <div className="p-field p-col-12 p-md-6">
         <label htmlFor="lastname6">Last Name</label>
-        <InputText id="lastname" type="text" />
+        <InputText value={this.state.newlastname} id="lastname" type="text" onChange={(e) => { this.onLastNameValueChange(e.target.value); }}/>
     </div>
     <div className="p-field p-col-12 p-md-6">
         <label htmlFor="firstname6">Email</label>
-        <InputText id="newemail" type="text" />
+        <InputText value={this.state.newemail} id="newemail" type="text" onChange={(e) => { this.onEmailValueChange(e.target.value); }}/>
     </div>
     <div className="p-field p-col-12 p-md-6">
         <label htmlFor="lastname6">Phone</label>
-        <InputText id="newphone" type="text" />
+        <InputText value={this.state.newphone} id="newphone" type="text" onChange={(e) => { this.onPhoneValueChange(e.target.value); }}/>
     </div>
     <div className="p-field p-col-12 p-md-3">
         <label htmlFor="address">Laundry Plan Year</label>
-        <Dropdown  value={this.state.newplanYear} options={planSelectYear} onChange={(e) => {this.onPlanYearValueChange(e.target.value);}} placeholder='Select School Year'/>
+        <Dropdown  value={this.state.newplanyear} options={planSelectYear} onChange={(e) => {this.onPlanYearValueChange(e.target.value);}} placeholder='Select School Year'/>
 
     </div>
     <div className="p-field p-col-12 p-md-3">
         <label htmlFor="lastname6">Laundry Plan Quarter(s)</label>
-        <Dropdown  value={this.state.newplanQuarter} options={planSelectQuarter} onChange={(e) => {this.onPlanQuarterValueChange(e.target.value);}} placeholder='Select Quarter(s)'/>
+        <Dropdown  value={this.state.newplanquarter} options={planSelectQuarter} onChange={(e) => {this.onPlanQuarterValueChange(e.target.value);}} placeholder='Select Quarter(s)'/>
 
     </div>
     <div className="p-field p-col-12 p-md-3">
         <label htmlFor="city">Maximum Weight/week</label>
-        <InputText id="newmax" type="text" />
+        <InputText value={this.state.newmax} id="newmax" type="text" onChange={(e) => { this.onMaxweightValueChange(e.target.value); }}/>
     </div>
     <div className="p-field p-col-12 p-md-3">
         <label htmlFor="state">Residence Hall</label>
-        <InputText id="newreshall" type="text" />
+        <InputText value={this.state.newreshall} id="newreshall" type="text" onChange={(e) => { this.onReshallValueChange(e.target.value); }}/>
     </div>
     <div className = "p-field p-col-12">
-    <Button type="button" style={{ color: 'white', backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginTop: 30 }} label="ADD CUSTOMER" onClick={() => {this.save(customer)}} />
+    <Button type="button" style={{ color: 'white', backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginTop: 30 }} label="ADD CUSTOMER" onClick={() => {this.addCustomer()}} />
     </div>
-    {/* <div className="p-field p-col-12 p-md-3">
-        <label htmlFor="zip">Zip</label>
-        <InputText id="zip" type="text" />
-    </div> */}
 </div>
 </div>
             );
