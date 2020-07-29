@@ -97,8 +97,8 @@
     font-weight: 700;
     font-size: 12px;
     letter-spacing: .3px;
-    background-color: palegreen;
-    color: #474549;
+    background-color: #C8E6C9;
+    color: #256029;
 }
 .inactive {
     border-radius: 2px;
@@ -107,7 +107,7 @@
     font-weight: 700;
     font-size: 12px;
     letter-spacing: .3px;
-    background-color: #FFCDD2;
+    background-color: lightgrey;
     color: #474549;
 }
 .overweight {
