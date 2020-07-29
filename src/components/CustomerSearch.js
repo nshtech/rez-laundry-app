@@ -249,7 +249,7 @@ export class CustomerSearch extends Component {
                                     <div className="p-col">
                                         <Dropdown  value={this.state.newplanYear} options={planSelectYear} onChange={(e) => {this.onPlanYearValueChange(e.target.value);}} placeholder={customer.plan.substring(0,9)}/>
                                         <Dropdown  value={this.state.newplanQuarter} options={planSelectQuarter} onChange={(e) => {this.onPlanQuarterValueChange(e.target.value);}} placeholder={this.displayPlanQuarters(customer.plan.substring(10))}/>
-                                        
+
                                     </div>
                                 </div>
                                 <div className="p-field p-grid">
@@ -350,10 +350,3 @@ export class CustomerSearch extends Component {
 
     }
 }
-<<<<<<< HEAD
-=======
-
-//<InputText type="text" placeholder={customer.plan} onChange={(e) => { this.onPlanValueChange(e.target.value); }}/>
-//placeholder={customer.plan.substring(0,9)}
-//placeholder={this.displayPlanQuarters(customer.plan.substring(10))}
->>>>>>> 74a12a71f17d4b8f2feaf8246ad2c4be8ec6b799
