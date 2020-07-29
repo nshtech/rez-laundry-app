@@ -6,7 +6,7 @@ import { Column } from 'primereact/column'
 import { Chart } from 'primereact/chart'
 import { InputText } from 'primereact/inputtext';
 import { Editor } from 'primereact/editor';
-
+import {ToggleButton} from 'primereact/togglebutton';
 import firebase from 'firebase/app';
 import 'firebase/database';
 
@@ -35,6 +35,7 @@ export class CustomerSearch extends Component {
             newreshall: null,
             newphone: null,
             newemail: null,
+            newactive: null,
 
         };
         this.edit = this.edit.bind(this);
@@ -92,6 +93,10 @@ export class CustomerSearch extends Component {
             newcustomer.email = this.state.newemail;
             firebase.database().ref('/customers/' + customer.id + '/email').set(newcustomer.email)
         }
+        if (this.state.newactive) {
+            newcustomer.activestatus = this.state.newactive;
+            firebase.database().ref('/customers/' + customer.id + '/activestatus').set(newcustomer.activestatus)
+        }
         let count = 0;
         let individual=null;
         allcustomers.map(each => {
@@ -129,6 +134,11 @@ export class CustomerSearch extends Component {
     }
     onEmailValueChange(value) {
         this.setState({ newemail: value });
+    }
+    onActiveValueChange(value) {
+        this.setState({ newactive:value})
+
+
     }
 
     getCustomerHistory(customer) {
@@ -176,6 +186,7 @@ export class CustomerSearch extends Component {
         this.setState({ newreshall: null });
         this.setState({ newphone: null });
         this.setState({ newemail: null });
+        this.setState({ newactive: null })
     }
 
     /* --------------- Filters ---------------- */
@@ -257,6 +268,13 @@ export class CustomerSearch extends Component {
                                     <div className="p-col">
                                         <InputText type="text" placeholder={customer.maxweight} onChange={(e) => { this.onMaxweightValueChange(e.target.value); }}/>
                                     </div>
+
+                                </div>
+                                <div className="p-field p-grid">
+                                <label htmlFor="lastname3" className="p-col-fixed" style={{ width: '110px' }}>Active Status:</label>
+                                <div className="p-col">
+                                    <InputText type="text" placeholder={customer.activestatus} onChange={(e) => { this.onActiveValueChange(e.target.value); }}/>
+                                </div>
                                 </div>
                             </div>
                             <div style={{ minWidth: '50%' }}>
@@ -307,9 +325,9 @@ export class CustomerSearch extends Component {
                                 <div style={{ minWidth: '50%'  }}>
                                     <h3 style={{ marginBlockStart: 0, marginBlockEnd: '0.25em' }}>Account Information</h3>
                                     <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Customer ID: {customer.id}</p>
-                                    <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Customer ID: {customer.id}</p>
                                     <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Laundry Plan: {customer.plan}</p>
                                     <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Max Weight: {customer.maxweight}</p>
+                                    <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Active Status: {customer.activestatus}</p>
                                 </div>
                                 <div style={{ minWidth: '50%' }}>
                                     <h3 style={{ marginBlockStart: 0, marginBlockEnd: '0.25em' }}>Contact Information</h3>
