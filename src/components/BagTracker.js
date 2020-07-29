@@ -24,7 +24,6 @@ export class BagTracker extends Component {
         super();
         this.state = {
             customers: [],
-            selectedActive: 'active',
             selectedStatus: null,
             editing: false,
             loading: true,
@@ -33,7 +32,6 @@ export class BagTracker extends Component {
         this.edit = this.edit.bind(this);
         this.save = this.save.bind(this);
         this.export = this.export.bind(this);
-        this.onActiveFilterChange = this.onActiveFilterChange.bind(this);
         this.onStatusFilterChange = this.onStatusFilterChange.bind(this);
         this.bagStatusEditor = this.bagStatusEditor.bind(this)
         this.displaySelection = this.displaySelection.bind(this)
@@ -250,25 +248,6 @@ export class BagTracker extends Component {
         this.dt.filter(event.value, 'laundrystatus', 'equals');
         this.setState({ selectedStatus: event.value });
     }
-    renderActiveFilter() {
-
-        var actives = [
-            { label: 'active', value: 'active' },
-            { label: 'inactive', value: 'inactive' }
-
-        ];
-
-        return (
-
-        <Button label="Remove Inactive" onClick={this.onActiveFilterChange}/>
-
-       );
-
-  }
-
-    onActiveFilterChange(event) {
-        this.dt.filter('active', 'activestatus', 'equals');
-    }
 
     loadInitialState = async () => {
         const customerArray = [];
@@ -277,7 +256,7 @@ export class BagTracker extends Component {
                 if (childSnapshot.val().activestatus === 'active' ) {
                     customerArray.push(childSnapshot.toJSON());
                 }
-                
+
             });
         });
         this.setState({ customers: customerArray });
@@ -291,7 +270,6 @@ export class BagTracker extends Component {
 
     render() {
         const statusFilter = this.renderStatusFilter();
-        const activeFilter = this.renderActiveFilter();
         const allcustomers = this.state.customers;
         const currentcustomers = this.state.selectedCustomers;
 
@@ -364,7 +342,6 @@ export class BagTracker extends Component {
                             <Column field="reshall" header="Residential Hall" sortable={true} />
                             <Column field="laundrystatus" header="Bag Status" style={{ maxWidth: 150 }} sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
                             <Column field="weightstatus" header="Weight Status" style={{ maxWidth: 150 }} sortable={true} body={this.weightBodyTemplate}/>
-                            <Column field="activestatus" header="Active Status" style={{ maxWidth: 100 }} body={this.activeBodyTemplate} />
                             <Column field="weekweight" header="Bag Weight" style={{ maxWidth: 100 }} sortable={true} />
 
                         </DataTable>
