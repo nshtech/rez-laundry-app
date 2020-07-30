@@ -170,8 +170,8 @@ export class AddCustomers extends Component {
     resetNewInfo() {
         this.setState({newfirstname: ''});
         this.setState({newlastname: ''});
-        this.setState({ newplanYear: '' });
-        this.setState({ newplanQuarter: '' });
+        this.setState({ newplanYear: null });
+        this.setState({ newplanQuarter: null});
         this.setState({ newmax: '' });
         this.setState({ newreshall: '' });
         this.setState({ newphone: '' });
@@ -259,6 +259,10 @@ export class AddCustomers extends Component {
                 const result = 'Spring Quarter' ;
                 return result;
             }
+            else if (customerPlan === 'W-S') {
+                const result = 'Winter/Spring Quarter' ;
+                return result;
+            }
             else if (customerPlan === 'F-W-S') {
                 const result = 'Full Year' ;
                 return result;
@@ -315,6 +319,7 @@ export class AddCustomers extends Component {
             ]
             const planSelectQuarter = [
                 {label: 'Full Year', value: '-F-W-S'},
+                {label: 'Winter/Spring Quarter', value: '-W-S'},
                 {label: 'Fall Quarter', value: '-F'},
                 {label: 'Winter Quarter', value: '-W'},
                 {label: 'Spring Quarter', value: '-S'},
