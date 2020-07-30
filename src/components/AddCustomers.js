@@ -7,6 +7,8 @@ import { Chart } from 'primereact/chart'
 import { InputText } from 'primereact/inputtext';
 import { Editor } from 'primereact/editor';
 import {InputTextarea} from 'primereact/inputtextarea';
+import {Messages} from 'primereact/messages';
+import {Message} from 'primereact/message';
 
 import firebase from 'firebase/app';
 import 'firebase/database';
@@ -189,58 +191,65 @@ export class AddCustomers extends Component {
         // console.log('new email: ', this.state.newemail);
         //this.setState({idcount: this.state.idcount+1});
         //console.log('updated id Count', this.state.idcount);
-        var idNum = this.padId(this.state.idcount);
-        var id = this.state.newfirstname.substring(0,1).toLowerCase() +this.state.newlastname.substring(0,1).toLowerCase()+idNum;
-        //console.log('NEW ID: ', id);
-        const db = firebase.database().ref()
-        //updating id count in firebase and then updating state variable
-        db.child('/idcount').set(this.state.idcount+1);
-        db.child('/idcount').once('value')
-            .then(snapshot => {
-                this.setState({idcount: snapshot.val()})
-                console.log('state var idcount: ', this.state.idcount);
-                //idNum = snapshot.val();
-                console.log('id from firebase: ', snapshot.val());
-            });
+        if(this.state.newfirstname !=='' && this.state.newlastname !== '' && this.state.newemail !=='' && this.state.newphone !== '' && this.state.newreshall!=='' && this.state.newmax!=='' && this.state.newplanyear!==null && this.state.newplanquarter !== null) {
+            
+            var idNum = this.padId(this.state.idcount);
+            var id = this.state.newfirstname.substring(0,1).toLowerCase() +this.state.newlastname.substring(0,1).toLowerCase()+idNum;
+            //console.log('NEW ID: ', id);
+            this.messages.show({severity: 'success', summary: 'Success', detail: 'Customer Added!'});
+            const db = firebase.database().ref()
+            //updating id count in firebase and then updating state variable
+            db.child('/idcount').set(this.state.idcount+1);
+            db.child('/idcount').once('value')
+                .then(snapshot => {
+                    this.setState({idcount: snapshot.val()})
+                    console.log('state var idcount: ', this.state.idcount);
+                    //idNum = snapshot.val();
+                    console.log('id from firebase: ', snapshot.val());
+                });
 
-        const fullname = this.state.newfirstname + ' ' + this.state.newlastname;
-        const email = this.state.newemail
-        const phone = this.state.newphone
-        const reshall = this.state.newreshall
-        const maxweight = this.state.newmax
-        const plan = this.state.newplanyear+this.state.newplanquarter
-        db.child('/customers/'+id).once("value")
-            .then(snapshot => {
-                if(!snapshot.val()) {
-                    db.child('/customers/'+id+'/activestatus').set("active");
-                    db.child('/customers/'+id+'/bag-condition').set("good");
-                    db.child('/customers/'+id+'/bag-missing').set("false");
-                    db.child('/customers/'+id+'/email').set(email);
-                    db.child('/customers/'+id+'/id').set(id);
-                    db.child('/customers/'+id+'/laundrystatus').set('out-of-service');
-                    db.child('/customers/'+id+'/maxweight').set(maxweight);
-                    db.child('/customers/'+id+'/name').set(fullname);
-                    db.child('/customers/'+id+'/phone').set(phone);
-                    db.child('/customers/'+id+'/plan').set(plan);
-                    db.child('/customers/'+id+'/reshall').set(reshall);
-                    db.child('/customers/'+id+'/weekweight').set("N/A");
-                    db.child('/customers/'+id+'/weightstatus').set("N/A");
+            const fullname = this.state.newfirstname + ' ' + this.state.newlastname;
+            const email = this.state.newemail
+            const phone = this.state.newphone
+            const reshall = this.state.newreshall
+            const maxweight = this.state.newmax
+            const plan = this.state.newplanyear+this.state.newplanquarter
+            db.child('/customers/'+id).once("value")
+                .then(snapshot => {
+                    if(!snapshot.val()) {
+                        db.child('/customers/'+id+'/activestatus').set("active");
+                        db.child('/customers/'+id+'/bag-condition').set("good");
+                        db.child('/customers/'+id+'/bag-missing').set("false");
+                        db.child('/customers/'+id+'/email').set(email);
+                        db.child('/customers/'+id+'/id').set(id);
+                        db.child('/customers/'+id+'/laundrystatus').set('out-of-service');
+                        db.child('/customers/'+id+'/maxweight').set(maxweight);
+                        db.child('/customers/'+id+'/name').set(fullname);
+                        db.child('/customers/'+id+'/phone').set(phone);
+                        db.child('/customers/'+id+'/plan').set(plan);
+                        db.child('/customers/'+id+'/reshall').set(reshall);
+                        db.child('/customers/'+id+'/weekweight').set("N/A");
+                        db.child('/customers/'+id+'/weightstatus').set("N/A");
 
-                }
-            })
+                    }
+                })
 
-        this.setState({newfirstname: ''});
-        this.setState({newlastname: ''});
-        this.setState({ newplanYear: null});
-        this.setState({ newplanQuarter: null });
-        this.setState({ newmax: '' });
-        this.setState({ newreshall: '' });
-        this.setState({ newphone: '' });
-        this.setState({ newemail: '' });
-        //const curr  = await this.resetNewInfo();
+            this.setState({newfirstname: ''});
+            this.setState({newlastname: ''});
+            this.setState({ newplanYear: null});
+            this.setState({ newplanQuarter: null });
+            this.setState({ newmax: '' });
+            this.setState({ newreshall: '' });
+            this.setState({ newphone: '' });
+            this.setState({ newemail: '' });
+            //const curr  = await this.resetNewInfo();
        
-        //console.log('reset info: ', this.state.newfirstname);
-        //document.getElementById("form").reset();
+            //console.log('reset info: ', this.state.newfirstname);
+            //document.getElementById("form").reset();
+        }
+        else {
+            this.messages.show({severity: "error", summary: "Missing Fields", detail: "Please enter all information"});
+        }
 
     }
 
@@ -368,6 +377,11 @@ export class AddCustomers extends Component {
     <div className = "p-field p-col-12">
     <Button type="button" style={{ color: 'white', backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginTop: 30 }} label="ADD CUSTOMER" onClick={() => {this.addCustomer()}} />
     </div>
+    <div className = "p-field p-col-12">
+    <Messages ref={(el) => this.messages = el}></Messages>
+    </div>
+
+
 </div>
 </div>
             );
