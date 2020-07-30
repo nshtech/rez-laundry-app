@@ -168,14 +168,14 @@ export class AddCustomers extends Component {
         this.setState({ newemail: value });
     }
     resetNewInfo() {
-        this.setState({newfirstname: null});
-        this.setState({newlastname: null});
-        this.setState({ newplanYear: null });
-        this.setState({ newplanQuarter: null });
-        this.setState({ newmax: null });
-        this.setState({ newreshall: null });
-        this.setState({ newphone: null });
-        this.setState({ newemail: null });
+        this.setState({newfirstname: ''});
+        this.setState({newlastname: ''});
+        this.setState({ newplanYear: '' });
+        this.setState({ newplanQuarter: '' });
+        this.setState({ newmax: '' });
+        this.setState({ newreshall: '' });
+        this.setState({ newphone: '' });
+        this.setState({ newemail: '' });
     }
 
     async addCustomer() {
@@ -204,28 +204,42 @@ export class AddCustomers extends Component {
             });
 
         const fullname = this.state.newfirstname + ' ' + this.state.newlastname;
+        const email = this.state.newemail
+        const phone = this.state.newphone
+        const reshall = this.state.newreshall
+        const maxweight = this.state.newmax
+        const plan = this.state.newplanyear+this.state.newplanquarter
         db.child('/customers/'+id).once("value")
             .then(snapshot => {
                 if(!snapshot.val()) {
                     db.child('/customers/'+id+'/activestatus').set("active");
                     db.child('/customers/'+id+'/bag-condition').set("good");
                     db.child('/customers/'+id+'/bag-missing').set("false");
-                    db.child('/customers/'+id+'/email').set(this.state.newemail);
+                    db.child('/customers/'+id+'/email').set(email);
                     db.child('/customers/'+id+'/id').set(id);
                     db.child('/customers/'+id+'/laundrystatus').set('out-of-service');
-                    db.child('/customers/'+id+'/maxweight').set(this.state.newmax);
+                    db.child('/customers/'+id+'/maxweight').set(maxweight);
                     db.child('/customers/'+id+'/name').set(fullname);
-                    db.child('/customers/'+id+'/phone').set(this.state.newphone);
-                    db.child('/customers/'+id+'/plan').set(this.state.newplanyear+this.state.newplanquarter);
-                    db.child('/customers/'+id+'/reshall').set(this.state.newreshall);
+                    db.child('/customers/'+id+'/phone').set(phone);
+                    db.child('/customers/'+id+'/plan').set(plan);
+                    db.child('/customers/'+id+'/reshall').set(reshall);
                     db.child('/customers/'+id+'/weekweight').set("N/A");
                     db.child('/customers/'+id+'/weightstatus').set("N/A");
 
                 }
             })
-        const curr  = await this.resetNewInfo();
+
+        this.setState({newfirstname: ''});
+        this.setState({newlastname: ''});
+        this.setState({ newplanYear: null});
+        this.setState({ newplanQuarter: null });
+        this.setState({ newmax: '' });
+        this.setState({ newreshall: '' });
+        this.setState({ newphone: '' });
+        this.setState({ newemail: '' });
+        //const curr  = await this.resetNewInfo();
        
-        console.log('reset info: ', this.state.newfirstname);
+        //console.log('reset info: ', this.state.newfirstname);
         //document.getElementById("form").reset();
 
     }
