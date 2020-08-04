@@ -162,12 +162,15 @@ export class AddCustomers extends Component {
         this.setState({ newreshall: value });
     }
     onPhoneValueChange(value) {
-        if(value[3] ==='-' && value.length===12) {
+        if(value[3] ==='-' && value[7]==='-' && value.length===12) {
             this.setState({ newphone: value });
         }
+        //this.setState({ newphone: value });
     }
     onEmailValueChange(value) {
-        this.setState({ newemail: value });
+        if (value.includes('@') && value.includes('.')) {
+            this.setState({ newemail: value });
+        }
     }
     resetNewInfo() {
         this.setState({newfirstname: ''});
@@ -180,7 +183,7 @@ export class AddCustomers extends Component {
         this.setState({ newemail: '' });
     }
 
-    async addCustomer() {
+    addCustomer() {
         //console.log('new first name: ', this.state.newfirstname);
         //console.log('new last name: ', this.state.newlastname);
         // console.log('new plan year: ', this.state.newplanyear);
@@ -353,7 +356,7 @@ export class AddCustomers extends Component {
         <InputText value={this.state.newemail} id="newemail" type="text" onChange={(e) => { this.onEmailValueChange(e.target.value); }}/>
     </div>
     <div className="p-field p-col-12 p-md-6">
-        <label htmlFor="lastname6">Phone</label>
+        <label htmlFor="firstname6">Phone</label>
         <InputText value={this.state.newphone} id="newphone" type="text" onChange={(e) => { this.onPhoneValueChange(e.target.value); }}/>
     </div>
     <div className="p-field p-col-12 p-md-3">
