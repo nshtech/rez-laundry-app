@@ -128,12 +128,14 @@ export class CustomerSearch extends Component {
         this.setState({ newreshall: value });
     }
     onPhoneValueChange(value) {
-        if(value[3] ==='-' && value.length===12) {
+        if(value[3] ==='-' && value[7] ==='-' && value.length===12) {
             this.setState({ newphone: value });
         }
     }
     onEmailValueChange(value) {
-        this.setState({ newemail: value });
+        if (value.includes('@') && value.includes('.')) {
+            this.setState({ newemail: value });
+        }
     }
     onActiveValueChange(value) {
         this.setState({ newactive:value})
