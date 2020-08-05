@@ -57,20 +57,23 @@ export class BagTracker extends Component {
 
     updateWeightStatus(props,value, currDate) {
 
+        console.log(this.state.customers[props.rowIndex])
+        // console.log(props.rowIndex)
+
         if (value > props.rowData.maxweight) {
             firebase.database().ref('/customers/' + props.rowData.id + '/'+'weightstatus').set('overweight')
-            let updatedCustomers = [...props.value];
+            let updatedCustomers = this.state.customers;
             updatedCustomers[props.rowIndex][props.field] = value;
             updatedCustomers[props.rowIndex]['weightstatus'] = 'overweight';
-            this.setState({ customers: updatedCustomers });
+            // this.setState({ customers: updatedCustomers });
             return value
         }
         else {
             firebase.database().ref('/customers/' + props.rowData.id + '/'+'weightstatus').set('underweight')
-            let updatedCustomers = [...props.value];
+            let updatedCustomers = this.state.customers;
             updatedCustomers[props.rowIndex][props.field] = value;
             updatedCustomers[props.rowIndex]['weightstatus'] = 'underweight';
-            this.setState({ customers: updatedCustomers });
+            // this.setState({ customers: updatedCustomers });
             return value
         }
     }
@@ -116,16 +119,28 @@ export class BagTracker extends Component {
         return this.inputTextEditor(props, ' ');
     }
 
-    onEditorValueChange2(value) {
-        var query = firebase.database().ref("customers").orderByKey();
-        query.once("value")
-            .then(function (snapshot) {
-                snapshot.forEach(function (childSnapshot) {
-                    var key = childSnapshot.key;
-                    firebase.database().ref('/customers/' + key + '/' + "laundrystatus").set("bag-missing")
-                });
-        });
-    }
+    // onRowEditInit(event) {
+    //     this.clonedCars[event.data.vin] = { ...event.data };
+    // }
+
+    // onRowEditSave(event) {
+    //     if (this.onRowEditorValidator(event.data)) {
+    //         delete this.clonedCars[event.data.vin];
+    //         this.growl.show({ severity: 'success', summary: 'Success', detail: 'Car is updated' });
+    //     }
+    //     else {
+    //         this.growl.show({ severity: 'error', summary: 'Error', detail: 'Brand is required' });
+    //     }
+    // }
+
+    // onRowEditCancel(event) {
+    //     let cars = [...this.state.cars2];
+    //     cars[event.index] = this.clonedCars[event.data.vin];
+    //     delete this.clonedCars[event.data.vin];
+    //     this.setState({
+    //         cars2: cars
+    //     })
+    // }
 
     bagStatusEditor(allcustomers, currentcustomers, newstatus) {
         let updatedCustomers = [...allcustomers];
