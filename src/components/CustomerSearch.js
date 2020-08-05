@@ -7,9 +7,9 @@ import { Chart } from 'primereact/chart'
 import { InputText } from 'primereact/inputtext';
 import { Editor } from 'primereact/editor';
 import {ToggleButton} from 'primereact/togglebutton';
+import {RadioButton} from 'primereact/radiobutton';
 import firebase from 'firebase/app';
 import 'firebase/database';
-
 import validator from 'validator'
 
 
@@ -100,7 +100,7 @@ export class CustomerSearch extends Component {
         let count = 0;
         let individual=null;
         allcustomers.map(each => {
-            if (newcustomer.id == each.id) {
+            if (newcustomer.id === each.id) {
                 individual = {...allcustomers[count]};
                 individual= newcustomer;
                 allcustomers[count] = individual;
@@ -271,9 +271,18 @@ export class CustomerSearch extends Component {
 
                                 </div>
                                 <div className="p-field p-grid">
-                                <label htmlFor="lastname3" className="p-col-fixed" style={{ width: '110px' }}>Active Status:</label>
+
+                                <label htmlFor="lastname3" className="p-col-fixed" style={{ width: '200px' }}>Active Status:</label>
+
                                 <div className="p-col">
-                                    <InputText type="text" placeholder={customer.activestatus} onChange={(e) => { this.onActiveValueChange(e.target.value); }}/>
+                                    <label htmlFor="lastname3" className="p-col-fixed" style={{ width: '110px' }}>Active:</label>
+                                    <RadioButton value="active" name="Active" onChange={(e) => this.setState({newactive: e.value})} checked={customer.activestatus === 'active'} />
+
+
+                                </div>
+                                <div className="p-col">
+                                    <label htmlFor="lastname3" className="p-col-fixed" style={{ width: '110px' }}>Inactive:</label>
+                                    <RadioButton value="inactive" name="Inactive" onChange={(e) => this.setState({newactive: e.value})} checked={customer.activestatus === 'inactive'} />
                                 </div>
                                 </div>
                             </div>
@@ -327,7 +336,7 @@ export class CustomerSearch extends Component {
                                     <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Customer ID: {customer.id}</p>
                                     <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Laundry Plan: {customer.plan}</p>
                                     <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Max Weight: {customer.maxweight}</p>
-                                    <p style={{ marginBlockStart: 0, marginBlockEnd: '0.25em', paddingRight: 15 }}>Active Status: {customer.activestatus}</p>
+                                
                                 </div>
                                 <div style={{ minWidth: '50%' }}>
                                     <h3 style={{ marginBlockStart: 0, marginBlockEnd: '0.25em' }}>Contact Information</h3>
