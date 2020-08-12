@@ -6,6 +6,10 @@
     margin-right: 30%;
     margin-top: 15%
 }
+.login-error {
+  color: red;
+  text-align: left;
+}
 
 .login-card {
     background-color: #6a09a4;
@@ -56,4 +60,3 @@
     font-weight: bold;
     text-decoration: none;
 }
-

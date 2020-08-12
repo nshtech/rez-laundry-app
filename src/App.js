@@ -83,16 +83,22 @@ class App extends Component {
                 console.log(user.displayName)
                 this.setState({
                     user
-                });
+                })
+                {window.location.reload()}
+                {window.location = '/'}
+
             });
     }
 
     logout() {
         auth.signOut()
+
             .then(() => {
                 this.setState({
                     user: null
-                });
+                })
+                {window.location = '/#/sign-out'}
+
             });
     }
 
@@ -137,12 +143,14 @@ class App extends Component {
     }
 
     onMenuItemClick(event) {
+
         if(!event.item.items) {
             this.setState({
                 overlayMenuActive: false,
                 mobileMenuActive: false
             })
         }
+
     }
 
     createMenu() {
@@ -152,6 +160,7 @@ class App extends Component {
             { label: 'Customer Search', icon: 'pi pi-fw pi-search', to: '/customersearch' },
             { label: 'BagTracker', icon: 'pi pi-fw pi-check', to: '/bagtracker' },
             { label: 'Add New Customers', icon: 'pi pi-fw pi-user-plus', to: '/addcustomers' }
+            
         ];
     }
 
@@ -236,6 +245,26 @@ class App extends Component {
 
 
         return (
+          <div>
+
+            {this.state.user && !this.state.user.email.includes('studentholdings.org') ?
+            <div className="p-grid-login">
+                <div className="p-col-12">
+                <div className="login-error">
+                  <p>FAILED LOG IN</p>
+                    </div>
+                      <div className="card login-card">
+
+                        <h1>Rez Laundry Ops App</h1>
+                        <p>Log in with your SH email for access.</p>
+
+                        <div className="login-centered">
+                            <Button label="Log In" className="p-button-raised p-button-secondary" onClick={this.login} />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            :
             <div>
                 {this.state.user && this.state.user.email.includes('studentholdings.org') ?
                 <div>
@@ -287,6 +316,8 @@ class App extends Component {
                     </div>
                 }
             </div>
+          }
+          </div>
         );
     }
 }
