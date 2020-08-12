@@ -155,15 +155,7 @@ class App extends Component {
 
     createMenu() {
         this.menu = [
-<<<<<<< HEAD
-            {label: 'Customers', icon: 'pi pi-fw pi-users', command: () => {window.location = '#/'}},
-            { label: 'Orders', icon: 'pi pi-fw pi-inbox', to: '/ordersheet' },
-            { label: 'Customer Search', icon: 'pi pi-fw pi-search', to: '/customersearch' },
-            { label: 'BagTracker', icon: 'pi pi-fw pi-check', to: '/bagtracker' },
-            { label: 'Add New Customers', icon: 'pi pi-fw pi-user-plus', to: '/addcustomers' }
-            
-=======
-            {label: 'Dashboard', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/'}},
+          {label: 'Dashboard', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/'}},
             {
                 label: 'Customers',
                 icon: 'pi pi-fw pi-users',
@@ -178,13 +170,12 @@ class App extends Component {
                         icon: 'pi pi-fw pi-user-plus',
                         to: '/addcustomers'
                     }
-                    
+
                 ],
             },
             { label: 'Bag Tracker', icon: 'pi pi-fw pi-check', to: '/bagtracker' },
             { label: 'History', icon: 'pi pi-fw pi-inbox', to: '/ordersheet' },
 
->>>>>>> a8e6580b91ad382764892ec7ce62d60f2aa39fae
         ];
     }
 
