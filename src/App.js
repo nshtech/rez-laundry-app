@@ -147,11 +147,27 @@ class App extends Component {
 
     createMenu() {
         this.menu = [
-            {label: 'Customers', icon: 'pi pi-fw pi-users', command: () => {window.location = '#/'}},
-            { label: 'Orders', icon: 'pi pi-fw pi-inbox', to: '/ordersheet' },
-            { label: 'Customer Search', icon: 'pi pi-fw pi-search', to: '/customersearch' },
-            { label: 'BagTracker', icon: 'pi pi-fw pi-check', to: '/bagtracker' },
-            { label: 'Add New Customers', icon: 'pi pi-fw pi-user-plus', to: '/addcustomers' }
+            {label: 'Dashboard', icon: 'pi pi-fw pi-home', command: () => {window.location = '#/'}},
+            {
+                label: 'Customers',
+                icon: 'pi pi-fw pi-users',
+                items: [
+                    {
+                        label: 'Search',
+                        icon: 'pi pi-fw pi-search',
+                        to: '/customersearch'
+                    },
+                    {
+                        label: 'Add New',
+                        icon: 'pi pi-fw pi-user-plus',
+                        to: '/addcustomers'
+                    }
+                    
+                ],
+            },
+            { label: 'Bag Tracker', icon: 'pi pi-fw pi-check', to: '/bagtracker' },
+            { label: 'History', icon: 'pi pi-fw pi-inbox', to: '/ordersheet' },
+
         ];
     }
 
@@ -255,17 +271,7 @@ class App extends Component {
                             <Route path="/bagtracker" component={BagTracker} />
                             <Route path="/ordersheet" component={OrderSheet} />
                             <Route path="/addcustomers" component={AddCustomers} />
-                            <Route path="/forms" component={FormsDemo} />
-                            <Route path="/sample" component={SampleDemo} />
-                            <Route path="/data" component={DataDemo} />
-                            <Route path="/panels" component={PanelsDemo} />
-                            <Route path="/overlays" component={OverlaysDemo} />
-                            <Route path="/menus" component={MenusDemo} />
-                            <Route path="/messages" component={MessagesDemo} />
-                            <Route path="/charts" component={ChartsDemo} />
-                            <Route path="/misc" component={MiscDemo} />
-                            <Route path="/empty" component={EmptyPage} />
-                            <Route path="/documentation" component={Documentation} />
+                            <Route path="/menudemo" component={MenusDemo} />
                         </div>
 
                         <AppFooter />
