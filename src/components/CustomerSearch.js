@@ -36,6 +36,55 @@ export class CustomerSearch extends Component {
             newphone: null,
             newemail: null,
             newactive: null,
+            planSelectYear: [
+                {label: '2020-2021', value: '2020-2021'},
+                {label: '2021-2022', value: '2021-2022'},
+                {label: '2022-2023', value: '2022-2023'},
+                {label: '2023-2024', value: '2023-2024'}
+            ],
+            planSelectQuarter: [
+                {label: 'Full Year', value: '-F-W-S'},
+                {label: 'Winter/Spring Quarter', value: '-W-S'},
+                {label: 'Fall Quarter', value: '-F'},
+                {label: 'Winter Quarter', value: '-W'},
+                {label: 'Spring Quarter', value: '-S'},
+            ],
+            planSelectWeight: [
+                {label: '15 lb/week', value: '15'},
+                {label: '20 lb/week', value: '20'},
+                {label: '25 lb/week', value: '25'},
+            ],
+            planSelectReshall:[
+                {label: 'Choose later', value: 'Choose later'},
+                {label: '560 Lincoln', value: '560 Lincoln'},
+                {label: '720 Emerson', value: '720 Emerson'},
+                {label: '1838 Chicago', value: '1838 Chicago'},
+                {label: '1856 Orrington', value: '1856 Orrington'},
+                {label: '2303 Sheridan', value: '2303 Sheridan'},
+                {label: 'AYers', value: 'Ayers'},
+                {label: 'Allison', value: 'Allison'},
+                {label: 'Bobb', value: 'Bobb'},
+                {label: 'Chapin', value: 'Chapin'},
+                {label: 'East Fairchild', value: 'East Fairchild'},
+                {label: 'Elder', value: 'Elder'},
+                {label: 'West Fairchild', value: 'West Fairchild'},
+                {label: 'Foster-Walker (PLEX)', value: 'Foster-Walker (PLEX)'},
+                {label: 'Goodrich', value: 'Goodrich'},
+                {label: 'Hobart', value: 'Hobart'},
+                {label: 'Jones', value: 'Jones'},
+                {label: 'Kemper', value: 'Kemper'},
+                {label: 'McCulloch', value: 'McCulloch'},
+                {label: 'PARC (North Mid Quads)', value: 'PARC (North Mid Quads)'},
+                {label: 'Rogers House', value: 'Rogers House'},
+                {label: 'Sargent', value: 'Sargent'},
+                {label: 'Shepard Residential College (South Mid Quads)', value: 'Shepard Residential College (South Mid Quads)'},
+                {label: 'Shepard Hall', value: 'Shepard Hall'},
+                {label: 'Slivka', value: 'Slivka'},
+                {label: 'Willard', value: 'Willard'},
+                {label: 'Delta Gamma', value: 'Delta Gamma'},
+                {label: 'Kappa Kappa Gamma', value: 'Kappa Kappa Gamma'}
+
+            ]
 
         };
         this.edit = this.edit.bind(this);
@@ -224,18 +273,7 @@ export class CustomerSearch extends Component {
 
 
             if (this.state.editing) {
-                const planSelectYear = [
-                    {label: '2020-2021', value: '2020-2021'},
-                    {label: '2021-2022', value: '2021-2022'},
-                    {label: '2022-2023', value: '2022-2023'},
-                    {label: '2023-2024', value: '2023-2024'}
-                ]
-                const planSelectQuarter = [
-                    {label: 'Full Year', value: '-F-W-S'},
-                    {label: 'Fall Quarter', value: '-F'},
-                    {label: 'Winter Quarter', value: '-W'},
-                    {label: 'Spring Quarter', value: '-S'},
-                ]
+                
                 //this.setState({ newplanYear: null });
                 //this.setState({ newplanQuarter: null });
                 return (
@@ -260,15 +298,15 @@ export class CustomerSearch extends Component {
                                 <div className="p-field p-grid">
                                     <label htmlFor="firstname3" className="p-col-fixed" style={{ width: '110px' }}>Laundry Plan:</label>
                                     <div className="p-col">
-                                        <Dropdown  value={this.state.newplanYear} options={planSelectYear} onChange={(e) => {this.onPlanYearValueChange(e.target.value);}} placeholder={customer.plan.substring(0,9)}/>
-                                        <Dropdown  value={this.state.newplanQuarter} options={planSelectQuarter} onChange={(e) => {this.onPlanQuarterValueChange(e.target.value);}} placeholder={this.displayPlanQuarters(customer.plan.substring(10))}/>
+                                        <Dropdown  value={this.state.newplanYear} options={this.state.planSelectYear} onChange={(e) => {this.onPlanYearValueChange(e.target.value);}} placeholder={customer.plan.substring(0,9)}/>
+                                        <Dropdown  value={this.state.newplanQuarter} options={this.state.planSelectQuarter} onChange={(e) => {this.onPlanQuarterValueChange(e.target.value);}} placeholder={this.displayPlanQuarters(customer.plan.substring(10))}/>
 
                                     </div>
                                 </div>
                                 <div className="p-field p-grid">
                                     <label htmlFor="lastname3" className="p-col-fixed" style={{ width: '110px' }}>Max Weight:</label>
                                     <div className="p-col">
-                                        <InputText type="text" placeholder={customer.maxweight} onChange={(e) => { this.onMaxweightValueChange(e.target.value); }}/>
+                                    <Dropdown  value={this.state.newmax} options={this.state.planSelectWeight} onChange={(e) => {this.onMaxweightValueChange(e.target.value);}} placeholder={customer.maxweight}/>
                                     </div>
 
                                 </div>
@@ -293,7 +331,7 @@ export class CustomerSearch extends Component {
                                 <div className="p-field p-grid">
                                     <label htmlFor="firstname3" className="p-col-fixed" style={{ width: '120px' }}>Residential Hall:</label>
                                     <div className="p-col">
-                                        <InputText type="text" placeholder={customer.reshall} onChange={(e) => { this.onReshallValueChange(e.target.value); }}/>
+                                        <Dropdown  value={this.state.newreshall} options={this.state.planSelectReshall} onChange={(e) => {this.onReshallValueChange(e.target.value);}} placeholder={customer.reshall}/>
                                     </div>
                                 </div>
                                 <div className="p-field p-grid">
