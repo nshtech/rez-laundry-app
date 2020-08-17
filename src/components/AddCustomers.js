@@ -41,6 +41,55 @@ export class AddCustomers extends Component {
             newreshall: null,
             newphone: null,
             newemail: null,
+            planSelectYear: [
+                {label: '2020-2021', value: '2020-2021'},
+                {label: '2021-2022', value: '2021-2022'},
+                {label: '2022-2023', value: '2022-2023'},
+                {label: '2023-2024', value: '2023-2024'}
+            ],
+            planSelectQuarter: [
+                {label: 'Full Year', value: '-F-W-S'},
+                {label: 'Winter/Spring Quarter', value: '-W-S'},
+                {label: 'Fall Quarter', value: '-F'},
+                {label: 'Winter Quarter', value: '-W'},
+                {label: 'Spring Quarter', value: '-S'},
+            ],
+            planSelectWeight: [
+                {label: '15 lb/week', value: '15'},
+                {label: '20 lb/week', value: '20'},
+                {label: '25 lb/week', value: '25'},
+            ],
+            planSelectReshall:[
+                {label: 'Choose later', value: 'Choose later'},
+                {label: '560 Lincoln', value: '560 Lincoln'},
+                {label: '720 Emerson', value: '720 Emerson'},
+                {label: '1838 Chicago', value: '1838 Chicago'},
+                {label: '1856 Orrington', value: '1856 Orrington'},
+                {label: '2303 Sheridan', value: '2303 Sheridan'},
+                {label: 'AYers', value: 'Ayers'},
+                {label: 'Allison', value: 'Allison'},
+                {label: 'Bobb', value: 'Bobb'},
+                {label: 'Chapin', value: 'Chapin'},
+                {label: 'East Fairchild', value: 'East Fairchild'},
+                {label: 'Elder', value: 'Elder'},
+                {label: 'West Fairchild', value: 'West Fairchild'},
+                {label: 'Foster-Walker (PLEX)', value: 'Foster-Walker (PLEX)'},
+                {label: 'Goodrich', value: 'Goodrich'},
+                {label: 'Hobart', value: 'Hobart'},
+                {label: 'Jones', value: 'Jones'},
+                {label: 'Kemper', value: 'Kemper'},
+                {label: 'McCulloch', value: 'McCulloch'},
+                {label: 'PARC (North Mid Quads)', value: 'PARC (North Mid Quads)'},
+                {label: 'Rogers House', value: 'Rogers House'},
+                {label: 'Sargent', value: 'Sargent'},
+                {label: 'Shepard Residential College (South Mid Quads)', value: 'Shepard Residential College (South Mid Quads)'},
+                {label: 'Shepard Hall', value: 'Shepard Hall'},
+                {label: 'Slivka', value: 'Slivka'},
+                {label: 'Willard', value: 'Willard'},
+                {label: 'Delta Gamma', value: 'Delta Gamma'},
+                {label: 'Kappa Kappa Gamma', value: 'Kappa Kappa Gamma'}
+
+            ],
 
         };
         this.edit = this.edit.bind(this);
@@ -223,8 +272,12 @@ export class AddCustomers extends Component {
                         db.child('/customers/'+id+'/activestatus').set("active");
                         db.child('/customers/'+id+'/bag-condition').set("good");
                         db.child('/customers/'+id+'/bag-missing').set("false");
+                        db.child('/customers/'+id+'/detergent').set('unscented');
                         db.child('/customers/'+id+'/email').set(email);
+                        db.child('/customers/'+id+'/fabric_softener').set('No');
                         db.child('/customers/'+id+'/id').set(id);
+                        db.child('/customers/'+id+'/last_status_updated').set('N/A');
+                        db.child('/customers/'+id+'/last_weight_updated').set('N/A');
                         db.child('/customers/'+id+'/laundrystatus').set('out-of-service');
                         db.child('/customers/'+id+'/maxweight').set(maxweight);
                         db.child('/customers/'+id+'/name').set(fullname);
@@ -323,19 +376,6 @@ export class AddCustomers extends Component {
                 'out-of-service': 'out of service',
                 'bag-missing': 'bag missing'
             }
-            const planSelectYear = [
-                {label: '2020-2021', value: '2020-2021'},
-                {label: '2021-2022', value: '2021-2022'},
-                {label: '2022-2023', value: '2022-2023'},
-                {label: '2023-2024', value: '2023-2024'}
-            ]
-            const planSelectQuarter = [
-                {label: 'Full Year', value: '-F-W-S'},
-                {label: 'Winter/Spring Quarter', value: '-W-S'},
-                {label: 'Fall Quarter', value: '-F'},
-                {label: 'Winter Quarter', value: '-W'},
-                {label: 'Spring Quarter', value: '-S'},
-            ]
 
             return (
             <div className="card" id="form">
@@ -361,21 +401,22 @@ export class AddCustomers extends Component {
     </div>
     <div className="p-field p-col-12 p-md-3">
         <label htmlFor="address">Laundry Plan Year</label>
-        <Dropdown  value={this.state.newplanyear} options={planSelectYear} onChange={(e) => {this.onPlanYearValueChange(e.target.value);}} placeholder='Select School Year'/>
+        <Dropdown  value={this.state.newplanyear} options={this.state.planSelectYear} onChange={(e) => {this.onPlanYearValueChange(e.target.value);}} placeholder='Select School Year'/>
 
     </div>
     <div className="p-field p-col-12 p-md-3">
         <label htmlFor="lastname6">Laundry Plan Quarter(s)</label>
-        <Dropdown  value={this.state.newplanquarter} options={planSelectQuarter} onChange={(e) => {this.onPlanQuarterValueChange(e.target.value);}} placeholder='Select Quarter(s)'/>
+        <Dropdown  value={this.state.newplanquarter} options={this.state.planSelectQuarter} onChange={(e) => {this.onPlanQuarterValueChange(e.target.value);}} placeholder='Select Quarter(s)'/>
 
     </div>
     <div className="p-field p-col-12 p-md-3">
         <label htmlFor="city">Maximum Weight/week</label>
-        <InputText value={this.state.newmax} id="newmax" type="text" onChange={(e) => { this.onMaxweightValueChange(e.target.value); }}/>
+        <Dropdown  value={this.state.newmax} options={this.state.planSelectWeight} onChange={(e) => {this.onMaxweightValueChange(e.target.value);}} placeholder='Select Weight'/>
+
     </div>
     <div className="p-field p-col-12 p-md-3">
         <label htmlFor="state">Residence Hall</label>
-        <InputText value={this.state.newreshall} id="newreshall" type="text" onChange={(e) => { this.onReshallValueChange(e.target.value); }}/>
+        <Dropdown  value={this.state.newreshall} options={this.state.planSelectReshall} onChange={(e) => {this.onReshallValueChange(e.target.value);}} placeholder='Select Residence Hall'/>
     </div>
     <div className = "p-field p-col-12">
     <Button type="button" style={{ color: 'white', backgroundColor: '#6a09a4', borderColor: '#6a09a4', marginTop: 30 }} label="ADD CUSTOMER" onClick={() => {this.addCustomer()}} />
