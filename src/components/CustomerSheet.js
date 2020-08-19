@@ -95,6 +95,18 @@ export class CustomerSheet extends Component {
         return <span className={rowData.activestatus}>{rowData.activestatus}</span>;
     }
 
+    detergentBodyTemplate(rowData){
+        return <span className={rowData.detergent}>{rowData.detergent}</span>;
+    }
+
+    fabricSoftenerBodyTemplate(rowData){
+        return <span className={rowData.fabric_softener}>{rowData.fabric_softener}</span>;
+    }
+
+    specialRequestBodyTemplate(rowData){
+        return <span className={rowData.special_request}>{rowData.special_request}</span>;
+    }
+
     renderStatusFilter() {
         var statuses =  [
             {label: 'Picked Up', value: 'picked-up'},
@@ -143,10 +155,13 @@ export class CustomerSheet extends Component {
                     <h1>RezLaundry Dashboard</h1>
                     <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}>
                         <Column field="id" header="ID" sortable={true} />
-                        <Column field="name" header="Name" style={{ maxWidth: 150 }} sortable filter filterPlaceholder="Search name"/>
-                        <Column field="laundrystatus" header="Bag Status" style={{ maxWidth: 150 }} sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
-                        <Column field="weightstatus" header="Weight Status" style={{ maxWidth: 150 }}  sortable={true} body={this.weightBodyTemplate} />
-                        <Column field="activestatus" header="Active" style={{ maxWidth: 100 }} sortable={true} body={this.activeBodyTemplate}/>
+                        <Column field="name" header="Name" style={{ maxWidth: 150 }} sortable filter filterPlaceholder="Search name" exportable={false}/>
+                        <Column field="laundrystatus" header="Bag Status" style={{ maxWidth: 150 }} sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} exportable={false}/>
+                        <Column field="weightstatus" header="Weight Status" style={{ maxWidth: 150 }}  sortable={true} body={this.weightBodyTemplate} exportable={false}/>
+                        <Column field="activestatus" header="Active" style={{ maxWidth: 100 }} sortable={true} body={this.activeBodyTemplate} exportable={false}/>
+                        <Column field="detergentstatus" header="Detergent" style={{ maxWidth: 100 }} sortable={true} body={this.detergentBodyTemplate}/>
+                        <Column field="fabricstatus" header="Fabric Softener" style={{ maxWidth: 100 }} sortable={true} body={this.fabricSoftenerBodyTemplate}/>
+                        <Column field="requeststatus" header="Special Requests" style={{ maxWidth: 100 }} sortable={true} body={this.specialRequestBodyTemplate}/>
                     </DataTable>
                 </div>
             </div>
