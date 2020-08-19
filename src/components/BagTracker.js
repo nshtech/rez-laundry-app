@@ -25,6 +25,7 @@ export class BagTracker extends Component {
         this.state = {
             customers: [],
             selectedStatus: null,
+            selectedReshall: null,
             editing: false,
             loading: true,
             selectedCustomers: null
@@ -33,6 +34,7 @@ export class BagTracker extends Component {
         this.save = this.save.bind(this);
         this.export = this.export.bind(this);
         this.onStatusFilterChange = this.onStatusFilterChange.bind(this);
+        this.onReshallFilterChange = this.onReshallFilterChange.bind(this);
         this.bagStatusEditor = this.bagStatusEditor.bind(this)
         this.displaySelection = this.displaySelection.bind(this)
         this.loadInitialState = this.loadInitialState.bind(this)
@@ -226,6 +228,8 @@ export class BagTracker extends Component {
 
 
     /* --------------- Filters ---------------- */
+
+//dropdown for laundrystats
     statusBodyTemplate(rowData) {
         var laundryStatusDisplay = {
             'picked-up': 'picked up',
@@ -236,13 +240,7 @@ export class BagTracker extends Component {
         }
         return <span className={rowData.laundrystatus}>{laundryStatusDisplay[rowData.laundrystatus]}</span>
     }
-    weightBodyTemplate(rowData) {
-        return <span className={rowData.weightstatus}>{rowData.weightstatus}</span>;
-    }
 
-    activeBodyTemplate(rowData) {
-        return <span className={rowData.activestatus}>{rowData.activestatus}</span>;
-    }
 
     renderStatusFilter() {
         var statuses = [
@@ -260,11 +258,102 @@ export class BagTracker extends Component {
         );
     }
 
+    weightBodyTemplate(rowData) {
+        return <span className={rowData.weightstatus}>{rowData.weightstatus}</span>;
+    }
+
 
     onStatusFilterChange(event) {
         this.dt.filter(event.value, 'laundrystatus', 'equals');
         this.setState({ selectedStatus: event.value });
     }
+
+
+//dropdown for reshall
+
+    reshallBodyTemplate(rowData) {
+        var reshallDisplay = {
+          '560 Lincoln': '560 Lincoln',
+          '720 Emerson': '720 Emerson',
+          '1838 Chicago': '1838 Chicago',
+          '1856 Orrington': '1856 Orrington',
+          '2303 Sheridan': '2303 Sheridan',
+          'Ayers': 'Ayers',
+          'Allison': 'Allison',
+          'Bobb': 'Bobb',
+          'Chapin': 'Chapin',
+          'East Fairchild': 'East Fairchild',
+          'Elder': 'Elder',
+          'West Fairchild': 'West Fairchild',
+          'Foster-Walker': 'Foster-Walker',
+          'Goodrich': 'Goodrich',
+          'Hobart': 'Hobart',
+          'Jones': 'Jones',
+          'Kemper': 'Kemper',
+          'McCulloch': 'McCulloch',
+          'PARC': 'PARC (North Mid Quads)',
+          'Rogers House': 'Rogers House',
+          'Sargent': 'Sargent',
+          'SMQ': 'Shepard Residential College (South Mid Quads)',
+          'Shepard': 'Shepard',
+          'Slivka': 'Slivka',
+          'Willard':  'Willard',
+          'Delta Gamma': 'Delta Gamma',
+          'Kappa Kappa Gamma': 'Kappa Kappa Gamma',
+          'Foster-Walker': 'Foster-Walker'
+          }
+          return <span className={rowData.reshall}>{reshallDisplay[rowData.reshall]}</span>
+    }
+
+    renderReshallFilter() {
+        var reshalls = [
+            { label: '560 Lincoln', value: '560 Lincoln' },
+            { label: '720 Emerson', value: '720 Emerson'},
+            { label: '1838 Chicago', value: '1838 Chicago'},
+            { label: '1856 Orrington', value: '1856 Orrington'},
+            { label: '2303 Sheridan', value: '2303 Sheridan'},
+            { label: 'Ayers', value: 'Ayers'},
+            { label: 'Allison', value: 'Allison'},
+            { label: 'Bobb', value: 'Bobb' },
+            { label: 'Chapin', value: 'Chapin'},
+            { label: 'East Fairchild', value: 'East Fairchild'},
+            { label: 'Elder', value: 'Elder'},
+            { label: 'West Fairchild', value: 'West Fairchild'},
+            { label: 'Foster-Walker', value: 'Foster-Walker'},
+            { label: 'Goodrich', value: 'Goodrich'},
+            { label: 'Hobart', value: 'Hobart'},
+            { label: 'Jones', value: 'Jones' },
+            { label: 'Kemper', value: 'Kemper'},
+            { label: 'McCulloch', value: 'McCulloch'},
+            { label: 'PARC (North Mid Quads)', value: 'PARC'},
+            { label: 'Rogers House', value: 'Rogers House' },
+            { label: 'Sargent', value: 'Sargent'},
+            { label: 'Shepard Residential College (South Mid Quads)', value: 'SMQ'},
+            { label: 'Shepard', value: 'Shepard'},
+            { label: 'Slivka', value: 'Slivka'},
+            { label: 'Willard', value: 'Willard'},
+            { label: 'Delta Gamma', value: 'Delta Gamma'},
+            { label: 'Kappa Kappa Gamma', value: 'Kappa Kappa Gamma'},
+            { label: 'Foster-Walker', value: 'Foster-Walker'}
+        ];
+
+        return (
+
+            <Dropdown value={this.state.selectedReshall} options={reshalls} onChange={this.onReshallFilterChange}
+             showClear={true} placeholder="Select a Dorm" className="p-column-filter" style={{maxWidth: 200, minWidth: 50}} />
+        );
+    }
+
+
+    onReshallFilterChange(event) {
+        this.dt.filter(event.value, 'reshall', 'equals');
+        this.setState({ selectedReshall: event.value });
+    }
+
+
+
+
+
 
     loadInitialState = async () => {
         const customerArray = [];
@@ -287,6 +376,7 @@ export class BagTracker extends Component {
 
     render() {
         const statusFilter = this.renderStatusFilter();
+        const reshallFilter = this.renderReshallFilter();
         const allcustomers = this.state.customers;
         const currentcustomers = this.state.selectedCustomers;
 
@@ -330,10 +420,10 @@ export class BagTracker extends Component {
                             <Column selectionMode="multiple" style={{ width: '3em' }} />
                             <Column field="id" header="ID" sortable={true} />
                             <Column field="name" header="Name" style={{ maxWidth: 150 }} sortable filter filterPlaceholder="Search by name" />
-                            <Column field="reshall" header="Residential Hall" sortable={true}/>
+                            <Column field="reshall" header="Residential Hall" style={{ maxWidth: 200 }} sortable={true} filter filterElement={reshallFilter} body={this.reshallBodyTemplate}/>
                             <Column field="laundrystatus" header="Bag Status" style={{ maxWidth: 150 }} sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate}/>
                             <Column field="weightstatus" header="Weight Status" style={{ maxWidth: 150 }} sortable={true} body={this.weightBodyTemplate}/>
-                            <Column field="activestatus" header="Active Status" style={{ maxWidth: 100 }} body={this.activeBodyTemplate} />
+
                             <Column field="weekweight" header="Bag Weight" sortable={true} style={{ backgroundColor: '#6a09a4', color: 'white', maxWidth: 100 }} editor={this.generalEditor}/>
                         </DataTable>
                     </div>
@@ -357,7 +447,7 @@ export class BagTracker extends Component {
                         <DataTable value={this.state.customers} header={header} ref={(el) => { this.dt = el; }} style={{ marginBottom: '20px' }} responsive={true} autoLayout={true} editMode="row" rowEditorValidator={this.onRowEditorValidator} onRowEditInit={this.onRowEditInit} onRowEditSave={this.onRowEditSave} onRowEditCancel={this.onRowEditCancel}>
                             <Column field="id" header="ID" sortable={true} />
                             <Column field="name" header="Name" style={{ maxWidth: 150 }} sortable filter filterPlaceholder="Search by name" />
-                            <Column field="reshall" header="Residential Hall" sortable={true} />
+                            <Column field="reshall" header="Residential Hall" style={{ maxWidth: 200 }} sortable={true} filter filterElement={reshallFilter} body={this.reshallBodyTemplate}/>
                             <Column field="laundrystatus" header="Bag Status" style={{ maxWidth: 150 }} sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} />
                             <Column field="weightstatus" header="Weight Status" style={{ maxWidth: 150 }} sortable={true} body={this.weightBodyTemplate}/>
                             <Column field="weekweight" header="Bag Weight" style={{ maxWidth: 100 }} sortable={true} />
