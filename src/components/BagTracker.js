@@ -88,7 +88,7 @@ export class BagTracker extends Component {
         var currDay = new Date().getDate();
         var currMonth = new Date().getMonth() +1;
         var currYear = new Date().getFullYear();
-        var currDate = currMonth + '-'+currDay+'-'+currYear;
+        var currDate = currYear + '-' + currMonth + '-'+currDay;
         var fullDate = new Date().toDateString();
         var currTime = new Date().toLocaleTimeString('it-IT');
         db.child('/orders/' + currDate + props.rowData.id).once("value")
