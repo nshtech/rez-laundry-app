@@ -87,6 +87,12 @@ export class BagTracker extends Component {
         var currWeight = value;
         var currDay = new Date().getDate();
         var currMonth = new Date().getMonth() +1;
+        if (currMonth < 10) {
+            currMonth = '0'+currMonth
+        }
+        if (currDay < 10) {
+            currDay = '0' + currDay
+        }
         var currYear = new Date().getFullYear();
         var currDate = currYear + '-' + currMonth + '-'+currDay;
         var fullDate = new Date().toDateString();
