@@ -155,8 +155,14 @@ export class BagTracker extends Component {
         const db = firebase.database().ref()
         var currDay = new Date().getDate();
         var currMonth = new Date().getMonth() +1;
+        if (currMonth < 10) {
+            currMonth = '0'+currMonth
+        }
+        if (currDay < 10) {
+            currDay = '0' + currDay
+        }
         var currYear = new Date().getFullYear();
-        var currDate = currMonth + '-'+currDay+'-'+currYear;
+        var currDate = currYear + '-' + currMonth + '-'+currDay;
         //var currDate = new Date().toDateString();
         var currTime = new Date().toLocaleTimeString('it-IT');
 
