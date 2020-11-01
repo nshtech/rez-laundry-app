@@ -35,8 +35,8 @@ export class AddCustomers extends Component {
             idcount: null,
             newfirstname: null,
             newlastname: null,
-            newplanyear: null,
-            newplanquarter: null,
+            newplanYear: null,
+            newplanQuarter: null,
             newmax: null,
             newreshall: null,
             newphone: null,
@@ -134,21 +134,21 @@ export class AddCustomers extends Component {
         //console.log(this.state.newplan)
         let allcustomers = [...this.state.customers];
         let newcustomer = {...this.state.selectedCustomer};
-        if (this.state.newplanYear && this.state.newplanQuarter) {
-             newcustomer.plan = this.state.newplanYear+this.state.newplanQuarter;
+        if (this.state.newplanyear && this.state.newplanquarter) {
+             newcustomer.plan = this.state.newplanyear+this.state.newplanquarter;
              //console.log('newplanQuarter: ', this.state.newplanQuarter);
              //console.log('newplanYear', this.state.newplanYear)
              firebase.database().ref('/customers/' + customer.id + '/plan').set(newcustomer.plan);
         }
-        else if (this.state.newplanYear) {
-            newcustomer.plan = this.state.newplanYear+customer.plan.substring(9);
+        else if (this.state.newplanyear) {
+            newcustomer.plan = this.state.newplanyear+customer.plan.substring(9);
             //console.log('newcustomer.plan: ', newcustomer.plan);
             //console.log('newplanYear', this.state.newplanYear)
             //console.log('customer quarter: ', customer.plan.substring(9));
             firebase.database().ref('/customers/' + customer.id + '/plan').set(newcustomer.plan);
        }
-       else if (this.state.newplanQuarter) {
-            newcustomer.plan = customer.plan.substring(0,9)+this.state.newplanQuarter;
+       else if (this.state.newplanquarter) {
+            newcustomer.plan = customer.plan.substring(0,9)+this.state.newplanquarter;
             //console.log('newcustomer.plan: ', newcustomer.plan);
             //console.log('customer year', customer.plan.substring(0,9))
             //console.log('newplanQuarter: ', this.state.newplanQuarter);
@@ -224,8 +224,8 @@ export class AddCustomers extends Component {
     resetNewInfo() {
         this.setState({newfirstname: ''});
         this.setState({newlastname: ''});
-        this.setState({ newplanYear: null });
-        this.setState({ newplanQuarter: null});
+        this.setState({ newplanyear: '' });
+        this.setState({ newplanquarter: ''});
         this.setState({ newmax: '' });
         this.setState({ newreshall: '' });
         this.setState({ newphone: '' });
@@ -292,8 +292,8 @@ export class AddCustomers extends Component {
 
             this.setState({newfirstname: ''});
             this.setState({newlastname: ''});
-            this.setState({ newplanYear: null});
-            this.setState({ newplanQuarter: null });
+            this.setState({ newplanyear: ''});
+            this.setState({ newplanquarter: '' });
             this.setState({ newmax: '' });
             this.setState({ newreshall: '' });
             this.setState({ newphone: '' });
