@@ -158,10 +158,10 @@ export class CustomerSheet extends Component {
                         <Column field="name" header="Name" style={{ maxWidth: 150 }} sortable filter filterPlaceholder="Search name" exportable={false}/>
                         <Column field="laundrystatus" header="Bag Status" style={{ maxWidth: 150 }} sortable={true} filter filterElement={statusFilter} body={this.statusBodyTemplate} exportable={false}/>
                         <Column field="weightstatus" header="Weight Status" style={{ maxWidth: 150 }}  sortable={true} body={this.weightBodyTemplate} exportable={false}/>
-                        {/* <Column field="activestatus" header="Active" style={{ maxWidth: 100 }} sortable={true} body={this.activeBodyTemplate} exportable={false}/> */}
-                        <Column field="detergentstatus" header="Detergent" style={{ maxWidth: 100 }} sortable={true} body={this.detergentBodyTemplate}/>
-                        <Column field="fabricstatus" header="Fabric Softener" style={{ maxWidth: 100 }} sortable={true} body={this.fabricSoftenerBodyTemplate}/>
-                        <Column field="requeststatus" header="Special Requests" style={{ maxWidth: 100 }} sortable={true} body={this.specialRequestBodyTemplate}/>
+                        <Column field="detergent" header="Detergent" style={{ maxWidth: 100 }} sortable={true} body={this.detergentBodyTemplate} />
+                        <Column field="fabric_softener" header="Fabric Softener" style={{ maxWidth: 100 }} sortable={true} body={this.fabricSoftenerBodyTemplate} exportable={false}/>
+                        <Column field="special_request" header="Special Requests" style={{ maxWidth: 100 }} sortable={true} body={this.specialRequestBodyTemplate} exportable={false}/>
+                        
                     </DataTable>
                 </div>
             </div>
