@@ -35,6 +35,7 @@ export class AddCustomers extends Component {
             idcount: null,
             newfirstname: null,
             newlastname: null,
+            newid: null,
             newplanYear: null,
             newplanQuarter: null,
             newmax: null,
@@ -195,6 +196,10 @@ export class AddCustomers extends Component {
         //console.log('new last name: ', value)
         this.setState({newlastname: value});
     }
+    onIdValueChange(value) {
+        //console.log('new id name: ', value)
+        this.setState({ newid: value });
+    }
 
     onPlanYearValueChange(value) {
         //console.log('newPlanYear: ', value)
@@ -224,6 +229,7 @@ export class AddCustomers extends Component {
     resetNewInfo() {
         this.setState({newfirstname: ''});
         this.setState({newlastname: ''});
+        this.setState({ newid: '' });
         this.setState({ newplanyear: '' });
         this.setState({ newplanquarter: ''});
         this.setState({ newmax: '' });
@@ -246,7 +252,8 @@ export class AddCustomers extends Component {
         if(this.state.newfirstname !=='' && this.state.newlastname !== '' && this.state.newemail !=='' && this.state.newphone !== '' && this.state.newreshall!=='' && this.state.newmax!=='' && this.state.newplanyear!==null && this.state.newplanquarter !== null) {
             
             var idNum = this.padId(this.state.idcount);
-            var id = this.state.newfirstname.substring(0,1).toLowerCase() +this.state.newlastname.substring(0,1).toLowerCase()+idNum;
+            // var id = this.state.newfirstname.substring(0,1).toLowerCase() +this.state.newlastname.substring(0,1).toLowerCase()+idNum;
+            var id = this.state.newid;
             //console.log('NEW ID: ', id);
             this.messages.show({severity: 'success', summary: 'Success', detail: 'Customer Added!'});
             const db = firebase.database().ref()
@@ -292,6 +299,7 @@ export class AddCustomers extends Component {
 
             this.setState({newfirstname: ''});
             this.setState({newlastname: ''});
+            this.setState({ newid: '' });
             this.setState({ newplanyear: ''});
             this.setState({ newplanquarter: '' });
             this.setState({ newmax: '' });
@@ -383,13 +391,17 @@ export class AddCustomers extends Component {
 
 
                 <div className="p-fluid p-formgrid p-grid">
-    <div className="p-field p-col-12 p-md-6">
+    <div className="p-field p-col-12 p-md-4">
         <label htmlFor="firstname6">First Name</label>
         <InputText value={this.state.newfirstname} id="firstname" type="text" onChange={(e) => { this.onFirstNameValueChange(e.target.value); }}/>
     </div>
-    <div className="p-field p-col-12 p-md-6">
+    <div className="p-field p-col-12 p-md-4">
         <label htmlFor="lastname6">Last Name</label>
         <InputText value={this.state.newlastname} id="lastname" type="text" onChange={(e) => { this.onLastNameValueChange(e.target.value); }}/>
+    </div>
+    <div className="p-field p-col-12 p-md-4">
+        <label htmlFor="firstname6">ID</label>
+        <InputText value={this.state.newid} id="firstname" type="text" onChange={(e) => { this.onIdValueChange(e.target.value); }} />
     </div>
     <div className="p-field p-col-12 p-md-6">
         <label htmlFor="firstname6">Email</label>

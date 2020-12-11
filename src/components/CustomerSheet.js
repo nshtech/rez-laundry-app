@@ -82,7 +82,8 @@ export class CustomerSheet extends Component {
             'delivered-to-SH': 'delivered to SH',
             'delivered-to-dorm': 'delivered to dorm',
             'out-of-service': 'out of service',
-            'bag-missing': 'bag missing'
+            'bag-missing': 'bag missing',
+            'start-of-quarter': 'start of quarter'
         }
         return <span className={rowData.laundrystatus}>{laundryStatusDisplay[rowData.laundrystatus]}</span>;
     }
@@ -113,7 +114,8 @@ export class CustomerSheet extends Component {
             {label: 'Out of Service', value: 'out-of-service'},
             {label: 'Delivered to SH', value: 'delivered-to-SH'},
             {label: 'Delivered to Dorm', value: 'delivered-to-dorm'},
-            {label: 'Bag Missing', value: 'bag-missing'}
+            {label: 'Bag Missing', value: 'bag-missing'},
+            { label: 'Start of Quarter', value: 'start-of-quarter' }
                 ];
         return (
             <Dropdown value={this.state.selectedStatus} options={statuses} onChange={this.onStatusFilterChange}

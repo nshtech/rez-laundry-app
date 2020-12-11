@@ -80,6 +80,17 @@
     color: #474549;
 }
 
+.start-of-quarter {
+    border-radius: 2px;
+    padding: .25em .5em;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: .3px;
+    background-color: lightgrey;
+    color: #474549;
+}
+
 .underweight {
     border-radius: 2px;
     padding: .25em .5em;
@@ -154,7 +165,7 @@
     color: #256029;
 }
 
-.no{
+.No{
     border-radius: 2px;
     padding: .25em .5em;
     text-transform: uppercase;

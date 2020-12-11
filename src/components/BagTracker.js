@@ -248,7 +248,8 @@ export class BagTracker extends Component {
             'delivered-to-SH': 'delivered to SH',
             'delivered-to-dorm': 'delivered to dorm',
             'out-of-service': 'out of service',
-            'bag-missing': 'bag missing'
+            'bag-missing': 'bag missing',
+            'start-of-quarter': 'start of quarter'
         }
         return <span className={rowData.laundrystatus}>{laundryStatusDisplay[rowData.laundrystatus]}</span>
     }
@@ -260,7 +261,8 @@ export class BagTracker extends Component {
             { label: 'Out of Service', value: 'out-of-service' },
             { label: 'Delivered to SH', value: 'delivered-to-SH' },
             { label: 'Delivered to Dorm', value: 'delivered-to-dorm' },
-            { label: 'Bag Missing', value: 'bag-missing' }
+            { label: 'Bag Missing', value: 'bag-missing' },
+            { label: 'Start of Quarter', value: 'start-of-quarter' }
         ];
 
         return (
@@ -412,6 +414,8 @@ export class BagTracker extends Component {
                     <Button type="button" style={{ color: '#474549', backgroundColor: 'lightgrey', borderColor: '#474549', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="NO SERVICE" onClick={() => { this.bagStatusEditor(allcustomers, currentcustomers, 'out-of-service') }}>
                     </Button>
                     <Button type="button" style={{ color: '#C63737', backgroundColor: '#FFCDD2', borderColor: '#C63737', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="MISSING" onClick={() => { this.bagStatusEditor(allcustomers, currentcustomers, 'bag-missing') }}>
+                    </Button>
+                    <Button type="button" style={{ color: '#474549', backgroundColor: 'lightgrey', borderColor: '#474549', marginRight: 10 }} icon="pi pi-check" iconPos="left" label="START" onClick={() => { this.bagStatusEditor(allcustomers, currentcustomers, 'start-of-quarter') }}>
                     </Button>
 
                 </div>
