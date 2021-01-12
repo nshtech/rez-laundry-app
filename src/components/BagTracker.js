@@ -289,6 +289,7 @@ export class BagTracker extends Component {
         var reshallDisplay = {
           '560 Lincoln': '560 Lincoln',
           '720 Emerson': '720 Emerson',
+            '1715 Chicago Ave': '1715 Chicago Ave',
           '1838 Chicago': '1838 Chicago',
           '1856 Orrington': '1856 Orrington',
           '2303 Sheridan': '2303 Sheridan',
@@ -314,7 +315,8 @@ export class BagTracker extends Component {
           'Willard':  'Willard',
           'Delta Gamma': 'Delta Gamma',
           'Kappa Kappa Gamma': 'Kappa Kappa Gamma',
-          'Foster-Walker': 'Foster-Walker'
+          'Foster-Walker': 'Foster-Walker',
+            'Zeta Beta Tau (ZBT)': 'Zeta Beta Tau (ZBT)'
           }
           return <span className={rowData.reshall}>{reshallDisplay[rowData.reshall]}</span>
     }
@@ -323,6 +325,7 @@ export class BagTracker extends Component {
         var reshalls = [
             { label: '560 Lincoln', value: '560 Lincoln' },
             { label: '720 Emerson', value: '720 Emerson'},
+            { label: '1715 Chicago', value: '1715 Chicago'},
             { label: '1838 Chicago', value: '1838 Chicago'},
             { label: '1856 Orrington', value: '1856 Orrington'},
             { label: '2303 Sheridan', value: '2303 Sheridan'},
@@ -348,8 +351,9 @@ export class BagTracker extends Component {
             { label: 'Willard', value: 'Willard'},
             { label: 'Delta Gamma', value: 'Delta Gamma'},
             { label: 'Kappa Kappa Gamma', value: 'Kappa Kappa Gamma'},
-            { label: 'Foster-Walker', value: 'Foster-Walker'}
-        ];
+            { label: 'Foster-Walker', value: 'Foster-Walker'},
+            { label: 'Zeta Beta Tau (ZBT)', value: 'Zeta Beta Tau (ZBT)'}
+    ];
 
         return (
 

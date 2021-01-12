@@ -7,7 +7,8 @@
     "res-hall": "Delta Gamma",
     "laundrystatus": "picked-up",
     "bag-condition": "good",
-    "activestatus": "active"
+    "activestatus": "active",
+    "detergent": "unscented"
   },
   {
     "id": "001",

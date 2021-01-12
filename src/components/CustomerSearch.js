@@ -58,10 +58,11 @@ export class CustomerSearch extends Component {
                 {label: 'Choose later', value: 'Choose later'},
                 {label: '560 Lincoln', value: '560 Lincoln'},
                 {label: '720 Emerson', value: '720 Emerson'},
+                {label: '1715 Chicago', value: '1715 Chicago'},
                 {label: '1838 Chicago', value: '1838 Chicago'},
                 {label: '1856 Orrington', value: '1856 Orrington'},
                 {label: '2303 Sheridan', value: '2303 Sheridan'},
-                {label: 'AYers', value: 'Ayers'},
+                {label: 'Ayers', value: 'Ayers'},
                 {label: 'Allison', value: 'Allison'},
                 {label: 'Bobb', value: 'Bobb'},
                 {label: 'Chapin', value: 'Chapin'},
@@ -82,8 +83,8 @@ export class CustomerSearch extends Component {
                 {label: 'Slivka', value: 'Slivka'},
                 {label: 'Willard', value: 'Willard'},
                 {label: 'Delta Gamma', value: 'Delta Gamma'},
-                {label: 'Kappa Kappa Gamma', value: 'Kappa Kappa Gamma'}
-
+                {label: 'Kappa Kappa Gamma', value: 'Kappa Kappa Gamma'},
+                { label: 'Zeta Beta Tau (ZBT)', value: 'Zeta Beta Tau (ZBT)'}
             ]
 
         };
