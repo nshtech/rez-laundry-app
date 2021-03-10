@@ -73,6 +73,7 @@ export class BagTracker extends Component {
             let updatedCustomers = this.state.customers;
             updatedCustomers[props.rowIndex][props.field] = value;
             updatedCustomers[props.rowIndex]['weightstatus'] = 'overweight';
+            updatedCustomers[props.rowIndex]['quarter-overages'] += value;
             // this.setState({ customers: updatedCustomers });
             return value
         }
