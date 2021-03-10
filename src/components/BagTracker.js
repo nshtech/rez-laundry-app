@@ -62,7 +62,13 @@ export class BagTracker extends Component {
         console.log(this.state.customers[props.rowIndex])
         // console.log(props.rowIndex)
 
-        if (value > props.rowData.maxweight) {
+        //if (value > props.rowData.maxweight) {
+        
+        //if (value > firebase.database().ref('/customers/'+props.rowData.id+'/maxweight')) {
+        console.log('value: ',value);
+        console.log('maxweight comparison: ',parseInt(this.state.customers[props.rowIndex].maxweight));
+        if (parseFloat(value) > parseFloat(this.state.customers[props.rowIndex].maxweight)) {
+            console.log('marking as overweight.');
             firebase.database().ref('/customers/' + props.rowData.id + '/'+'weightstatus').set('overweight')
             let updatedCustomers = this.state.customers;
             updatedCustomers[props.rowIndex][props.field] = value;
@@ -71,6 +77,7 @@ export class BagTracker extends Component {
             return value
         }
         else {
+            console.log('marking as underweight');
             firebase.database().ref('/customers/' + props.rowData.id + '/'+'weightstatus').set('underweight')
             let updatedCustomers = this.state.customers;
             updatedCustomers[props.rowIndex][props.field] = value;
