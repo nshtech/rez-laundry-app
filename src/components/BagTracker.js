@@ -68,12 +68,18 @@ export class BagTracker extends Component {
         console.log('value: ',value);
         console.log('maxweight comparison: ',parseInt(this.state.customers[props.rowIndex].maxweight));
         if (parseFloat(value) > parseFloat(this.state.customers[props.rowIndex].maxweight)) {
+            let over = parseFloat(value) - parseFloat(this.state.customers[props.rowIndex].maxweight)
             console.log('marking as overweight.');
             firebase.database().ref('/customers/' + props.rowData.id + '/'+'weightstatus').set('overweight')
+            let temp = firebase.database().ref('/customers/' + props.rowData.id + '/' + 'quarter-overages')
+            temp.once('value', (snapshot) => {
+                let total = snapshot.val()+over
+                firebase.database().ref('/customers/' + props.rowData.id + '/' + 'quarter-overages').set(total)
+            })
             let updatedCustomers = this.state.customers;
             updatedCustomers[props.rowIndex][props.field] = value;
             updatedCustomers[props.rowIndex]['weightstatus'] = 'overweight';
-            updatedCustomers[props.rowIndex]['quarter-overages'] += value;
+            //updatedCustomers[props.rowIndex]['quarter-overages'] += parseFloat(value);
             // this.setState({ customers: updatedCustomers });
             return value
         }

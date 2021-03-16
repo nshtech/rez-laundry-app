@@ -238,6 +238,7 @@ export class AddCustomers extends Component {
         this.setState({ newreshall: '' });
         this.setState({ newphone: '' });
         this.setState({ newemail: '' });
+        this.setState({newoverage: ''});
     }
 
     addCustomer() {
