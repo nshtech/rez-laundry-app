@@ -71,11 +71,11 @@ export class BagTracker extends Component {
             let over = parseFloat(value) - parseFloat(this.state.customers[props.rowIndex].maxweight)
             console.log('marking as overweight.');
             firebase.database().ref('/customers/' + props.rowData.id + '/'+'weightstatus').set('overweight')
-            let temp = firebase.database().ref('/customers/' + props.rowData.id + '/' + 'quarter-overages')
+            /*let temp = firebase.database().ref('/customers/' + props.rowData.id + '/' + 'quarter-overages')
             temp.once('value', (snapshot) => {
                 let total = snapshot.val()+over
                 firebase.database().ref('/customers/' + props.rowData.id + '/' + 'quarter-overages').set(total)
-            })
+            })*/
             let updatedCustomers = this.state.customers;
             updatedCustomers[props.rowIndex][props.field] = value;
             updatedCustomers[props.rowIndex]['weightstatus'] = 'overweight';
@@ -218,25 +218,36 @@ export class BagTracker extends Component {
             })
             this.setState({ customers: updatedCustomers });
         }
+        console.log('bagStatusEditor currentcustomers: ',currentcustomers);
         this.dothisfirst(currentcustomers, newstatus)
 
     }
 
 
     dothisfirst(currentcustomers, newstatus) {
+        console.log('currentcustomers: ',currentcustomers);
+        console.log('newstatus: ',newstatus);
         if (currentcustomers) {
             var ids = Object.keys(currentcustomers).map(function (key) {
                 return currentcustomers[key].id;
             });
-            console.log(ids)
+            console.log('ids: ',ids);
             var query = firebase.database().ref("customers").orderByKey();
             query.once("value")
                 .then(function (snapshot) {
+                    var counter=0;
                     snapshot.forEach(function (childSnapshot) {
                         var key = childSnapshot.key;
                         if (ids.includes(key)) {
                             var key = childSnapshot.key;
-                            firebase.database().ref('/customers/' + key + '/' + "laundrystatus").set(newstatus)
+                            firebase.database().ref('/customers/' + key + '/' + "laundrystatus").set(newstatus);
+                            console.log('currentcustomers in forEach: ',currentcustomers);
+                            if (newstatus === 'delivered-to-SH' && parseFloat(currentcustomers[counter].weekweight) > parseFloat(currentcustomers[counter].maxweight)) {
+                                firebase.database().ref('/customers/' + key + '/' + "quarter-overages").transaction(function(currOverages) {
+                                    return currOverages+1;
+                                });
+                            }
+                            counter = counter+1;
 
                         }
                     });
