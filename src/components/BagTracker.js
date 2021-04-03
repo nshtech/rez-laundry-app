@@ -244,7 +244,8 @@ export class BagTracker extends Component {
                             console.log('currentcustomers in forEach: ',currentcustomers);
                             if (newstatus === 'delivered-to-SH' && parseFloat(currentcustomers[counter].weekweight) > parseFloat(currentcustomers[counter].maxweight)) {
                                 firebase.database().ref('/customers/' + key + '/' + "quarter-overages").transaction(function(currOverages) {
-                                    return currOverages+1;
+                                    //return currOverages+1;
+                                    return currOverages + parseFloat(currentcustomers[counter].weekweight) - parseFloat(currentcustomers[counter].maxweight);
                                 });
                             }
                             counter = counter+1;
