@@ -243,7 +243,7 @@ export class BagTracker extends Component {
                             firebase.database().ref('/customers/' + key + '/' + "laundrystatus").set(newstatus);
                             console.log('currentcustomers in forEach: ',currentcustomers);
                             if (newstatus === 'delivered-to-SH' && parseFloat(currentcustomers[counter].weekweight) > parseFloat(currentcustomers[counter].maxweight)) {
-                                firebase.database().ref('/customers/' + key + '/' + "quarter-overages").transaction(function(currOverages) {
+                                firebase.database().ref('/customers/' + key + '/' + "quarter_overages").transaction(function(currOverages) {
                                     //return currOverages+1;
                                     return currOverages + parseFloat(currentcustomers[counter].weekweight) - parseFloat(currentcustomers[counter].maxweight);
                                 });
