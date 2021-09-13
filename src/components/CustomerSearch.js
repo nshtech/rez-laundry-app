@@ -64,7 +64,6 @@ export class CustomerSearch extends Component {
                 {label: '1856 Orrington', value: '1856 Orrington'},
                 {label: '2303 Sheridan', value: '2303 Sheridan'},
                 {label: 'Allison', value: 'Allison'},
-                {label: 'Alpha Phi', value: 'Alpha Phi'},
                 {label: 'Ayers', value: 'Ayers'},
                 {label: 'Bobb', value: 'Bobb'},
                 {label: 'Chapin', value: 'Chapin'},
@@ -86,8 +85,10 @@ export class CustomerSearch extends Component {
                 {label: 'Shepard Hall', value: 'Shepard Hall'},
                 {label: 'Slivka', value: 'Slivka'},
                 {label: 'Willard', value: 'Willard'},
+                {label: 'Alpha Phi', value: 'Alpha Phi'},
                 {label: 'Delta Gamma', value: 'Delta Gamma'},
                 {label: 'Kappa Kappa Gamma', value: 'Kappa Kappa Gamma'},
+                {label: 'Tri Delt', value: 'Tri Delt'},
                 {label: 'Zeta Beta Tau (ZBT)', value: 'Zeta Beta Tau (ZBT)'}
 
             ]

@@ -322,7 +322,7 @@ export class BagTracker extends Component {
           '1856 Orrington': '1856 Orrington',
           '2303 Sheridan': '2303 Sheridan',
           'Allison': 'Allison',
-          'Alpha Phi': 'Alpha Phi',
+          
           'Ayers': 'Ayers',
           'Bobb': 'Bobb',
           'Chapin': 'Chapin',
@@ -344,9 +344,10 @@ export class BagTracker extends Component {
           'Shepard Hall': 'Shepard Hall',
           'Slivka': 'Slivka',
           'Willard':  'Willard',
+          'Alpha Phi': 'Alpha Phi',
           'Delta Gamma': 'Delta Gamma',
           'Kappa Kappa Gamma': 'Kappa Kappa Gamma',
-          'Foster-Walker': 'Foster-Walker',
+          'Tri Delt': 'Tri Delt',
             'Zeta Beta Tau (ZBT)': 'Zeta Beta Tau (ZBT)'
           }
           return <span className={rowData.reshall}>{reshallDisplay[rowData.reshall]}</span>
@@ -362,7 +363,6 @@ export class BagTracker extends Component {
             {label: '1856 Orrington', value: '1856 Orrington'},
             {label: '2303 Sheridan', value: '2303 Sheridan'},
             {label: 'Allison', value: 'Allison'},
-            {label: 'Alpha Phi', value: 'Alpha Phi'},
             {label: 'Ayers', value: 'Ayers'},
             {label: 'Bobb', value: 'Bobb'},
             {label: 'Chapin', value: 'Chapin'},
@@ -384,8 +384,10 @@ export class BagTracker extends Component {
             {label: 'Shepard Hall', value: 'Shepard Hall'},
             {label: 'Slivka', value: 'Slivka'},
             {label: 'Willard', value: 'Willard'},
+            {label: 'Alpha Phi', value: 'Alpha Phi'},
             {label: 'Delta Gamma', value: 'Delta Gamma'},
             {label: 'Kappa Kappa Gamma', value: 'Kappa Kappa Gamma'},
+            {label: 'Tri Delt', value: 'Tri Delt'},
             {label: 'Zeta Beta Tau (ZBT)', value: 'Zeta Beta Tau (ZBT)'}
         ];
 
