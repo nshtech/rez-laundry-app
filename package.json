@@ -30,7 +30,7 @@
         "react-scripts": "3.0.1",
         "react-transition-group": "^2.5.1",
         "tmp": "^0.2.1",
-        "validator": "^13.0.0"
+        "validator": "^13.7.0"
     },
     "scripts": {
         "start": "react-scripts start",
